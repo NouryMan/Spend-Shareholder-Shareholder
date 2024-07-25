@@ -1,0 +1,343 @@
+﻿@model PagedList.IPagedList<Spend.Models.CENTERSTBL_Model>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "ربط الحسابات بالمراكز";
+}
+
+
+
+
+@if (Model != null)
+{
+
+
+
+
+    <div class="dashboard-content-wrap">
+        <div class="dashboard-bread dashboard--bread dashboard-bread-2">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="col-lg-6">
+                        <div class="breadcrumb-content">
+                            <div class="section-heading">
+                                <h2 class="sec__title font-size-30 text-white">ربط الحسابات بالمراكز</h2>
+                            </div>
+                        </div><!-- end breadcrumb-content -->
+                    </div><!-- end col-lg-6 -->
+                    <div class="col-lg-6">
+                        <div class="breadcrumb-list text-right">
+                            <ul class="list-items">
+                                <li><a href="index.html" class="text-white">الصفحة الرئيسية</a></li>
+                                <li>ربط الحسابات بالمراكز</li>
+                            
+                            </ul>
+                        </div><!-- end breadcrumb-list -->
+                    </div><!-- end col-lg-6 -->
+                </div><!-- end row -->
+            </div>
+        </div><!-- end dashboard-bread -->
+        <div class="dashboard-main-content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-box">
+                            <div class="form-title-wrap">
+
+
+                                <a href="~/centerstbl/create" class="btn btn-primary btn-sm "> <i class="fa fa-plus"> </i>ربط جديد</a>
+
+
+
+                            </div>
+                            <div class="form-content">
+                                @using (Html.BeginForm())
+                                {
+
+
+
+                                    <div class=" row input-group mb-4 ">
+                                        <div class="col-md-3 col-sm-8  ">
+
+                                            <input class="form-control" name="search" id="search" type="text" placeholder="بحث..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+
+                                        </div>
+                                        <div class="col-md-3 pr-0">
+                                            <button class="btn btn-primary" type="submit"><i class="la la-search"></i></button>
+                                        </div>
+
+
+                                    </div>
+                                }
+                                <div>
+
+                                    <table class="table table-responsive table-sm table-responsive-sm table-bordered table-striped small ">
+                                        <thead>
+                                            <tr>
+
+                                                <th class="text-align-center">
+                                                    <span class="font-size-12"> كود الربط</span>
+
+                                                </th>
+                                                <th class="text-align-center">
+                                                    <span class="font-size-12">اسم المشروع</span>
+
+                                                </th>
+
+
+                                                <th class="text-align-center">
+                                                    <span class="font-size-12">حساب المشروع</span>
+
+                                                </th>
+                                                <th class="text-align-center">
+                                                    <span class="font-size-12">اسم المالك </span>
+
+                                                </th>
+                                                <th class="text-align-center">
+                                                    <span class="font-size-12">حساب المالك</span>
+
+                                                </th>
+                                                <th class="text-align-center">
+                                                    <span class="font-size-12">حساب البنك</span>
+
+                                                </th>
+
+
+                                                <th class="text-align-center">
+                                                    <span class="font-size-12">حساب النقدية</span>
+
+                                                </th>
+
+
+                                                <th class="text-align-center">
+                                                    <span class="font-size-12"> حساب المشتريات النقدية</span>
+
+                                                </th>
+
+
+
+                                                <th class="text-align-center">
+                                                    <span class="font-size-12">حساب المشتريات الاجلة</span>
+
+                                                </th>
+                                                <th class="text-align-center">
+                                                    <span class="font-size-12">حساب المبيعات </span>
+
+                                                </th>
+
+
+                                                <th class="text-align-center">
+                                                    <span class="font-size-12"> حساب المسوق</span>
+
+                                                </th>
+                                                <th class="text-align-center">
+                                                    <span class="font-size-12"> حساب مشتريات العهد</span>
+
+                                                </th>
+
+
+                                                <th class="text-align-center">
+                                                    <span class="font-size-12"> حساب عمولات تنفيذ الاعمال</span>
+
+                                                </th>
+                                                <th class="text-align-center">
+                                                    <span class="font-size-12"> نسبة تنفيذ الاعمال</span>
+
+                                                </th>
+                                                <th class="text-align-center">
+                                                    <span class="font-size-12">  صندوق الصرف</span>
+
+                                                </th>
+                                                <th class="text-align-center">
+                                                    <span class="font-size-12"> صندوق التسويق</span>
+
+                                                </th>
+
+
+
+                                                <th class="text-align-center">
+                                                    <span class="font-size-12"> صندوق تنفيذ الاعمال </span>
+
+                                                </th>
+                                                <th class="text-align-center">
+                                                    <span class="font-size-12"> صندوق  العمولات الاخرى</span>
+
+                                                </th>
+                                                <th class="text-align-center">
+                                                    <span class="font-size-12">  صندوق الدخل</span>
+
+                                                </th>
+                                                <th class="text-align-center">
+                                                    <span class="font-size-12">صندوق عمولات اخرى</span>
+
+                                                </th>
+
+
+
+
+
+
+
+
+
+                                                <th class="text-align-center">
+                                                    <span class="font-size-12">حساب الضريبة </span>
+
+                                                </th>
+                                                <th class="text-align-center">
+                                                    <span class="font-size-12">رقم الضريبة</span>
+
+                                                </th>
+                                                <th class="text-align-center">
+                                                    <span class="font-size-12"> صندوق الضريبة</span>
+
+                                                </th>
+
+                                                <th class="text-align-center">
+                                                    <span class="font-size-12">حساب تكلفة العمل</span>
+
+                                                </th>
+
+
+                                                <th class="text-align-center">
+
+
+                                                </th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (Spend.Models.CENTERSTBL_Model item in Model)
+                                            {
+
+
+                                            <tr>
+                                                <td> <span class="font-size-12">@item.ID</span></td>
+                                                <td> <span class="font-size-12">@item.PROJECTTBL_Model.PROJECT_NAME</span></td>
+                                                <td> <span class="font-size-12">@item.PROJECT_NO</span></td>
+                                                <td> <span class="font-size-12">@item.OWNERTBL_Model.OWNER_NAME</span></td>
+                                                <td> <span class="font-size-12">@item.OWNERTBL_Model.ACC_NO</span></td>
+
+                                                <td> <span class="font-size-12">@item.BANK_ACC</span></td>
+                                                <td> <span class="font-size-12">@item.CASH_ACC</span></td>
+                                                <td> <span class="font-size-12">@item.CASH_PUR_ACC</span></td>
+                                            
+
+                                                <td> <span class="font-size-12">@item.FUTURES_ACC</span></td>
+
+                                                <td> <span class="font-size-12">@item.SALES_ACC</span></td>
+
+                                                <td> <span class="font-size-12">@item.MARKETER_ACC</span></td>
+                                                <td> <span class="font-size-12">@item.FUT_PUR_CASH</span></td>
+
+                                                <td> <span class="font-size-12">@item.SALES_COMM_ACC</span></td>
+                                                <td> <span class="font-size-12">@item.WORKING_COMM_PERCENT</span></td>
+                                                <td> <span class="font-size-12">@item.SPEND_BOX</span></td>
+                                                <td> <span class="font-size-12">@item.MARKETING_BOX</span></td>
+                                                <td> <span class="font-size-12">@item.WORKING_COMM_BOX</span></td>
+                                                <td> <span class="font-size-12">@item.OTHER_COMM_BOX</span></td>
+                                                <td> <span class="font-size-12">@item.INCOME_BOX</span></td>
+                                                <td> <span class="font-size-12">@item.OTHER_COMM_ACC</span></td>
+                                                <td> <span class="font-size-12">@item.VAT_ACC</span></td>
+                                                <td> <span class="font-size-12">@item.VAT_ID</span></td>
+                                                <td> <span class="font-size-12">@item.VAT_BOX</span></td>
+                                                <td> <span class="font-size-12">@item.WORK_COST_ACC</span></td>
+
+
+                                                <td>
+                                                    <div class="row  p-1">
+                                                        <div class="col-md-3 ">
+                                                            <a href="" class="btn btn-success btn-sm "> <i class="la  la-eye"> </i></a>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="row  p-1">
+                                                        <div class="col-md-3 ">
+                                                            <a href="" class="btn btn-info btn-sm "> <i class="la  la-edit"></i></a>
+                                                        </div>
+                                                    </div>
+
+
+                                                    <div class="row  p-1">
+                                                        <div class="col-md-3">
+
+
+                                                            <a href="" class="btn btn-danger btn-sm "> <i class="la  la-trash"></i></a>
+                                                        </div>
+
+                                                    </div>
+
+                                                </td>
+                                            </tr>
+
+                                            }
+                                        </tbody>
+
+                                    </table>
+                                </div>
+
+
+                            </div>
+                        </div><!-- end form-box -->
+                    </div><!-- end col-lg-12 -->
+                </div><!-- end row -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <nav aria-label="Page navigation example">
+
+                            صفحة @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) من @Model.PageCount
+
+                            <div>
+
+
+                                @Html.PagedListPager(Model, page => Url.Action("index",
+                                                             new { page })
+                                                             ,
+                                                             new PagedListRenderOptions
+                                                             {
+                                                                 LiElementClasses = new string[] { "page-link page-link-nav" },
+
+
+                                                             }
+
+                                                    )
+                            </div>
+
+
+
+                        </nav>
+                    </div>
+                </div>
+                <div class="border-top mt-5"></div>
+                <div class="row align-items-center">
+                    <div class="col-lg-7">
+                        <div class="copy-right padding-top-30px">
+                            <p class="copy__desc">
+                                &copy; Copyright Tech Light 2022. Made with
+                                <span class="la la-heart"></span> by <a href="http://Tech-Light.com/">Noury</a>
+                            </p>
+                        </div><!-- end copy-right -->
+                    </div><!-- end col-lg-7 -->
+                    <div class="col-lg-5">
+                        <div class="footer-social-box text-right padding-top-30px">
+                            <ul class="social-profile">
+                                <li><a href="#"><i class="lab la-facebook-f"></i></a></li>
+                                <li><a href="#"><i class="lab la-twitter"></i></a></li>
+                                <li><a href="#"><i class="lab la-instagram"></i></a></li>
+                                <li><a href="#"><i class="lab la-linkedin-in"></i></a></li>
+                            </ul>
+                        </div><!-- end copy-right-content -->
+                    </div><!-- end col-lg-5 -->
+                </div><!-- end row -->
+            </div><!-- end container-fluid -->
+        </div><!-- end dashboard-main-content -->
+    </div><!-- end dashboard-content-wrap -->
+
+
+
+
+
+
+
+}
+

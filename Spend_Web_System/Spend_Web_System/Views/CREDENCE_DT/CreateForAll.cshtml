@@ -1,0 +1,126 @@
+﻿@model Spend.Models.CREDENCE_DTTBL_Model
+@{
+    ViewBag.Title = "انشاء استحقاق";
+}
+
+
+
+<div class="container" dir="rtl">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="card shadow-lg border-0 rounded-lg mt-5">
+                <div class="card-header"><h3 class="text-center font-weight-light my-4">انشاء استحقاق</h3></div>
+                <div class="card-body">
+
+                    @using (Html.BeginForm("CreateForAll", "CREDENCE_DT", FormMethod.Post, new { enctype = "multipart/form-data" }))
+                    {
+                        @Html.AntiForgeryToken()
+                        <input class="form-control" id="PERSON_ACC_PROJTBL_ID" name="PERSON_ACC_PROJTBL_ID" value="@ViewBag.per_acc_proj" type="hidden" placeholder="" />
+                        <input class="form-control" id="redirct" name="redirct" value="@ViewBag.redirct" type="hidden" placeholder="" />
+
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                        <div class="row mb-3">
+                            <div class="col-md-4">
+                                <div class="form-floating mb-3 mb-md-0">
+
+                                    <label for="inputFirstName">اسم المشروع</label>
+                                    <input class="form-control" id="PROJECT_NO" name="PROJECT_NO" type="hidden" value="@ViewBag.project_id" placeholder="" />
+                                    <span class="form-control">@ViewBag.project_name</span>
+
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-floating">
+                                    <label for="inputLastName">اسم الشغلة</label>
+                                    <input class="form-control" id="UTL_NO" name="UTL_NO" value="@ViewBag.utlist_id" type="hidden" placeholder="" />
+
+                                    <span class="form-control">@ViewBag.Utl_Name</span>
+
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <label for="inputLastName">اسم المقاول</label>
+                                    @*<input class="form-control" id="UTL_NO" name="UTL_NO" value="ViewBag.utlist_id" type="hidden" placeholder="" />*@
+                                    <span class="form-control">@ViewBag.PERSON_ACC_Name</span>
+
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="row mb-3">
+
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3 mb-md-0">
+                                    <label for="inputPasswordConfirm">المبلغ</label>
+                                    @*<input class="form-control" id="inputPasswordConfirm" type="number" placeholder="Confirm password" />*@
+                                    @Html.EditorFor(model => model.AMMOUNT, new { htmlAttributes = new { @class = "form-control", @id = "SING_PRICE", @type = "number", @placeholder = "" } })
+                                    @Html.ValidationMessageFor(model => model.AMMOUNT, "", new { @class = "text-danger" })
+
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3 mb-md-0">
+                                    <label for="inputPasswordConfirm">تاريخ الاستحقاق</label>
+                                    @Html.EditorFor(model => model.ACT_EXEC_DATE_M, new { htmlAttributes = new { @class = "form-control", @type = "date", @placeholder = "" } })
+                                    @Html.ValidationMessageFor(model => model.ACT_EXEC_DATE_M, "", new { @class = "text-danger" })
+
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="row mb-3">
+
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <label for="inputLastName">السبب</label>
+                                    @Html.EditorFor(model => model.REASON, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = "" } })
+                                    @Html.ValidationMessageFor(model => model.REASON, "", new { @class = "text-danger" })
+
+
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <label for="inputLastName">الملاحظة</label>
+                                    @Html.EditorFor(model => model.NOTE, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = "" } })
+                                    @Html.ValidationMessageFor(model => model.NOTE, "", new { @class = "text-danger" })
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+                            <div class="col-md-12">
+                                <div class="form-floating mb-12 mb-md-0">
+                                    <label for="inputPasswordConfirm">الملحقات</label>
+                                    @*<input class="form-control" id="inputPasswordConfirm" type="number" placeholder="Confirm password" />*@
+                                    <input type="file" multiple="multiple" id="files" name="files" class="form-control" />
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4 mb-0">
+                            <div class="d-grid col-md-6 "><button class="btn btn-primary btn-block" type="submit">حفظ</button></div>
+
+                            <div class="d-grid col-md-6"><a class="btn btn-danger btn-block" href="~/credence_dt/Index/@ViewBag.per_acc_proj?redirct=@ViewBag.redirct">رجوع</a></div>
+
+
+
+
+
+                        </div>
+                    }
+                </div>
+                <div class="card-footer text-center py-3">
+                    <div class="small">Tech Light</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

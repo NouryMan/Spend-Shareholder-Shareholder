@@ -1,0 +1,285 @@
+﻿@model IEnumerable<Spend.Models.PERSON_ACC_PROJTBL_Model>
+@{
+    ViewBag.Title = "الاتفاقيات";
+
+    string tableColor = "table-primary";
+}
+
+
+
+
+@if (Model != null)
+{
+
+    <div class="dashboard-content-wrap">
+        <div class="dashboard-bread dashboard--bread dashboard-bread-2">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="col-lg-6">
+                        <div class="breadcrumb-content">
+                            <div class="section-heading">
+                                <h2 class="sec__title font-size-30 text-white"> @ViewBag.project_name</h2>
+                            </div>
+                        </div><!-- end breadcrumb-content -->
+                    </div><!-- end col-lg-6 -->
+                    <div class="col-lg-6">
+                        <div class="breadcrumb-list text-right">
+                            <ul class="list-items">
+                                <li class=""><a href="~/">الرئسية</a></li>
+                                <li class=""><a href="~/credence_dt/Indexproject">المشاريع</a></li>
+
+                                <li class="breadcrumb-item active">الاتفاقيات</li>
+
+                            </ul>
+                        </div><!-- end breadcrumb-list -->
+                    </div><!-- end col-lg-6 -->
+                </div><!-- end row -->
+            </div>
+        </div><!-- end dashboard-bread -->
+        <div class="dashboard-main-content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-box">
+                            <div class="form-title-wrap">
+
+
+
+
+
+                            </div>
+                            <div class="form-content">
+
+
+
+
+
+
+
+                                <div class="card-body" style=" overflow-x: scroll; width: 100%;  ">
+                                    <table class="table table-bordered table-sm small">
+                                        <thead>
+                                            <tr>
+                                                <th>اسم المقاول</th>
+                                                <th>موبايل المقاول</th>
+                                                <th>جزء المشروع</th>
+                                                <th>العمارة</th>
+                                                <th>الشقة</th>
+                                                <th>الوحدة</th>
+                                                <th>سعر الوحدة</th>
+                                                <th> الكمية</th>
+                                                <th> الاجمالي</th>
+
+                                                <th> المبلغ المعتمد غير المدفوع</th>
+
+                                                <th> اجمالي المقاولة</th>
+                                                <th> اجمالي المعتمد غير المدفوع</th>
+
+
+                                                <th> اجمالي المبلغ المدفوع</th>
+                                                <th>اجمالي المتبقي</th>
+
+                                                <th> التاريخ</th>
+                                                <th> المدة</th>
+                                                <th>بواسطة</th>
+                                                <th>ملاحظة</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+
+                                            @foreach (var Group in Model.GroupBy(x => x.ACC_NO))
+                                            {
+                                                int n = Group.Count() + 1;
+                                                if (tableColor == "")
+                                                {
+                                                    tableColor = "table-primary";
+                                                }
+                                                else
+                                                {
+                                                    tableColor = "";
+                                                }
+
+                                                <tr class="@tableColor">
+                                                    <th style="vertical-align : middle;text-align:center;" rowspan="@n"> <a href="~/credence_dt/index/@Group.FirstOrDefault().ID?redirct=CREDENCE_DT&isall=true"> @Group.FirstOrDefault().PERSON_ACCTBL_Model.PERSONAL_INFOTBL_Model.AR_NAME</a></th>
+                                                    <th style="vertical-align : middle;text-align:center;" rowspan="@n">@Group.FirstOrDefault().PERSON_ACCTBL_Model.PERSONAL_INFOTBL_Model.MOBILE_NO</th>
+
+
+                                                </tr>
+                                                {
+                                                    int i = 0;
+                                                    decimal REST_TOTAL = 0;
+                                                    foreach (var item in Group)
+                                                    {
+                                                        i++;
+                                                        REST_TOTAL = Group.Sum(x => x.TOTAL_PRICE) - (Group.Sum(x => x.NO_PAY_AMOUNT) + item.PAY_AMOUNT);
+
+                                                        <tr class="@tableColor">
+
+                                                            <td>
+
+                                                                @{try
+                                                                    { <a href="~/credence_dt/index/@item.ID?redirct=CREDENCE_DT">
+                                                                            @item.SUB_PROJTBL_Model.SUB_PROJ_NAME
+                                                                        </a>}
+                                                                    catch { } }
+
+                                                            </td>
+                                                            <td>
+                                                                @{try
+                                                                    {<a href="~/credence_dt/index/@item.ID?redirct=CREDENCE_DT">
+                                                                            @item.PARTTBL_Model.PART_NAME
+                                                                        </a>}
+                                                                    catch { } }
+                                                            </td>
+                                                            <td>
+                                                                @{try
+                                                                    {<a href="~/credence_dt/index/@item.ID?redirct=CREDENCE_DT"> @item.UNITTBL_Model.UNIT_NAME </a>}
+                                                                catch { } }
+                                                            </td>
+                                                            <td>
+                                                                @{try
+                                                                    { @item.UTL_TYPETBL_Model.UTL_TYPE_NAME}
+                                                                catch { } }
+                                                            </td>
+                                                            <td>
+                                                                @{try
+                                                                    { @item.SING_PRICE}
+                                                                catch { } }
+                                                            </td>
+                                                            <td>
+                                                                @{try
+                                                                    { @item.QNTY}
+                                                                catch { } }
+                                                            </td>
+                                                            <td>
+                                                                @{try
+                                                                    { @item.TOTAL_PRICE}
+                                                                catch { } }
+                                                            </td>
+                                                            <td>
+                                                                @{try
+                                                                    { @item.NO_PAY_AMOUNT}
+                                                                catch { } }
+                                                            </td>
+                                                            @if (i == 1)
+                                                            {
+
+                                                                <th style="vertical-align : middle;text-align:center;" rowspan="@Group.Count()">
+                                                                    @{try
+                                                                        { @Group.Sum(x => x.TOTAL_PRICE)}
+                                                                    catch { } }
+                                                                </th>
+                                                                <th style="vertical-align : middle;text-align:center;" rowspan="@Group.Count()">
+                                                                    @{try
+                                                                        { @Group.Sum(x => x.NO_PAY_AMOUNT)}
+                                                                    catch { }
+                                                                    }
+                                                                </th>
+                                                                <th style="vertical-align : middle;text-align:center;" rowspan="@Group.Count()">
+                                                                    @{try
+                                                                        { @item.PAY_AMOUNT}
+                                                                    catch { } }
+                                                                </th>
+                                                                <th style="vertical-align : middle;text-align:center;" rowspan="@Group.Count()">
+                                                                    @{try
+                                                                        { @REST_TOTAL}
+                                                                    catch { } }
+                                                                </th>
+                                                            }
+                                                            <td align="center">
+                                                                @{try
+                                                                    { @item.CR_DATE.Value.ToShortDateString()}
+                                                                catch { } }
+                                                            </td>
+                                                            <td>
+                                                                @{try
+                                                                    { @item.EXECUT_PERIOD}
+                                                                catch { } }
+                                                            </td>
+                                                            <td>
+                                                                @{try
+                                                                    {@item.USER_CR_Model.PERSONAL_INFOTBL_Model.AR_NAME;
+                                                                }
+                                                                catch { } }
+                                                            </td>
+                                                            <td>
+                                                                @{try
+                                                                    { @item.NOTE}
+                                                                catch { } }
+                                                            </td>
+
+                                                            <td>
+
+
+
+                                                                <div class="row p-1">
+                                                                    <div class="col-md-2 col-lg-2">
+                                                                        <a href="~/credence_dt/index/@item.ID?redirct=CREDENCE_DT" class="btn btn-info btn-sm "> <i class="fa  fa-columns"> </i> الاستحقاقات </a>
+                                                                    </div>
+                                                                </div>
+
+
+                                                            </td>
+
+
+                                                        </tr>
+
+                                                    }
+                                                }
+
+
+
+
+                                            }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                                        </tbody>
+                                    </table>
+                                </div>
+
+                            </div>
+                        </div><!-- end form-box -->
+                    </div><!-- end col-lg-12 -->
+                </div><!-- end row -->
+                <div class="border-top mt-5"></div>
+                <div class="row align-items-center">
+                    <div class="col-lg-7">
+                        <div class="copy-right padding-top-30px">
+                            <p class="copy__desc">
+                                &copy; Copyright Tech Light 2022. Made with
+                                <span class="la la-heart"></span> by <a href="http://Tech-Light.com/">Noury</a>
+                            </p>
+                        </div><!-- end copy-right -->
+                    </div><!-- end col-lg-7 -->
+                    <div class="col-lg-5">
+                        <div class="footer-social-box text-right padding-top-30px">
+                            <ul class="social-profile">
+                                <li><a href="#"><i class="lab la-facebook-f"></i></a></li>
+                                <li><a href="#"><i class="lab la-twitter"></i></a></li>
+                                <li><a href="#"><i class="lab la-instagram"></i></a></li>
+                                <li><a href="#"><i class="lab la-linkedin-in"></i></a></li>
+                            </ul>
+                        </div><!-- end copy-right-content -->
+                    </div><!-- end col-lg-5 -->
+                </div><!-- end row -->
+            </div><!-- end container-fluid -->
+        </div><!-- end dashboard-main-content -->
+    </div><!-- end dashboard-content-wrap -->
+
+
+}

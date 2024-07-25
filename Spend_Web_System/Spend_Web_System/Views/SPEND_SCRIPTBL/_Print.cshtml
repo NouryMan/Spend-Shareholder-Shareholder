@@ -1,0 +1,419 @@
+﻿@model Spend.Models.SPEND_SCRIPTBL_Model
+@using System.Globalization;
+@{
+    Layout = "";
+    ViewBag.Title = "السندات";
+    int i = 1;
+    decimal total = 0;
+
+
+    NumberFormatInfo nfi = new CultureInfo("en-US", false).NumberFormat;
+    nfi.CurrencyDecimalDigits = 2;
+    nfi.NumberDecimalDigits = 2;
+    nfi.CurrencyDecimalSeparator = ".";
+    nfi.CurrencyGroupSeparator = ",";
+    nfi.CurrencySymbol = "";
+    nfi.CurrencyNegativePattern = 1;
+    //var answer = Convert.ToDecimal(xyz).
+
+    string box = "";
+    long boxAcc = 0;
+    string cust = "";
+    long custAcc = 0;
+    if (Model.SCRIPT_TYPE == 2)
+    {
+        box = Model.DEBTOR_ACC_Model.ACC_NAME;
+        boxAcc = Model.DEBTOR_ACC.Value;
+        cust = Model.CREDITOR_Model.ACC_NAME;
+        custAcc = Model.CREDITOR_ACC.Value;
+    }
+    else
+    {
+        box = Model.CREDITOR_Model.ACC_NAME;
+        boxAcc = Model.CREDITOR_ACC.Value;
+        cust = Model.DEBTOR_ACC_Model.ACC_NAME;
+        custAcc = Model.DEBTOR_ACC.Value;
+    }
+
+}
+
+
+
+
+
+
+<div class="m-4 p-4 bg-white " id="transprintDiv" dir="rtl">
+
+
+    <div class=" row ">
+
+
+        <div class="row ">
+
+            <div class="col-md-4 mt-4 pl-4">
+
+
+                <div class="text-center  h6">
+
+                    شـركـة اتـحـاد الـمـاســة
+
+                </div>
+                <div class="text-center">
+
+                    للـمـقـاولات
+
+                </div>
+                <div class="text-center ">
+
+                    قـسـم الحـسـابـات
+
+                </div>
+                <div class="text-center  ">
+
+                    www.union-diamond.net
+
+                </div>
+
+            </div>
+            <div class="col-md-3 ">
+
+
+
+
+                <img src="~/assets/images/CompnyLogo.png" style="width:190px;height:150px" />
+
+
+
+            </div>
+            <div class="col-md-5 mt-4  ">
+
+
+                <div class="text-center h6">
+
+                    Union Diamond Contracting Company
+
+                </div>
+                <div class="text-center  ">
+
+                    Accounts Department
+
+                </div>
+                <div class="text-center  ">
+
+                    www.union-diamond.net
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+
+    </div>
+
+
+    <div class="row">
+        @*<div class="col-md-12 mt-4 p-1 bg-info"> </div>*@
+        <div class="col-md-12">
+            <div class="form-floating">
+                <hr />
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row ">
+
+        <div class="col-md-12 mt-2  bg-info">
+            <center>
+
+                <h4 style="font-family:'Times New Roman'" for="inputLastName" id="type">   @Model.SCRIP_TYPETBL_Model.SCRIP_TYPE </h4>
+
+            </center>
+        </div>
+    </div>
+    <font size="2" style="font-weight:bold" face="Times New Roman">
+        <div class=" row bg-light">
+            <div class="col-12">
+                <div class="row p-1  ">
+
+                    <div class="col-md-8 ">
+                        <div class="form-floating  ">
+                            رقم السند : @Model.SCRIP_NO
+
+                        </div>
+
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            تاريخ السند : @Model.SCRIP_DATE.Value.ToString("dd-MM-yyyy")
+
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="row  p-1 ">
+
+                    <div class="col-md-8 ">
+                        <div class="form-floating  ">
+                            اسم الحساب : @try
+                            {@box}
+                        catch { }
+
+
+                        </div>
+
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            رقم الحساب : @try
+                            {@boxAcc}
+                        catch { }
+
+                        </div>
+                    </div>
+
+
+                </div>
+                <div class="row p-1  ">
+
+                    <div class="col-md-8 ">
+                        <div class="form-floating  ">
+                            طريقة الدفع : @try
+                            {@Model.SCRIP_OPTYPETBL_Model.NAME}
+                        catch { }
+
+
+                        </div>
+
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            رقم الشيك : @try
+                            {@Model.SHAKE_NO}
+                        catch { }
+
+                        </div>
+                    </div>
+
+
+
+                </div>
+
+                <div class="row   p1">
+
+                    <div class="col-md-8 ">
+                        <div class="form-floating  ">
+                            العملة : ريال سعودي
+
+                        </div>
+
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            كود المستخدم : @try
+                            {@Model.USER_CR}
+                        catch { }
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+                <div class="row  p1 ">
+
+                    <div class="col-md-8 ">
+                        <div class="form-floating  ">
+                            البيان : @try
+                            {@Model.REMARK}
+                        catch { }
+
+
+                        </div>
+
+                    </div>
+
+
+                </div>
+            </div>
+
+
+
+
+
+        </div>
+    </font>
+    <div class="row ">
+
+        <div class="col-md-12">
+            <div class="form-floating">
+                <hr />
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="row  margin-50 mb-5 pb-4  justify-content-center">
+
+        <div class="col-12">
+            <font size="2" face="Times New Roman">
+                <table width="100%" class="table table-borderless  table-sm table-striped " style="">
+                    <thead class=" ">
+                        <tr class="bg-info">
+
+
+
+                            <th style="font-size:10pt">#</th>
+                            <th style="font-size:10pt">المبلغ</th>
+                            <th width="15%" style="font-size:8pt">رقم الحساب</th>
+                            <th style="font-size:10pt"> الحساب</th>
+                            <th style="font-size:10pt">البيان </th>
+                            <th style="font-size:10pt">المشروع  </th>
+
+
+
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+
+
+                        <tr>
+
+                            <td>
+
+                                @{ try
+                                    {
+                                        @i
+
+                                    }
+                                    catch
+                                    {
+
+                                    }
+                                }
+
+                            </td>
+                            <td>
+                                @{ try
+                                    {@Convert.ToDecimal(Model.COST).ToString("C", nfi) }
+                                catch
+                                {
+
+                                }
+                                }
+                            </td>
+
+
+
+                            <td>
+                                @{ try
+                                    {@custAcc
+                                }
+                                catch
+                                {
+
+                                }
+                                }
+                            </td>
+                            <td>
+                                @{ try
+                                    {
+                                        @cust
+
+                                    }
+                                    catch
+                                    {
+
+                                    }
+                                }
+                            </td>
+                            <td>
+                                @{ try
+                                    {@Model.REMARK
+                                }
+                                catch
+                                {
+
+                                }
+                                }
+
+                            </td>
+                            <td>
+                                @{ try
+                                    {@Model.PROJECTTBL_Model.PROJECT_NAME
+                                }
+                                catch
+                                {
+
+                                }
+                                }
+
+                            </td>
+
+
+
+
+                        </tr>
+
+
+
+                        <tr>
+                            <th>الاجمالي</th>
+                            <th>@Convert.ToDecimal(Model.COST.Value).ToString("C", nfi)</th>
+                            <th colspan="5"> @Model.Cost_String فقط لاغير</th>
+
+
+                        </tr>
+
+
+                    </tbody>
+                </table>
+            </font>
+        </div>
+    </div>
+
+
+
+    <div class="row ">
+
+        <div class="col-md-12">
+            <div class="form-floating">
+                <hr />
+            </div>
+
+        </div>
+
+    </div>
+
+
+</div>
+
+
+
+
+
+
+
+
+
+<style>
+    hr {
+        border: 1px solid;
+        border-color: #17a2b8
+        /*  border-radius: 1px;*/
+    }
+
+    /*tablestyle, tr, td, th, thead {
+        border: 2px solid black;*/
+    /*  border-radius: 1px;*/
+    /*}*/
+</style>

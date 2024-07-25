@@ -1,0 +1,378 @@
+﻿@model Spend.Models.PROJECTTBL_Model
+@{
+    ViewBag.Title = " بطاقة مشروع ";
+}
+
+
+
+<div class="dashboard-content-wrap">
+    <div class="dashboard-bread dashboard--bread dashboard-bread-2">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="breadcrumb-content">
+                        <div class="section-heading">
+                            <h2 class="sec__title font-size-30 text-white">انشاء مشروع</h2>
+                        </div>
+                    </div><!-- end breadcrumb-content -->
+                </div><!-- end col-lg-6 -->
+                <div class="col-lg-6">
+                    <div class="breadcrumb-list text-right">
+                        <ul class="list-items">
+                            <li><a href="index.html" class="text-white">الصفحة الرئيسية</a></li>
+                           
+                            <li>المشاريع</li>
+                            <li>انشاء مشروع</li>
+                        </ul>
+                    </div><!-- end breadcrumb-list -->
+                </div><!-- end col-lg-6 -->
+            </div><!-- end row -->
+        </div>
+    </div><!-- end dashboard-bread -->
+    <div class="dashboard-main-content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-box">
+                        <div class="form-title-wrap">
+                            <div>
+                                <h3 class="title"> بطاقة مشروع</h3>
+                                @*<p class="font-size-14">إظهار 1 إلى 10 من أصل 20 مُدخل</p>*@
+                            </div>
+
+
+
+                        </div>
+                        <div class="form-content">
+
+
+                            @using (Html.BeginForm())
+                            {
+                                @Html.AntiForgeryToken()
+
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                             
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-12 mb-md-0">
+                                            <label for="inputPasswordConfirm">رقم المشروع</label>
+                                            <input type="text" class="form-control" value="@ViewBag.Project_NO" id="PROJECT_NO" name="PROJECT_NO" disabled>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-12 mb-md-0">
+                                            <label for="inputPasswordConfirm">اسم المشروع</label>
+                                            @Html.EditorFor(model => model.PROJECT_NAME, new { htmlAttributes = new { @class = "form-control", @type = "text", @required = "required", @placeholder = "اسم المشروع" } })
+                                            @Html.ValidationMessageFor(model => model.PROJECT_NAME, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+
+
+                                @*<div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-12 mb-md-0">
+                                            <label for="inputPasswordConfirm">رقم المخطط</label>
+                                            @Html.EditorFor(model => model.PLAN_NO, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = "الاسم العربي" } })
+                                            @Html.ValidationMessageFor(model => model.PLAN_NO, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-6 mb-md-0">
+                                            <label for="inputPasswordConfirm">المالك</label>
+                                            <select id="OWNER_NO" name="OWNER_NO" class="selectpicker  form-control" dir="rtl" data-live-search="true" >
+                                                <option value="">اختار مالك المشروع</option>
+                                                @foreach (var item in ViewBag.OWNER)
+                                                {
+
+                                                    <option class="themeprimary" value="@item.OWNER_NO">
+                                                        @{ try
+                                                            { @item.OWNER_NAME }
+                                                        catch { } }
+                                                    </option>
+                                                }
+
+
+                                            </select>
+                                            @Html.ValidationMessageFor(model => model.OWNER_NO, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+
+
+                                </div>*@
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-12 mb-md-0">
+                                            <label for="inputPasswordConfirm">تاريخ البداية</label>
+                                            <input type="date" class="form-control"  id="START_DATE" name="START_DATE">
+                                            @Html.ValidationMessageFor(model => model.START_DATE, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-12 mb-md-0">
+                                            <label for="inputPasswordConfirm">تاريخ النهاية</label>
+                                            <input type="date" class="form-control" id="END_DATE" name="END_DATE">
+                                            @Html.ValidationMessageFor(model => model.END_DATE, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                <div class="row mb-3">
+
+
+
+                                    @*<div class="col-md-6">
+                                        <div class="form-floating mb-6 mb-md-0">
+                                            <label for="inputPasswordConfirm">مهندس المخطط</label>
+                                            <select id="PLAN_ENG" name="PLAN_ENG" class="selectpicker  form-control" dir="rtl" data-live-search="true" >
+                                                <option value="">اختار مهندس المخطط</option>
+                                                @foreach (var item in ViewBag.Engineer)
+                                                {
+
+                                                    <<option class="themeprimary" value="@item.ENG_NO">
+                                                        @{ try
+                                                            { @item.ENG_NAME }
+                                                        catch { } }
+                                                    </option>
+                                                }
+
+
+                                            </select>
+                                            @Html.ValidationMessageFor(model => model.PLAN_ENG, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-6 mb-md-0">
+                                            <label for="inputPasswordConfirm">المهندس المشرف</label>
+                                            <select id="OVERSIGHT_ENG" name="OVERSIGHT_ENG" class="selectpicker  form-control" dir="rtl" data-live-search="true" >
+                                                <option value="">اختار مهندس الاشراف</option>
+                                                @foreach (var item in ViewBag.Engineer)
+                                                {
+
+                                                    <option class="themeprimary" value="@item.ENG_NO">
+                                                        @{ try
+                                                            { @item.ENG_NAME }
+                                                        catch { } }
+                                                    </option>
+                                                }
+
+
+                                            </select>
+                                            @Html.ValidationMessageFor(model => model.OVERSIGHT_ENG, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>*@
+
+                                </div>
+
+                                @*<div class="row mb-3">
+
+
+
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-6 mb-md-0">
+                                            <label for="inputPasswordConfirm">مهندس اختبار التربة</label>
+                                            <select id="CLOD_TEST_ENG" name="CLOD_TEST_ENG" class="selectpicker  form-control" dir="rtl" data-live-search="true" >
+                                                <option value="">اختار مهندس اختبار التربة</option>
+                                                @foreach (var item in ViewBag.Engineer)
+                                                {
+
+                                            <option class="themeprimary" value="@item.ENG_NO">
+                                                @{ try
+                                                    { @item.ENG_NAME }
+                                                catch { } }
+                                            </option>
+                                                }
+
+
+                                            </select>
+                                            @Html.ValidationMessageFor(model => model.CLOD_TEST_ENG, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-6 mb-md-0">
+                                            <label for="inputPasswordConfirm">المهندس الانشائي</label>
+                                            <select id="STRUCTURAL_ENG" name="STRUCTURAL_ENG" class="selectpicker  form-control" dir="rtl" data-live-search="true" >
+                                                <option value="">اختار المهندس الانشائي</option>
+                                                @foreach (var item in ViewBag.Engineer)
+                                                {
+
+                                                   <option class="themeprimary" value="@item.ENG_NO">
+                                                        @{ try
+                                                            { @item.ENG_NAME }
+                                                        catch { } }
+                                                    </option>
+                                                }
+
+
+                                            </select>
+                                            @Html.ValidationMessageFor(model => model.STRUCTURAL_ENG, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+
+                                </div>*@
+
+
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="inputPasswordConfirm">حالة الحساب</label>
+                                        <div class="switch-h d-flex justify-content-between align-items-center border p-1 mb-3">
+                                            <h5 class="font-size-h4 text-dark mb-0">مفعل</h5>
+                                            <div class="custom-control switch custom-switch-info custom-switch custom-control-inline mr-0">
+                                                @*@Html.CheckBox(m => m.IS_ENABLE, new { @checked = "checked" });*@
+                                                @Html.CheckBoxFor(model => model.CLOSED, new { @class = "custom-control-input", @id = "CLOSED", @checked = "checked", })
+                                                <label class="custom-control-label mr-1" for="CLOSED">
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <label for="inputPasswordConfirm">الصيانة</label>
+                                        <div class="switch-h d-flex justify-content-between align-items-center border p-1 mb-3">
+                                            <h5 class="font-size-h4 text-dark mb-0">مغلق</h5>
+                                            <div class="custom-control switch custom-switch-info custom-switch custom-control-inline mr-0">
+                                                @*@Html.CheckBox(m => m.IS_ENABLE, new { @checked = "checked" });*@
+                                                @Html.CheckBoxFor(model => model.M_CLOSED, new { @class = "custom-control-input", @id = "M_CLOSED", @checked = "checked", })
+                                                <label class="custom-control-label mr-1" for="M_CLOSED">
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+                                </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <label for="inputPasswordConfirm">البيع</label>
+                                        <div class="switch-h d-flex justify-content-between align-items-center border p-1 mb-3">
+                                            <h5 class="font-size-h4 text-dark mb-0">غلق</h5>
+                                            <div class="custom-control switch custom-switch-info custom-switch custom-control-inline mr-0">
+                                                @*@Html.CheckBox(m => m.IS_ENABLE, new { @checked = "checked" });*@
+                                                @Html.CheckBoxFor(model => model.SALES_CLOSED, new { @class = "custom-control-input", @id = "SALES_CLOSED", @checked = "checked", })
+                                                <label class="custom-control-label mr-1" for="SALES_CLOSED">
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+                              
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-12 mb-md-0">
+                                                <label for="inputPasswordConfirm">الملاحظة</label>
+                                                @Html.EditorFor(model => model.REMARK, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = "ملاحظة"} })
+                                                @Html.ValidationMessageFor(model => model.REMARK, "", new { @class = "text-danger" })
+
+                                            </div>
+                                        </div>
+                                       
+
+
+
+                                    </div>
+
+
+
+
+                                    <div class="row mt-4 mb-0">
+                                        <div class="d-grid col-md-6 "><button class="btn btn-primary btn-block" type="submit">حفظ</button></div>
+
+                                        <div class="d-grid col-md-6"><a class="btn btn-danger btn-block" href="~/PROJECTT/Index">رجوع</a></div>
+
+
+
+
+
+                                    </div>
+                                    }
+
+                                </div>
+                    </div><!-- end form-box -->
+                </div><!-- end col-lg-12 -->
+            </div><!-- end row -->
+
+            <div class="border-top mt-5"></div>
+            <div class="row align-items-center">
+                <div class="col-lg-7">
+                    <div class="copy-right padding-top-30px">
+
+                        <p class="copy__desc">
+                            &copy; Copyright Tech Light 2022. Made with
+                            <span class="la la-heart"></span> by <a href="http://Tech-Light.com/">Noury</a>
+                        </p>
+
+                    </div><!-- end copy-right -->
+                </div><!-- end col-lg-7 -->
+                <div class="col-lg-5">
+                    <div class="footer-social-box text-right padding-top-30px">
+                        <ul class="social-profile">
+                            <li><a href="#"><i class="lab la-facebook-f"></i></a></li>
+                            <li><a href="#"><i class="lab la-twitter"></i></a></li>
+                            <li><a href="#"><i class="lab la-instagram"></i></a></li>
+                            <li><a href="#"><i class="lab la-linkedin-in"></i></a></li>
+                        </ul>
+                    </div><!-- end copy-right-content -->
+                </div><!-- end col-lg-5 -->
+            </div><!-- end row -->
+        </div><!-- end container-fluid -->
+    </div><!-- end dashboard-main-content -->
+</div><!-- end dashboard-content-wrap -->
+
+
+
+<script>
+    function getAcc_NO() {
+
+
+
+        var id = $('#ACC_PARENT').val();
+        $('#parent-Acc').val(id);
+
+        var ajaxMethodUrl = "/ACC_TREETBL/getAcc_NO?parent_id=" + id;
+
+        $.ajax({
+            async: false,
+            cache: true,
+            type: "Get",
+            url: ajaxMethodUrl,
+            success: function (data) {
+                $('#Acc_NOString').val(data);
+
+
+            },
+
+
+        });
+    }
+
+
+
+</script>
+
+
+
+
+
+

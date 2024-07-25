@@ -1,0 +1,452 @@
+﻿@model IEnumerable<Spend.Models.SALES_INVTBL_Model>
+
+@{
+    ViewBag.Title = "الفواتير";
+   
+   
+
+}
+
+
+
+
+
+
+<div class="dashboard-content-wrap">
+    <div class="dashboard-bread dashboard--bread dashboard-bread-2">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="breadcrumb-content">
+                        <div class="section-heading">
+                            <h2 class="sec__title font-size-30 text-white">ترحيل</h2>
+                        </div>
+                    </div><!-- end breadcrumb-content -->
+                </div><!-- end col-lg-6 -->
+                <div class="col-lg-6">
+                    <div class="breadcrumb-list text-right">
+                        <ul class="list-items">
+                            <li><a href="index.html" class="text-white">الصفحة الرئيسية</a></li>
+                            <li>المساهمة</li>
+                            <li>الترحيل</li>
+                        </ul>
+                    </div><!-- end breadcrumb-list -->
+                </div><!-- end col-lg-6 -->
+            </div><!-- end row -->
+        </div>
+    </div><!-- end dashboard-bread -->
+    <div class="dashboard-main-content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-box">
+
+                        <div class="form-content">
+
+
+
+                            @using (Html.BeginForm())
+                            {
+
+
+
+                                <div class=" row input-group ">
+
+
+
+                                    <div class="col-md-2 col-sm-6  ">
+
+                                        <select id="ProjNo" name="ProjNo" dir="ltr" class="form-control selectpicker " required data-live-search="true">
+                                            <option value="">اختار مشروع</option>
+                                            @foreach (var p in ViewBag.Project)
+                                            {
+                                                if (p.PROJECT_NO == ViewBag.PROJECT_NO)
+                                                {
+                                                    <option selected class="themeprimary" value='@p.PROJECT_NO'>
+                                                        @p.PROJECT_NAME
+                                                    </option>
+                                                }
+                                                else
+                                                {
+                                                    <option class="themeprimary" value='@p.PROJECT_NO'>
+                                                        @p.PROJECT_NAME
+                                                    </option>
+                                                }
+
+
+
+                                            }
+
+                                        </select>
+                                    </div>
+                                    <div class="col-md-1 col-sm-6 p-0 m-0 ">
+
+                                        <select id="Transe" name="Transe" dir="ltr" class="form-control selectpicker " onchange="TransChange()" data-live-search="true">
+
+
+
+                                            @if (ViewBag.Transe == 1)
+                                            {
+                                                <option value="0"> الغير مرحل</option>
+                                                <option selected value="1">المرحل فقط</option>
+
+
+                                            }
+                                            else if (ViewBag.Transe == 0)
+                                            {
+                                                <option selected value="0"> الغير مرحل</option>
+                                                <option value="1">المرحل فقط</option>
+
+
+                                            }
+
+                                            else
+                                            {
+                                                <option value="0"> الغير مرحل</option>
+                                                <option value="1">المرحل فقط</option>
+
+
+                                            }
+
+
+
+
+
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-2   ">
+
+                                        <input type="date" id="FromDate" name="FromDate" />
+                                    </div>
+                                    <div class="col-md-2   ">
+
+                                        <input type="date" id="ToDate" name="ToDate" />
+                                    </div>
+
+
+                                    <div class="col-md-1 nopadding">
+                                        <button class="btn btn-primary" type="submit"><i class="la la-search"></i></button>
+                                    </div>
+
+                                    <div class="col-md-2 ">
+                                        <button class="btn btn-success" type="button" id="btn-trans" onclick="Save()">ترحيل</button>
+                                    </div>
+
+
+                                </div>
+                            }
+
+                      
+                            
+                        </div>
+
+                                @if (Model != null)
+                                {
+
+                                    <div class="mt-4 " @*style=" overflow-x: scroll; width: 100%;  "*@>
+                                        <table id="ReportTable" class="table ">
+                                            <thead>
+                                                <tr>
+                                                    <th>رقم الفاتورة</th>
+                                                    <th>رقم القيد</th>
+                                                    <th>البيان</th>
+                                                    <th>التاريخ </th>
+
+                                                    <th>صافي المبلغ </th>
+                                                    <th>مخصص الصيانة </th>
+                                                    <th> مخصص التسويق </th>
+                                                    <th> مخصصات اخرى </th>
+
+                                                    <th>
+                                                        <div class=" col-12">
+                                                            <input type="checkbox" value="" name="flexCheckDefault" id="flexCheckDefault"  onclick="checkAll()">
+                                                        </div>
+                                                    </th>
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+
+
+
+                                                @foreach (var item in Model)
+                                                {
+
+                                                    <tr>
+                                                        <td>
+
+                                                            @{ try
+                                                                {
+                                                                    @item.INV_NO
+                                                                }
+                                                                catch
+                                                                {
+
+                                                                }
+                                                            }
+
+
+                                                        </td>
+                                                        <td>
+
+                                                            @{ try
+                                                                {
+                                                                    @item.UNDER_NO
+                                                                }
+                                                                catch
+                                                                {
+
+                                                                }
+                                                            }
+
+
+                                                        </td>
+                                                        <td>
+
+                                                            @{ try
+                                                                {
+                                                                    @item.NOTE
+                                                                }
+                                                                catch
+                                                                {
+
+                                                                }
+                                                            }
+
+
+                                                        </td>
+
+                                                        <td>
+                                                            @{ try
+                                                                {
+                                                                    @item.DATE_M.Value.ToString("dd/MM/yyyy")
+                                                                }
+                                                                catch
+                                                                {
+
+                                                                }
+
+
+                                                            }
+                                                        </td>
+
+                                                        <td id="pur-cost_@item.INV_NO">
+                                                            @{ try
+                                                                {
+                                                                    @item.INV_PUR
+                                                                }
+                                                                catch
+                                                                {
+
+                                                                }
+                                                            }
+                                                        </td>
+
+
+                                                        <td> <input class="col-12" type="number" id="mantinc_@item.INV_NO" value="0"onchange="getAll()"/></td>
+                                                        <td> <input class="col-12" type="number" id="markting_@item.INV_NO" value="0" onchange="getAll()" /></td>
+                                                        <td> <input class="col-12" type="number" id="othercost_@item.INV_NO" value="0" onchange="getAll()" /></td>
+
+                                                        <td>
+                                                            <div class=" col-12">
+                                                                <input name="parent-check" type="checkbox" value="@item.INV_NO" id="@item.INV_NO" onclick="getAll()">
+                                                            </div>
+                                                        </td>
+
+
+                                                    </tr>
+                                                }
+                                            <tr>
+                                                <td></td>
+                                                <td><h5>الاجمالي</h5></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td id="totallPurCost"> 
+                                                </td>
+
+                                                <td id="totallMantinc">
+                                                </td>
+                                                <td id="totallMarkting">
+                                                </td>
+                                                <td id="totallOthercost">
+                                                </td>
+                                                <td>
+                                                </td>
+
+                                            </tr>
+
+                                            </tbody>
+                                        </table>
+
+
+                                    </div>
+                                }
+
+                            </div>
+                        </div><!-- end form-box -->
+                </div><!-- end col-lg-12 -->
+            </div><!-- end row -->
+
+            <div class="border-top mt-5"></div>
+            <div class="row align-items-center">
+                <div class="col-lg-7">
+                    <div class="copy-right padding-top-30px">
+                        <p class="copy__desc">
+                            &copy; Copyright Jeddah first 2022. Made with
+                            <span class="la la-heart"></span> by <a href="http://jeddah-first.com/">Noury</a>
+                        </p>
+                    </div><!-- end copy-right -->
+                </div><!-- end col-lg-7 -->
+                <div class="col-lg-5">
+                    <div class="footer-social-box text-right padding-top-30px">
+                        <ul class="social-profile">
+                            <li><a href="#"><i class="lab la-facebook-f"></i></a></li>
+                            <li><a href="#"><i class="lab la-twitter"></i></a></li>
+                            <li><a href="#"><i class="lab la-instagram"></i></a></li>
+                            <li><a href="#"><i class="lab la-linkedin-in"></i></a></li>
+                        </ul>
+                    </div><!-- end copy-right-content -->
+                </div><!-- end col-lg-5 -->
+            </div><!-- end row -->
+        </div><!-- end container-fluid -->
+    </div><!-- end dashboard-main-content -->
+</div><!-- end dashboard-content-wrap -->
+
+
+
+
+
+<script>
+
+
+
+        jQuery(document).ready(function () {
+
+            var FromDate = moment('@ViewBag.FromDate',"YYYY-MM-DD").format('YYYY-MM-DD');
+            var ToDate = moment('@ViewBag.ToDate',"YYYY-MM-DD").format('YYYY-MM-DD');
+
+            $('#FromDate').val(FromDate);
+            $('#ToDate').val(ToDate);
+
+
+         });
+
+    function checkAll() {
+
+
+        /* $(this).is(':checked')*/
+        if ($('#flexCheckDefault').is(':checked')) {
+
+            $('input:checkbox[name=parent-check]').each(function () {
+
+
+                this.checked = true;
+
+
+
+
+            });
+        } else {
+
+            $('input:checkbox[name=parent-check]').each(function () {
+
+
+                this.checked = false;
+
+
+
+
+            });
+
+
+        }
+        getAll()
+
+    }
+
+    list = []
+    function getAll() {
+        list = []
+
+        $('input:checkbox[name=parent-check]').each(function () {
+
+
+         
+
+            if ($(this).is(':checked')) {
+                id = $(this).val()
+                var pur_cost = parseFloat($("#pur-cost_" + id).text());
+                var proj = $("#ProjNo").val();
+                var mantinc = parseFloat($("#mantinc_" + id).val());
+                var markting = parseFloat($("#markting_" + id).val());
+                var othercost = parseFloat($("#othercost_" + id).val());
+                list.push({ InovNo: id, PurCost: pur_cost, Mantinc: mantinc, Markting: markting, OtherCost: othercost, ProjNo: proj })
+            }
+
+         
+        });
+
+      
+        Collection()
+    }
+
+    function Collection() {
+        totallPurCost = 0;
+        totallMantinc = 0;
+        totallMarkting = 0;
+        totallOthercost = 0;
+
+        for (let item of list) {
+            totallPurCost += item.PurCost;
+            totallMantinc += item.Mantinc;
+            totallMarkting += item.Markting;
+            totallOthercost += item.OtherCost;
+        }
+
+        $("#totallPurCost").text(totallPurCost);
+        $("#totallMantinc").text(totallMantinc);
+        $("#totallMarkting").text(totallMarkting);
+        $("#totallOthercost").text(totallOthercost);
+
+    }
+
+
+    function Save() {
+        if (list.length > 0) {
+            var data = {
+                list: list
+            }
+
+            jQuery.ajax({
+
+                type: "Post",
+                data: data,
+                url: '/api/ApiACCH_OPBOXT/TranseSaleInv',
+                success: function (data) {
+
+                    if (data.success == true) {
+                        alert("تم الحفظ بنجاح")
+                        window.location.href = "index";
+                    } else {
+                        alert("هناك خطاء لم يتم الحفظ ")
+                    }
+
+                }
+
+
+            });
+        } else {
+            alert("يجب اختيار فواتير")
+        }
+    }
+    function TransChange() {
+        if ($("#Transe").val() == 1) {
+            $("#btn-trans").attr('disabled', 'disabled');
+        } else {
+            $("#btn-trans").removeAttr('disabled');
+        }
+    }
+
+</script>
+

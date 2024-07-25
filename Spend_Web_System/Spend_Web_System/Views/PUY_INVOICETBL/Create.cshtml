@@ -1,0 +1,943 @@
+﻿@model Spend.Models.INVOICETBL_Model
+@{
+    ViewBag.Title = "فاتورة مشتريات";
+}
+
+
+
+<div class="container" dir="rtl">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="card shadow-lg border-0 rounded-lg mt-5">
+                <div class="card-header"><h3 class="text-center font-weight-light my-4">  فاتورة مشتريات </h3></div>
+                <div class="card-body">
+
+                    <form id="Add" method="post">
+
+                        @Html.AntiForgeryToken()
+
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        <div class="row mb-2">
+
+                            <div class="col-md-3">
+                                <div class="form-floating">
+                                   <label  class=" col-form-label-sm" for="inputLastName">نوع الفاتورة</label>
+                                   <select id="INV_DUC_TYPE" name="INV_DUC_TYPE" dir="ltr" class="form-control selectpicker " data-live-search="true" onchange="GetAccCenterForProj()">
+
+                                       @foreach (var p in ViewBag.Duc_Type)
+                                       {
+                                           if (p.ID == 9)
+                                           {
+                                               <option class="themeprimary" value="@p.ID" selected> @p.ACC_AR_NAME</option>
+                                           } else {
+                                           <option class="themeprimary" value="@p.ID"> @p.ACC_AR_NAME</option>}
+                                       }
+
+                                   </select>
+
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-floating">
+                                   <label  class=" col-form-label-sm" for="inputLastName">اسم المشروع</label>
+                                    <select id="PROJ_NO" name="PROJ_NO" dir="ltr" onchange="GetAccCenterForProj()" class="form-control selectpicker " data-live-search="true" required data-parsley-error-message="حقل مطلوب">
+                                        <option value="">اختار المشروع</option>
+                                        @foreach (var p in ViewBag.proj)
+                                        {
+                                            <option class="themeprimary" value="@p.PROJECT_NO"> @p.PROJECT_NAME</option>
+                                        }
+
+                                    </select>
+
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-floating">
+                                   <label  class=" col-form-label-sm" for="inputLastName">مرحلة العمل</label>
+                                    <select id="STAGE_NO" name="STAGE_NO" dir="ltr" class="form-control selectpicker " data-live-search="true" required data-parsley-error-message="حقل مطلوب">
+                                        <option value="">اختار مرحلة العمل</option>
+                                        @foreach (var p in ViewBag.STAGES)
+                                        {
+                                            <option class="themeprimary" value="@p.STAGE_NO"> @p.STAGE_NAME</option>
+                                        }
+
+                                    </select>
+
+                                </div>
+                            </div>
+                            <div class="col-md-3  row ">
+                                <div class="col-md-5 p-0">
+                                    <div class="form-floating">
+                                       <label  class=" col-form-label-sm" for="inputLastName">طريقة دفع </label>
+                                       <select id="INV_TYPE" name="INV_TYPE" dir="ltr" class="form-control selectpicker " data-live-search="true" onchange="InvTypeChang()">
+                                           <option value="1">اجلة /عهدة</option>
+
+                                           <option value="2">نقدية </option>
+
+
+                                       </select>
+
+                                    </div>
+                                </div>
+
+
+                                <div class="form-floating col-md-7   ">
+                                   <label  class=" col-form-label-sm" for="inputLastName">نوع العهدة</label>
+                                    <select id="INV_WONER" name="INV_WONER" disabled dir="ltr" class="form-control selectpicker " data-live-search="true">
+                                        <option value="1">عهدة مورد</option>
+                                        <option value="2">عهدة موظف</option>
+                                    </select>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="row mb-2">
+                            <div class="col-md-3 ">
+
+                                <div class="form-floating">
+                                   <label  class=" col-form-label-sm" for="inputLastName">الموظف المستلم</label>
+                                    <select id="EMP_NO" name="EMP_NO" dir="ltr" class="form-control selectpicker " data-live-search="true">
+                                        <option value="">الموظف المستلم</option>
+                                        @foreach (var p in ViewBag.pERSONAL)
+                                        {
+                                            <option class="themeprimary" value="@p.PERSON_ID"> @p.PERSONAL_INFOTBL_Model.AR_NAME</option>
+                                        }
+
+                                    </select>
+
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-floating">
+                                   <label  class=" col-form-label-sm" for="inputLastName">التاريخ الميلادي</label>
+                                    @Html.EditorFor(model => model.DATE_M, new { htmlAttributes = new { @class = "form-control", @type = "date", @placeholder = "dd-mm-yyyy" } })
+                                    @Html.ValidationMessageFor(model => model.DATE_M, "", new { @class = "text-danger" })
+
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-floating">
+                                   <label  class=" col-form-label-sm" for="inputLastName">التاريخ الهجري</label>
+                                    @Html.EditorFor(model => model.DATE_H, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = "التاريخ الهجري" } })
+                                    @Html.ValidationMessageFor(model => model.DATE_H, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="col-md-3 row">
+
+                                <div class="form-floating col-md-7 p-0">
+                                   <label  class=" col-form-label-sm" for="inputLastName">تاريخ الادخال</label>
+                                    @Html.EditorFor(model => model.ENTRY_DATE, new { htmlAttributes = new { @class = "form-control", @type = "date", @placeholder = "" } })
+                                    @Html.ValidationMessageFor(model => model.ENTRY_DATE, "", new { @class = "text-danger" })
+
+
+                                </div>
+                                <div class="form-floating col-md-5 ">
+                                   <label  class=" col-form-label-sm" for="inputLastName">السنة المالية </label>
+                                    @Html.EditorFor(model => model.FISCAL_YEAR, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = "السنة المالية", @disabled = "disabled" } })
+                                    @Html.ValidationMessageFor(model => model.FISCAL_YEAR, "", new { @class = "text-danger" })
+
+
+                                </div>
+                            </div>
+
+
+
+
+
+                        </div>
+
+
+                        <div class="row mb-2">
+
+                            <div class="col-md-3">
+                                <div class="form-floating">
+                                   <label  class=" col-form-label-sm" for="inputLastName">الرقم التسلسلي للفاتورة</label>
+                                    <input type="text" class="form-control" id="INV_SERIAL" name="INV_SERIAL" disabled value="@ViewBag.Serial" />
+
+                                    @Html.ValidationMessageFor(model => model.INV_SERIAL, "", new { @class = "text-danger" })
+
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-floating">
+                                   <label  class=" col-form-label-sm" for="inputLastName">رقم القيد </label>
+                                    <input type="text" class="form-control" id="UNDER_NO" name="UNDER_NO" disabled value="@ViewBag.UNDER_NO" />
+
+                                    @Html.ValidationMessageFor(model => model.UNDER_NO, "", new { @class = "text-danger" })
+
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-floating">
+                                   <label  class=" col-form-label-sm" for="inputLastName">رقم فاتورة المورد</label>
+                                    @Html.EditorFor(model => model.SUPP_INV_NO, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = "رقم فاتورة المورد", @required = "required", @data_parsley_error_message = "حقل مطلوب" } })
+                                    @Html.ValidationMessageFor(model => model.SUPP_INV_NO, "", new { @class = "text-danger" })
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-3 row">
+                                <div class="col-md-6">
+                                   <label  class=" col-form-label-sm" for="inputPasswordConfirm">احتساب الضريبة</label>
+                                    <div class="switch-h d-flex justify-content-between align-items-center border p-1 ">
+                                        <h5 class="font-size-h4 text-dark mb-0">نعم</h5>
+                                        <div class="custom-control switch custom-switch-info custom-switch custom-control-inline mr-0">
+                                            @*@Html.CheckBoxFor(model => model.VAT_ACC, new { @class = "custom-control-input", @id = "RECEIVED", @checked = "checked", })*@
+                                            <input type="checkbox" class="custom-control-input" id="ISVAT" checked="checked" onchange="IsVat()" />
+                                           <label  class=" col-form-label-sm custom-control-label mr-1" for="ISVAT">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                   <label  class=" col-form-label-sm" for="inputPasswordConfirm">فاتورة صيانة</label>
+                                    <div class="switch-h d-flex justify-content-between align-items-center border p-1 ">
+                                        <h5 class="font-size-h4 text-dark mb-0">نعم</h5>
+                                        <div class="custom-control switch custom-switch-info custom-switch custom-control-inline mr-0">
+                                            @Html.CheckBoxFor(model => model.M_INV.Value, new { @class = "custom-control-input", @id = "M_INV", })
+                                           <label  class=" col-form-label-sm custom-control-label mr-1" for="M_INV">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-2">
+
+                            <div class="col-md-3">
+                                <div class="form-floating">
+                                   <label  class=" col-form-label-sm" for="inputLastName">حساب المدين</label>
+
+                                    <select id="DEBTOR_ACC" name="DEBTOR_ACC" dir="ltr" class="form-control selectpicker " data-live-search="true" required data-parsley-error-message="حقل مطلوب">
+                                        <option value="">اختار المدين</option>
+                                        @foreach (var p in ViewBag.AllAcc)
+                                        {
+                                            <option class="themeprimary" value="@p.ACC_NO"> @p.ACC_NAME (@p.ACC_NO)(@p.NOTE)</option>
+                                        }
+
+                                    </select>
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-floating">
+                                   <label  class=" col-form-label-sm" for="inputLastName"> المورد </label>
+                                    <select id="CREDITOR_ID" name="CREDITOR_ID" dir="ltr" class="form-control selectpicker " data-live-search="true" required data-parsley-error-message="حقل مطلوب" onchange="CreditorSelect()">
+                                        <option value="">اختار المورد</option>
+                                        @foreach (var p in ViewBag.AllAcc)
+                                        {
+                                            <option class="themeprimary" value='{"ACC_NO":"@p.ACC_NO","ACC_PARENT":"@p.ACC_PARENT","INFO_ID":"@p.PERSONAL_NO","VAT_NO":"@try
+                                            {@p.PERSONAL_INFOTBL_Model.VAT_NO} catch { } "} '>
+                                                @p.ACC_NAME (@p.NOTE)
+                                            </option>
+                                        }
+
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-floating">
+                                   <label  class=" col-form-label-sm" for="inputLastName">الرقم الضريببي</label>
+
+                                    <input type="text" class="form-control" id="CUST_VATNO" name="CUST_VATNO" disabled />
+                                    @Html.ValidationMessageFor(model => model.CUST_VATNO, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-md-3 row">
+                                <div class="form-floating col-md-6 p-0">
+                                   <label  class=" col-form-label-sm" for="inputLastName">حساب المورد</label>
+                                    <input type="text" class="form-control text-sm-center" id="ACC_NO" name="ACC_NO" disabled />
+                                    @*@Html.ValidationMessageFor(model => model.DEBTOR_ACC, "", new { @class = "text-danger" })*@
+                                </div>
+                                <div class="form-floating col-md-6 ">
+                                   <label  class=" col-form-label-sm" for="inputLastName">الحساب الرئيسي </label>
+                                    <input type="text" class="form-control" id="ACC_PARENT" name="ACC_PARENT" disabled />
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row mb-4">
+
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                   <label  class=" col-form-label-sm" for="inputLastName"> ملاحظة</label>
+                                    @Html.EditorFor(model => model.NOTE, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = "البيان" } })
+                                    @Html.ValidationMessageFor(model => model.NOTE, "", new { @class = "text-danger" })
+
+
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                    <div class="form-floating">
+                                       <label  class=" col-form-label-sm" for="inputPasswordConfirm">ترحيل</label>
+                                        <div class="switch-h d-flex justify-content-between align-items-center border p-1 ">
+                                            <h5 class="font-size-h4 text-dark mb-0">نعم</h5>
+                                            <div class="custom-control switch custom-switch-info custom-switch custom-control-inline mr-0">
+                                                <input type="checkbox" checked="checked" class="custom-control-input" id="INV_TRANSED" name="INV_TRANSED"/>
+                                              
+                                               <label  class=" col-form-label-sm custom-control-label mr-1" for="INV_TRANSED">
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                        </div>
+
+
+
+                        <span>الاصناف</span>
+                        <div class="row mb-3">
+
+                            <div class="col-md-3 p-1">
+                                <div class="form-floating">
+                                   <label  class=" col-form-label-sm" for="inputLastName">اسم الصنف</label>
+                                    <select id="ITEMS" name="ITEMS" dir="ltr" class="form-control selectpicker " data-live-search="true" onchange="ItemSelect()">
+                                        <option value="">اختار الصنف</option>
+                                        @foreach (var p in ViewBag.ITEMT)
+                                        {
+                                            try
+                                            {
+                                                <option class="themeprimary" value='{"ITEM_NO":"@p.ITEM_NO","ITEM_PARENT":"@p.PARENT_ITEM","ITEM_NAME":"@p.ITEM_NAME","PRICE":"@p.PUR_COST"}'> @p.ITEM_NAME (@p.ITEM_NO)</option>
+                                            }
+                                            catch { }
+                                        }
+
+                                    </select>
+
+                                </div>
+                            </div>
+                            <div class="col-md-1 p-1">
+                                <div class="form-floating">
+                                   <label  class=" col-form-label-sm" for="inputLastName">رقم الصنف</label>
+                                    <input type="text" class="form-control" id="ITEM_NO" disabled />
+                                    <input type="hidden" class="form-control" id="ITEM_PARENT" />
+
+
+                                </div>
+                            </div>
+                            <div class="col-md-1 p-1">
+                                <div class="form-floating">
+                                   <label  class=" col-form-label-sm" for="inputLastName">السعر فردي</label>
+                                    <input type="number" class="form-control" id="SING_PRICE" onkeyup="ItemCalculator()" />
+
+
+                                </div>
+                            </div>
+                            <div class="col-md-1 p-1">
+                                <div class="form-floating">
+                                   <label  class=" col-form-label-sm" for="inputLastName">الكمية</label>
+                                    <input type="number" class="form-control" value="1" id="QNTY" onkeyup="ItemCalculator()" />
+
+
+                                </div>
+                            </div>
+                            <div class="col-md-1 p-1">
+                                <div class="form-floating">
+                                   <label  class=" col-form-label-sm" for="inputLastName">اجمالي الخصم</label>
+                                    <input type="number" class="form-control" id="TOTAL_DISC" value="0" onkeyup="ItemCalculator()" />
+
+                                </div>
+                            </div>
+                            <div class="col-md-1 p-1">
+                                <div class="form-floating">
+                                   <label  class=" col-form-label-sm" for="inputLastName">صافي المبلغ </label>
+                                    <input type="number" class="form-control" id="TOTAL_PRICE" disabled />
+
+                                </div>
+                            </div>
+                            <div class="col-md-1 p-1">
+                                <div class="form-floating">
+                                   <label  class=" col-form-label-sm" for="inputLastName">نسبة الضريبة</label>
+                                    <input type="number" class="form-control" value="0" id="VAT" onkeyup="ItemCalculator()" />
+                                    <input type="hidden" class="form-control" id="VAT_ACC" name="VAT_ACC" />
+
+                                </div>
+                            </div>
+                            <div class="col-md-1 p-1">
+                                <div class="form-floating">
+                                   <label  class=" col-form-label-sm" for="inputLastName">قيمة الضريبة</label>
+                                    <input type="number" class="form-control" id="ITEM_VAT_AMOUNT" disabled />
+
+                                </div>
+                            </div>
+                            <div class="col-md-1 p-1">
+                                <div class="form-floating">
+                                   <label  class=" col-form-label-sm" for="inputLastName">اجمالي المبلغ</label>
+                                    <input type="number" class="form-control" id="TOTAL" disabled />
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-1 ">
+                               <label  class=" col-form-label-sm" for="inputLastName">اضافة</label>
+                                <div class="form-floating pt-6 mt-6 ">
+                                    <button class="btn btn-lg btn-primary btn-block " id="btnAdd" type="button" onclick="AddToOrderList()"><span class="la la-plus"></span></button>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row mb-0">
+                            <div class="col-md-12">
+
+                                <div class="form-check form-switch col-md-12 p-0 ">
+                                    <div class="card mb-4 col-md-12  ">
+                                        <div class="card-header ">
+                                            <i class="fas fa-table me-1"></i>
+                                            التفاصيل
+
+                                        </div>
+                                        <div class="card-body">
+                                            <table id="myTable" class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>الرقم</th>
+                                                        <th>البيان</th>
+                                                        <th>اسعر افرادي</th>
+                                                        <th>الكمية</th>
+                                                        <th>اجمالي الخصم</th>
+                                                        <th>صافي المبلغ</th>
+                                                        <th>نسبة الضريبة</th>
+                                                        <th>قيمة الضريبة الاجمالية</th>
+                                                        <th>الاجمالي</th>
+
+
+
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-4">
+
+                            <div class="col-md-2">
+                                <div class="form-floating">
+                                   <label  class=" col-form-label-sm" for="inputLastName">مبلغ الفاتورة</label>
+                                    @Html.EditorFor(model => model.INV_COST, new { htmlAttributes = new { @id = "INV_COST", @class = "form-control", @type = "number", @placeholder = "", @disabled = "disabled" } })
+                             
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-2">
+                                <div class="form-floating">
+                                   <label  class=" col-form-label-sm" for="inputLastName">اجمالي الخصم</label>
+                                    <input type="number" class="form-control" id="DISCOUNT" value="0" />
+
+
+                                  
+                                </div>
+                            </div>
+                            <div class="col-md-2 ">
+                                <div class="form-floating">
+                                   <label  class=" col-form-label-sm  " for="inputLastName">اجمالي الضريبة</label>
+                                    <input type="number" class="form-control" id="VAT_AMOUNT" disabled />
+
+
+                                  
+                                </div>
+
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-floating">
+                                   <label  class=" col-form-label-sm" for="inputLastName">اجمالي الفاتورة مع الضريبة</label>
+                                    @Html.EditorFor(model => model.PUR_COST, new { htmlAttributes = new { @id = "PUR_COST", @class = "form-control", @type = "number", @placeholder = "", @disabled= "disabled" } })
+                                
+                                </div>
+
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="row mt-4 mb-0">
+                            <div class="d-grid col-md-6 "><button class="btn btn-primary btn-block" id="btnSave" onclick="Save()"  type="button">حفظ</button></div>
+                            @*<div class="d-grid col-md-3 "><button class="btn btn-primary btn-block" id="btnSave" onclick="Save(1)" type="button">حفظ وترحيل</button></div>*@
+
+                            <div class="d-grid col-md-6"><a class="btn btn-danger btn-block" href="~/puy_invoicetbl/Index">رجوع</a></div>
+
+
+
+
+
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-center py-3">
+                    <div class="small">Tech Light</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="sccece-model" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog " role="document">
+        <div class="modal-content">
+            <div class="modal-header justify-content-center" id="mesg">
+              
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+
+    $(document).ready(function () {
+        var today = moment().format('YYYY-MM-DD');
+
+        $('#DATE_M').val(today);
+        $('#ENTRY_DATE').val(today);
+        $('#FISCAL_YEAR').val(moment().format("YYYY"));
+        $("#DATE_H").val(GetDate($("#DATE_M").val(),"m"))
+    });
+
+    $("#DATE_M").change(function () {
+
+
+        var year = moment($("#DATE_M").val(), 'YYYY/MM/DD').format("YYYY");
+
+        $('#FISCAL_YEAR').val(year);
+        $("#DATE_H").val(GetDate($("#DATE_M").val(),"m"))
+        getINV_SERIAL()
+    });
+
+    $("#DATE_H").change(function () {
+
+        $("#DATE_M").val(moment(GetDate($("#DATE_H").val(),"h")).format('YYYY-MM-DD'))
+
+
+    });
+
+
+    function GetDate(date, type) {
+        var reusert;
+        var url = "";
+        if (type == "m") {
+            url = "https://api.aladhan.com/v1/gToH?date=" + moment(date).format('DD-MM-YYYY');
+        } else {
+            url = "https://api.aladhan.com/v1/hToG?date=" + moment(date).format('DD-MM-YYYY');
+        }
+
+        jQuery.ajax({
+
+            type: "Get",
+            async: false,
+            url: url,
+            success: function (data) {
+                if (data.status == "OK") {
+                    if (type == "m") {
+                        reusert = moment(data.data.hijri.date, data.data.hijri.format).format('YYYY-MM-DD');
+                    } else {
+                        reusert = moment(data.data.gregorian.date, data.data.gregorian.format).format('YYYY-MM-DD');
+                    }
+
+                } else {
+                    reusert = null;
+                }
+
+            }
+
+        });
+
+        return reusert;
+    }
+
+
+    //function GetDate(date) {
+    //    var reusert;
+
+    //    jQuery.ajax({
+
+    //        type: "Get",
+    //        async: false,
+    //        url: '/api/ApiDate/GetDate?date=' + date,
+    //        success: function (data) {
+    //            if (data.success == true) {
+    //                reusert = data.data;
+
+    //            } else {
+    //                reusert = null;
+    //            }
+
+    //        }
+
+    //    });
+
+    //    return reusert;
+    //}
+
+    function getINV_SERIAL() {
+
+        id = $('#FISCAL_YEAR').val();
+
+        jQuery.ajax({
+
+            type: "Get",
+
+            url: '/api/PUY_INVOICE/GetINV_SERIAL/' + id,
+            success: function (data) {
+                if (data.success == true) {
+                    $('#INV_SERIAL').val(data.data);
+
+                } else {
+
+                }
+
+            }
+
+        });
+    }
+
+    function ItemSelect() {
+
+        var Item = $("#ITEMS").val();
+        var b = JSON.parse(Item)
+        $("#SING_PRICE").val(b.PRICE);
+        $("#ITEM_NO").val(b.ITEM_NO);
+        $("#QNTY").val("1");
+        $("#ITEM_PARENT").val(b.ITEM_PARENT);
+        ItemCalculator()
+    }
+
+
+    function CreditorSelect() {
+
+        var CREDITOR = $("#CREDITOR_ID").val();
+        var b = JSON.parse(CREDITOR)
+        $("#ACC_NO").val(b.ACC_NO);
+        $("#ACC_PARENT").val(b.ACC_PARENT);
+        $("#CUST_VATNO").val(b.VAT_NO);
+
+
+    }
+
+    function ItemCalculator() {
+        SING_PRICE = $("#SING_PRICE").val()
+        QNTY = $("#QNTY").val()
+        TOTAL_DISC = $("#TOTAL_DISC").val()
+        VAT = $("#VAT").val() / 100;
+        TOTAL_PRICE = (SING_PRICE * QNTY) - TOTAL_DISC;
+        ITEM_VAT_AMOUNT = TOTAL_PRICE * VAT;
+        TOTAL = TOTAL_PRICE + ITEM_VAT_AMOUNT;
+
+        $("#TOTAL_PRICE").val(TOTAL_PRICE)
+        $("#ITEM_VAT_AMOUNT").val(ITEM_VAT_AMOUNT)
+        $("#TOTAL").val(TOTAL)
+    }
+
+    var Itemlist = [];
+
+    function AddToOrderList() {
+
+        event.preventDefault();
+        $('button[data-id=ITEMS]').focus();
+        iTEM_NO = $("#ITEM_NO").val()
+        iTEM_PARENT = $("#ITEM_PARENT").val()
+        iTEM_NAME = $("#ITEMS option:selected").text()
+        sING_PRICE = $("#SING_PRICE").val()
+        qNTY = $("#QNTY").val()
+        tOTAL_DISC = $("#TOTAL_DISC").val()
+        tOTAL_PRICE = $("#TOTAL_PRICE").val()
+        vAT_AMOUNT = $("#ITEM_VAT_AMOUNT").val()
+        tOTAL = $("#TOTAL").val()
+        vAT = $("#VAT").val()
+        if (iTEM_NO > 0 && iTEM_NAME != "" && qNTY > 0 && sING_PRICE > 0) {
+            Itemlist.push({ ITEM_NO: iTEM_NO, ITEM_PARENT: iTEM_PARENT, ITEM_NAME: iTEM_NAME, SING_PRICE: sING_PRICE, QNTY: qNTY, TOTAL_DISC: tOTAL_DISC, TOTAL_PRICE: tOTAL_PRICE, VAT: vAT, VAT_AMOUNT: vAT_AMOUNT, TOTAL: tOTAL });
+            AddItemToTabel();
+        }
+    }
+
+    function AddItemToTabel() {
+        if (jQuery("#myTable tr").length > 1) {
+            DeleteTabel()
+        }
+        for (var i = 0; i < Itemlist.length; i++) {
+            var table = document.getElementById("myTable");
+            var rowindex = $("#myTable tr").length;
+            var id = 'cell' + (rowindex);
+            var row = table.insertRow();
+            var cell0 = row.insertCell(0);
+            var cell1 = row.insertCell(1);
+            var cell2 = row.insertCell(2);
+            var cell3 = row.insertCell(3);
+            var cell4 = row.insertCell(4);
+            var cell5 = row.insertCell(5);
+            var cell6 = row.insertCell(6);
+            var cell7 = row.insertCell(7);
+            var cell8 = row.insertCell(8);
+            var cell9 = row.insertCell(9);
+            cell0.innerHTML = $("#myTable tr").length - 1;
+            cell1.innerHTML = Itemlist[i].ITEM_NAME;
+            cell2.innerHTML = Itemlist[i].SING_PRICE;
+            cell3.innerHTML = Itemlist[i].QNTY;
+            cell4.innerHTML = Itemlist[i].TOTAL_DISC;
+            cell5.innerHTML = Itemlist[i].TOTAL_PRICE;
+            cell6.innerHTML = Itemlist[i].VAT;
+            cell7.innerHTML = Itemlist[i].VAT_AMOUNT;
+            cell8.innerHTML = Itemlist[i].TOTAL;
+            cell9.id = id;
+            //cell8().append("<strong>Hello</strong>");
+            $('#' + id).append('<button class="btn btn-danger btn-sm "  type="button" onclick="DeletedItem(' + i + ')"> <i class="la la-trash"></i>  </button>');
+
+        }
+        $('#SING_PRICE').val(0);
+        ItemCalculator()
+        INVCalculator()
+       
+
+    }
+
+
+
+    function DeletedItem(i) {
+        Itemlist.splice(i, 1);
+        AddItemToTabel();
+    }
+    function DeleteTabel() {
+
+        var g = $("#myTable tr").length;
+        for (var i = 1; i < $("#myTable tr").length; i) {
+            document.getElementById("myTable").deleteRow(1);
+        }
+    }
+
+
+
+    function INVCalculator() {
+        INV_AMOUNT = 0;
+        INV_VAT_AMOUNT = 0;
+        INV_TOTAL = 0;
+        DISCOUNT = $("#DISCOUNT").val();
+        if (Itemlist.length > 0) {
+            for (var i = 0; i < Itemlist.length; i++) {
+
+                INV_AMOUNT += parseInt(Itemlist[i].TOTAL_PRICE);
+                INV_VAT_AMOUNT += parseInt(Itemlist[i].VAT_AMOUNT);
+                // PUR_COST += parseInt( Itemlist[i].TOTAL);
+
+            }
+        }
+        INV_VAT_AMOUNT = parseInt((INV_AMOUNT - parseInt(DISCOUNT)) * 0.15);
+        PUR_COST = INV_AMOUNT - DISCOUNT + INV_VAT_AMOUNT;
+
+        $("#INV_COST").val(INV_AMOUNT.toFixed(2));
+        $("#VAT_AMOUNT").val(INV_VAT_AMOUNT.toFixed(2));
+        $("#PUR_COST").val(PUR_COST.toFixed(2));
+
+    }
+
+    function InvTypeChang() {
+
+        if ($("#INV_TYPE").val() == 1) {
+            $('#INV_WONER').attr('disabled', false)
+        } else {
+            $("#INV_WONER").attr('disabled', true)
+        }
+        $('#INV_WONER').selectpicker('refresh');
+    }
+
+    var vat;
+    function GetAccCenterForProj() {
+        id = $("#PROJ_NO").val();
+        $.ajax({
+            async: 'false',
+            Cache: 'false',
+            type: 'get',
+            url: '/api/PUY_INVOICE/GetAccCenterForProj/' + id, // this for calling the web method function in cs code.
+
+
+            success: function (response) {
+                type = $("#INV_DUC_TYPE").val();
+                vat = response.data.VATTBL_Model.VAT_PERCENT * 100
+                $("#VAT_ACC").val(response.data.VAT_ACC)
+
+                $("#VAT").val(vat)
+
+
+                if (type == 8) {
+                    $('select[name=DEBTOR_ACC]').val(response.data.CASH_PUR_ACC);
+                    $('#DEBTOR_ACC').selectpicker('refresh')
+
+                } else if (type == 9) {
+                    $('select[name=DEBTOR_ACC]').val(response.data.FUTURES_ACC);
+                    $('#DEBTOR_ACC').selectpicker('refresh')
+                }
+                //else if (type == 10) {
+                //    $('select[name=DEBTOR_ACC]').val(response.data.CASH_PUR_ACC);
+                //    $('#DEBTOR_ACC').selectpicker('refresh')
+                //} else if (type == 11) {
+                //    $('select[name=DEBTOR_ACC]').val(response.data.CASH_PUR_ACC);
+                //    $('#DEBTOR_ACC').selectpicker('refresh')
+                //} else if (type == 15) {
+                //    $('select[name=DEBTOR_ACC]').val(response.data.CASH_PUR_ACC);
+                //    $('#DEBTOR_ACC').selectpicker('refresh')
+                //}
+
+
+            }
+
+
+        });
+        IsVat();
+
+    }
+    function IsVat() {
+        if ($("#ISVAT").is(":checked")) {
+            $("#VAT").val(vat)
+            for (var i = 0; i < Itemlist.length; i++) {
+
+                Itemlist[i].VAT = 15;
+                Itemlist[i].VAT_AMOUNT = Itemlist[i].TOTAL_PRICE * (Itemlist[i].VAT / 100);
+                Itemlist[i].TOTAL = parseInt(Itemlist[i].TOTAL_PRICE) + parseInt(Itemlist[i].VAT_AMOUNT);
+
+            }
+            $("#SING_PRICE").val(0)
+            AddItemToTabel();
+        } else {
+            $("#VAT").val(0)
+
+            for (var i = 0; i < Itemlist.length; i++) {
+                Itemlist[i].VAT_AMOUNT = 0;
+                Itemlist[i].VAT = 0;
+
+                Itemlist[i].TOTAL = parseInt(Itemlist[i].TOTAL_PRICE) + parseInt(Itemlist[i].VAT_AMOUNT);
+            }
+            $("#SING_PRICE").val(0)
+            AddItemToTabel();
+        }
+    }
+    function Save() {
+
+        jQuery('#Add').parsley().whenValidate({
+
+        }).done(function () {
+
+            if (Itemlist.length > 0) {
+
+                create();
+            } else {
+                alert("لايوجد اصناف في الفاتورة")
+            }
+
+        });
+
+    }
+
+    
+
+    function create() {
+        trans = 0;
+        if ($("#INV_TRANSED").is(":checked")) {
+            trans = 1;
+        }
+        
+        var Item = $("#CREDITOR_ID").val();
+        var b = JSON.parse(Item)
+        var inv = {
+
+            INV_NO: $("#INV_NO").val(),
+            DATE_H: $("#DATE_H").val(),
+            DATE_M: $("#DATE_M").val(),
+            ENTRY_DATE: $("#ENTRY_DATE").val(),
+            PROJ_NO: $("#PROJ_NO").val(),
+            ACC_NO: $("#ACC_NO").val(),
+            UNDER_NO: $("#UNDER_NO").val(),
+            INV_COST: $("#INV_COST").val(),
+            DISCOUNT: $("#DISCOUNT").val(),
+            NOTE: $("#NOTE").val(),
+            FISCAL_YEAR: $("#FISCAL_YEAR").val(),
+            INV_TYPE: $("#INV_TYPE").val(),
+            INV_SERIAL: $("#INV_SERIAL").val(),
+            PUR_COST: $("#PUR_COST").val(),
+            STAGE_NO: $("#STAGE_NO").val(),
+            ACC_PARENT: $("#ACC_PARENT").val(),
+            DEBTOR_ACC: $("#DEBTOR_ACC").val(),
+            INV_WONER: $("#INV_WONER").val(),
+            M_INV: $("#M_INV").is(":checked"),
+            VAT_AMOUNT: $("#VAT_AMOUNT").val(),
+            CUST_VATNO: $("#CUST_VATNO").val(),
+            VAT_ACC: $("#VAT_ACC").val(),
+            INV_DUC_TYPE: $("#INV_DUC_TYPE").val(),
+            VAT_UP: $("#VAT_UP").val(),
+        
+            CREDITOR_ID: b.INFO_ID,
+            SUPP_INV_NO: $("#SUPP_INV_NO").val(),
+            EMP_NO: $("#EMP_NO").val(),
+            INV_TRANSED: trans,
+
+            INV_DTTBL_Collection: Itemlist
+
+
+
+
+        }
+
+
+        jQuery.ajax({
+            async: false,
+            cache: false,
+            type: "Post",
+            data: inv,
+            url: '/api/PUY_INVOICE/Add',
+            success: function (data) {
+                if (data.success == true) {
+                    $("#mesg").empty()
+                    $("#mesg").append('<h4 class="modal-title text-success" >تم الحفظ بنجاح</h4> ')
+                   
+                    $('#sccece-model').modal('show');
+                    Itemlist = [];
+                    $("#SUPP_INV_NO").val("")
+                    AddItemToTabel();
+
+                } else {
+                    $("#mesg").empty()
+                    $("#mesg").append('<h4 class="modal-title text-danger" >لم يتم الحفظ\n' + data.Message+'</h4> ')
+
+                 
+                    $('#sccece-model').modal('show');
+                   
+                }
+
+
+
+
+
+
+            }
+
+        });
+
+    }
+
+
+
+
+
+
+
+
+</script>

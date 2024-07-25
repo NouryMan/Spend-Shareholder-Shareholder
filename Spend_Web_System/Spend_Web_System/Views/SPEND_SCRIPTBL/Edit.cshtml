@@ -1,0 +1,659 @@
+﻿@model Spend.Models.SPEND_SCRIPTBL_Model
+@{
+
+    ViewBag.Title = "تعديل سند ";
+
+
+}
+
+
+
+
+
+<div class="dashboard-content-wrap">
+    <div class="dashboard-bread dashboard--bread dashboard-bread-2">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="breadcrumb-content">
+                        <div class="section-heading">
+                            <h2 class="sec__title font-size-30 text-white">تعديل سند </h2>
+                        </div>
+                    </div><!-- end breadcrumb-content -->
+                </div><!-- end col-lg-6 -->
+                <div class="col-lg-6">
+                    <div class="breadcrumb-list text-right">
+                        <ul class="list-items">
+                            <li><a href="index.html" class="text-white">الصفحة الرئيسية</a></li>
+                            <li>السندات</li>
+                            <li>تعديل سند</li>
+
+                        </ul>
+                    </div><!-- end breadcrumb-list -->
+                </div><!-- end col-lg-6 -->
+            </div><!-- end row -->
+        </div>
+    </div><!-- end dashboard-bread -->
+    <div class="dashboard-main-content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-box">
+                        <div class="form-title-wrap">
+                            <div>
+                                <h3 class="title">  سند</h3>
+                                @*<p class="font-size-14">إظهار 1 إلى 10 من أصل 20 مُدخل</p>*@
+                            </div>
+
+
+
+                        </div>
+                        <div class="form-content">
+                            <form id="Add" method="post">
+
+
+
+                                @Html.AntiForgeryToken()
+
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                @Html.HiddenFor(model => model.ID)
+
+
+                                <input type="hidden" id="redirect" value="redirect" />
+
+                                <div class="row mb-3">
+
+                                    <div class="col-md-3">
+                                        <div class="form-floating">
+                                            <label for="inputLastName">اسم المشروع</label>
+                                            <select id="PROJECT_NO" name="PROJECT_NO" dir="ltr" class="form-control selectpicker " data-live-search="true" required data-parsley-error-message="حقل مطلوب">
+                                                <option value="">اختار المشروع</option>
+                                                @foreach (var p in ViewBag.proj)
+                                                {
+                                                    if (p.PROJECT_NO == Model.PROJECT_NO)
+                                                    {
+                                                        <option class="themeprimary" selected value="@p.PROJECT_NO"> @p.PROJECT_NAME</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option class="themeprimary" value="@p.PROJECT_NO"> @p.PROJECT_NAME</option>
+                                                    }
+                                                }
+
+                                            </select>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-floating">
+                                            <label for="inputLastName">مرحلة العمل</label>
+                                            <select id="GROUP_NO" name="GROUP_NO" dir="ltr" class="form-control selectpicker " data-live-search="true">
+                                                <option value="">اختار مرحلة العمل</option>
+                                                @foreach (var p in ViewBag.STAGES)
+                                                {
+                                                    if (p.STAGE_NO == Model.GROUP_NO)
+                                                    {
+                                                        <option selected class="themeprimary" value="@p.STAGE_NO"> @p.STAGE_NAME</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option class="themeprimary" value="@p.STAGE_NO"> @p.STAGE_NAME</option>
+                                                    }
+                                                }
+                                                }
+
+                                            </select>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-floating">
+                                            <label for="inputLastName">نوع السند</label>
+                                            <select id="SCRIPT_TYPE" name="SCRIPT_TYPE" dir="ltr" class="form-control selectpicker " data-live-search="true" required data-parsley-error-message="حقل مطلوب">
+                                                <option value="">اختار نوع السند </option>
+                                                @foreach (var p in ViewBag.script_type)
+                                                {
+                                                    if (p.ID_NO == Model.SCRIPT_TYPE)
+                                                    {
+                                                        <option selected class="themeprimary" value="@p.ID_NO"> @p.SCRIP_TYPE</option>
+                                                    }
+
+                                                    else
+                                                    {
+                                                       <option class="themeprimary" value="@p.ID_NO"> @p.SCRIP_TYPE</option>
+                                                    }
+                                                }
+                                            </select>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-floating">
+                                            <label for="inputLastName">طريقة الدفع</label>
+                                            <select id="OP_TYPE" name="OP_TYPE" dir="ltr" class="form-control selectpicker " data-live-search="true" required data-parsley-error-message="حقل مطلوب">
+                                                <option value="">اختار طريقة الدفع</option>
+                                                @foreach (var p in ViewBag.SRIP_OPTYPE)
+                                                {
+                                                    if (p.ID_NO == Model.OP_TYPE)
+                                                    {
+                                                        <option class="themeprimary" selected value="@p.ID_NO"> @p.NAME</option>
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <option class="themeprimary" value="@p.ID_NO"> @p.NAME</option>
+                                                    }
+
+                                                }
+
+                                            </select>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+
+                                <div class="row mb-3">
+
+
+
+
+
+                                    <div class="col-md-3">
+                                        <div class="form-floating">
+                                            <label for="inputLastName">نوع العملية</label>
+                                            <select id="ACTION_TYPE" name="ACTION_TYPE" dir="ltr" class="form-control selectpicker " data-live-search="true" required data-parsley-error-message="حقل مطلوب">
+                                                <option value="">اختار نوع العملية</option>
+                                                @foreach (var p in ViewBag.ScACTION)
+                                                {
+                                                    if (p.ACTION_NO == Model.ACTION_TYPE)
+                                                    {
+                                                        <option class="themeprimary" selected value="@p.ACTION_NO"> @p.ACTION_NAME</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option class="themeprimary" value="@p.ACTION_NO"> @p.ACTION_NAME</option>
+                                                    }
+                                                }
+                                                }
+
+                                            </select>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="form-floating">
+                                            <label for="inputLastName">رقم السند</label>
+                                            <input type="text" class="form-control" disabled id="SCRIP_NO" name="SCRIP_NO" value="@Model.SCRIP_NO" />
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-floating">
+                                            <label for="inputLastName">رقم القيد</label>
+                                            <input type="text" class="form-control" id="UNDER_NO" name="UNDER_NO" disabled value="@Model.UNDER_NO" />
+
+
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="form-floating">
+                                            <label for="inputLastName">رقم السند/الشيك</label>
+                                            @Html.EditorFor(model => model.SHAKE_NO, new { htmlAttributes = new { @class = "form-control", @type = "number", @placeholder = "رقم السند/الشيك", @required = "required", @data_parsley_error_message = "حقل مطلوب" } })
+                                            @Html.ValidationMessageFor(model => model.SHAKE_NO, "", new { @class = "text-danger" })
+
+
+
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                <div class="row mb-3">
+
+
+                                    <div class="col-md-3">
+                                        <div class="form-floating">
+                                            <label for="inputLastName">الحساب المدين</label>
+                                            <select id="DEBTOR_ACC" name="DEBTOR_ACC" dir="ltr" class="form-control selectpicker " data-live-search="true" required data-parsley-error-message="حقل مطلوب">
+                                                <option value="">اختار الحساب المدين</option>
+                                                @foreach (var p in ViewBag.AllAcc)
+                                                {
+                                                    if (p.ACC_NO == Model.DEBTOR_ACC)
+                                                    {
+                                                        <option selected class="themeprimary" value="@p.ACC_NO"> @p.ACC_NAME (@p.ACC_NO)</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option class="themeprimary" value="@p.ACC_NO"> @p.ACC_NAME (@p.ACC_NO)</option>
+                                                    }
+
+                                                }
+
+                                            </select>
+
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-floating">
+                                            <label for="inputLastName">الحساب الدئن</label>
+                                            <select id="CREDITOR_ACC" name="CREDITOR_ACC" dir="ltr" class="form-control selectpicker " data-live-search="true" required data-parsley-error-message="حقل مطلوب">
+                                                <option value="">اختار الحساب الدئن</option>
+                                                @foreach (var p in ViewBag.AllAcc)
+                                                {
+                                                    if (p.ACC_NO == Model.CREDITOR_ACC)
+                                                    {
+                                                        <option selected class="themeprimary" value="@p.ACC_NO"> @p.ACC_NAME (@p.ACC_NO)</option>
+ }
+                                                    else
+                                                    {
+                                                        <option class="themeprimary" value="@p.ACC_NO"> @p.ACC_NAME (@p.ACC_NO)</option>
+}
+
+                                                }
+
+                                            </select>
+
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-3">
+                                        <div class="form-floating">
+                                            <label for="inputLastName">المبلغ</label>
+                                            @Html.EditorFor(model => model.COST, new { htmlAttributes = new { @class = "form-control", @type = "number", @placeholder = "المبلغ", @required = "required", @step = "0.01", @data_parsley_error_message = "حقل مطلوب" } })
+                                            @Html.ValidationMessageFor(model => model.COST, "", new { @class = "text-danger" })
+
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-floating">
+                                            <label for="inputLastName">اسم المستلم</label>
+                                            @Html.EditorFor(model => model.SCRIP_NAME, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = " اسم المستلم" } })
+                                            @Html.ValidationMessageFor(model => model.SCRIP_NAME, "", new { @class = "text-danger" })
+
+
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                <div class="row mb-3">
+
+
+
+                                    <div class="col-md-3">
+                                        <div class="form-floating">
+                                            <label for="inputLastName">تاريخ السند</label>
+                                            @Html.EditorFor(model => model.DATE_M, new { htmlAttributes = new { @class = "form-control", @type = "date", @placeholder = "التاريخ", @required = "required", } })
+                                            @Html.ValidationMessageFor(model => model.DATE_M, "", new { @class = "text-danger" })
+
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-floating">
+                                            <label for="inputLastName">التاريخ هجري</label>
+                                            @Html.EditorFor(model => model.SCRIP_DATE, new { htmlAttributes = new { @class = "form-control", @type = "text", } })
+                                            @Html.ValidationMessageFor(model => model.SCRIP_DATE, "", new { @class = "text-danger" })
+
+
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-floating">
+                                            <label for="inputLastName">السنة المالية</label>
+
+                                            <input type="text" class="form-control" value="@Model.FISCAL_YEAR" disabled id="FISCAL_YEAR" name="FISCAL_YEAR" />
+
+                                            @Html.ValidationMessageFor(model => model.FISCAL_YEAR, "", new { @class = "text-danger" })
+
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="row">
+                                            <div class="col-md-4">
+
+                                                <label for="inputPasswordConfirm">تم الاستلام</label>
+                                                <div class="switch-h d-flex justify-content-between align-items-center border p-1 ">
+                                                    <h5 class="font-size-h4 text-dark mb-0">نعم</h5>
+                                                    <div class="custom-control switch custom-switch-info custom-switch custom-control-inline mr-0">
+                                                        @if (Model.RECEIVED == true)
+                                                        {
+                                                            @Html.CheckBoxFor(model => model.RECEIVED, new { @class = "custom-control-input", @id = "RECEIVED", @checked = "checked", })
+                                                        }
+                                                        else
+                                                        {
+                                                            @Html.CheckBoxFor(model => model.RECEIVED, new { @class = "custom-control-input", @id = "RECEIVED", })
+
+                                                        }
+                                                        <label class="custom-control-label mr-1" for="RECEIVED">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+
+                                                <label for="inputPasswordConfirm">صيانة</label>
+                                                <div class="switch-h d-flex justify-content-between align-items-center border p-1 ">
+                                                    <h5 class="font-size-h4 text-dark mb-0">نعم</h5>
+                                                    <div class="custom-control switch custom-switch-info custom-switch custom-control-inline mr-0">
+                                                        @if (Model.M_SCRIP == true)
+                                                        {
+                                                            @Html.CheckBoxFor(model => model.M_SCRIP, new { @class = "custom-control-input", @id = "M_SCRIP", @checked = "checked" })
+                                                        }
+                                                        else
+                                                        { @Html.CheckBoxFor(model => model.M_SCRIP, new { @class = "custom-control-input", @id = "M_SCRIP" })
+                                                    }
+                                                        <label class="custom-control-label mr-1" for="M_SCRIP">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-md-4">
+
+                                                <label for="inputPasswordConfirm">مرحل</label>
+                                                <div class="switch-h d-flex justify-content-between align-items-center border p-1 ">
+                                                    <h5 class="font-size-h4 text-dark mb-0">نعم</h5>
+                                                    <div class="custom-control switch custom-switch-info custom-switch custom-control-inline mr-0">
+                                                        @if (Model.SCRIP_TRANS == true)
+                                                        {
+                                                            @Html.CheckBoxFor(model => model.SCRIP_TRANS, new { @class = "custom-control-input", @id = "SCRIP_TRANS", @checked = "checked", })
+                                                        }
+                                                        else
+                                                        { @Html.CheckBoxFor(model => model.SCRIP_TRANS, new { @class = "custom-control-input", @id = "SCRIP_TRANS", })
+                                                    }
+                                                        <label class="custom-control-label mr-1" for="SCRIP_TRANS">
+                                                        </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+
+
+                                <div class="row mb-3">
+
+
+
+                                    <div class="col-md-3">
+                                        <div class="form-floating">
+                                            <label for="inputLastName">جزء المشروع</label>
+                                            <select id="SUB_PROJ" name="SUB_PROJ" dir="ltr" class="form-control selectpicker " data-live-search="true">
+                                                <option value="">اختار</option>
+                                                @foreach (var p in ViewBag.Subproj)
+                                                {
+                                                    if (p.SUB_PROJ_NO == Model.SUB_PROJ)
+                                                    {
+                                                        <option selected class="themeprimary" value="@p.SUB_PROJ_NO"> @p.SUB_PROJ_NAME</option>
+}
+                                                    else
+                                                    {
+                                                        <option selected class="themeprimary" value="@p.SUB_PROJ_NO"> @p.SUB_PROJ_NAME</option>
+                                                    }
+                                                }
+
+                                            </select>
+
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-floating">
+                                            <label for="inputLastName">العمارة</label>
+                                            <select id="PART_NO" name="PART_NO" dir="ltr" class="form-control selectpicker " data-live-search="true">
+                                                <option value="">اختار</option>
+                                                @foreach (var p in ViewBag.Part_b)
+                                                {
+                                                    if (p.PART_NO == Model.PART_NO)
+                                                    {
+                                                    <option selected class="themeprimary" value="@p.PART_NO"> @p.PART_NAME</option>
+                                                    }
+                else
+                {
+                                            <option class="themeprimary" value="@p.PART_NO"> @p.PART_NAME</option>
+                }
+                                                }
+
+                                            </select>
+
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-floating">
+                                            <label for="inputLastName">الوحدة</label>
+                                            <select id="UNIT_NO" name="UNIT_NO" dir="ltr" class="form-control selectpicker " data-live-search="true">
+                                                <option value="">اختار</option>
+                                                @foreach (var p in ViewBag.Unitt_b)
+                                                {
+                                                    if (p.UNIT_NO == Model.UNDER_NO)
+                                                    {
+                                                        <option selected class="themeprimary" value="@p.UNIT_NO"> @p.UNIT_NAME</option>
+}
+                                                    else
+                                                    {
+                                                        <option  class="themeprimary" value="@p.UNIT_NO"> @p.UNIT_NAME</option>
+                                                    }
+                                                }
+
+                                            </select>
+
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="form-floating">
+                                            <label for="inputLastName">البيان</label>
+                                            @Html.EditorFor(model => model.REMARK, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = "البيان" } })
+                                            @Html.ValidationMessageFor(model => model.REMARK, "", new { @class = "text-danger" })
+
+
+                                        </div>
+                                    </div>
+
+
+
+                                </div>
+
+
+
+
+
+                                <div class="row mt-4 mb-0">
+                                    <div class="d-grid col-md-6 "><button class="btn btn-primary btn-block"  type="submit">حفظ</button></div>
+
+                                    <div class="d-grid col-md-6"><a class="btn btn-danger btn-block" href="~/SPEND_SCRIPTBL/Index">رجوع</a></div>
+
+
+
+
+
+                                </div>
+
+
+
+                            </form>
+                        </div>
+                    </div><!-- end form-box -->
+                </div><!-- end col-lg-12 -->
+            </div><!-- end row -->
+
+            <div class="border-top mt-5"></div>
+            <div class="row align-items-center">
+                <div class="col-lg-7">
+                    <div class="copy-right padding-top-30px">
+
+                        <p class="copy__desc">
+                            &copy; Copyright Tech Light 2022. Made with
+                            <span class="la la-heart"></span> by <a href="http://Tech-Light.com/">Noury</a>
+                        </p>
+
+                    </div><!-- end copy-right -->
+                </div><!-- end col-lg-7 -->
+                <div class="col-lg-5">
+                    <div class="footer-social-box text-right padding-top-30px">
+                        <ul class="social-profile">
+                            <li><a href="#"><i class="lab la-facebook-f"></i></a></li>
+                            <li><a href="#"><i class="lab la-twitter"></i></a></li>
+                            <li><a href="#"><i class="lab la-instagram"></i></a></li>
+                            <li><a href="#"><i class="lab la-linkedin-in"></i></a></li>
+                        </ul>
+                    </div><!-- end copy-right-content -->
+                    <div id="PrintDiv" hidden="hidden">
+
+                    </div>
+                </div><!-- end col-lg-5 -->
+            </div><!-- end row -->
+        </div><!-- end container-fluid -->
+    </div><!-- end dashboard-main-content -->
+</div><!-- end dashboard-content-wrap -->
+@*<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.6.1/jquery.min.js"></script>*@
+@*<script src="~/assets/js/moment.min.js"></script>*@
+<input type="hidden" value="@Model.SCRIPT_TYPE" id="scrptType" />
+<input type="hidden" value="@Model.FISCAL_YEAR" id="year" />
+<input type="hidden" value="@Model.SCRIP_NO" id="scrNO" />
+
+
+<script>
+
+   var oldscrptType ;
+    var oldyear;
+    var oldscrNO;
+
+    $(document).ready(function () {
+        var today = moment().format('YYYY-MM-DD');
+
+        $('#DATE_M').val(today);
+        $('#FISCAL_YEAR').val(moment().format("YYYY"));
+        $("#SCRIP_DATE").val(GetDate($("#DATE_M").val(), "m"))
+
+        oldscrptType = @Html.Raw(Json.Encode(Model.SCRIPT_TYPE));
+        oldyear =@Html.Raw(Json.Encode(Model.FISCAL_YEAR));
+        oldscrNO =@Html.Raw(Json.Encode(Model.SCRIP_NO));
+    });
+
+
+    $("#DATE_M").change(function () {
+
+
+        var year = moment($("#DATE_M").val(), 'YYYY-MM-DD').format("YYYY");
+
+        $('#FISCAL_YEAR').val(year);
+        $("#SCRIP_DATE").val(GetDate($("#DATE_M").val(),"m"))
+        if (oldscrptType == $("#SCRIPT_TYPE").val() && oldyear == year) {
+            $("#SCRIP_NO").val(oldscrNO)
+
+        } else {
+
+            getScript_NO()
+        }
+
+    });
+
+
+
+    $("#SCRIP_DATE").change(function () {
+
+        $("#DATE_M").val(moment(GetDate($("#SCRIP_DATE").val(),"h")).format('YYYY-MM-DD'))
+
+
+    });
+
+    function GetDate(date,type) {
+        var reusert;
+        var url = "";
+        if (type == "m") {
+            url = "https://api.aladhan.com/v1/gToH?date=" + moment(date).format('DD-MM-YYYY');
+        } else {
+            url = "https://api.aladhan.com/v1/hToG?date=" + moment(date).format('DD-MM-YYYY');
+        }
+
+        jQuery.ajax({
+
+            type: "Get",
+            async: false,
+            url: url,
+            success: function (data) {
+                if (data.status == "OK") {
+                    if (type == "m") {
+                        reusert = moment(data.data.hijri.date, data.data.hijri.format).format('YYYY-MM-DD');
+                    } else {
+                        reusert = moment(data.data.gregorian.date, data.data.gregorian.format).format('YYYY-MM-DD');
+                    }
+
+                } else {
+                    reusert = null;
+                }
+
+            }
+
+        });
+
+        return reusert;
+    }
+
+
+
+    $("#SCRIPT_TYPE").change(function () {
+
+        if (oldscrptType == this.value && oldyear == $('#FISCAL_YEAR').val()) {
+            $("#SCRIP_NO").val(oldscrNO)
+
+        } else {
+          
+            getScript_NO()
+        }
+
+    });
+
+    function getScript_NO() {
+
+        id = $('#FISCAL_YEAR').val();
+        type = $("#SCRIPT_TYPE").val()
+        jQuery.ajax({
+
+            type: "Get",
+
+            url: '/api/Api_Spend_scriptbl/GetScript_NO/' + id + '?type=' + type,
+            success: function (data) {
+                if (data.success == true) {
+
+                    $('#SCRIP_NO').val(data.data);
+
+                } else {
+
+                }
+
+
+
+
+
+
+            }
+
+        });
+    }
+
+
+
+</script>

@@ -1,0 +1,360 @@
+﻿@model Spend.Models.USERSTBL_Model
+@{
+    ViewBag.Title = "انشاء مستخدم";
+}
+
+<div class="dashboard-content-wrap">
+    <div class="dashboard-bread dashboard--bread dashboard-bread-2">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="breadcrumb-content">
+                        <div class="section-heading">
+                            <h2 class="sec__title font-size-30 text-white">انشاء مستخدم</h2>
+                        </div>
+                    </div><!-- end breadcrumb-content -->
+                </div><!-- end col-lg-6 -->
+                <div class="col-lg-6">
+                    <div class="breadcrumb-list text-right">
+                        <ul class="list-items">
+                            <li><a href="index.html" class="text-white">الصفحة الرئيسية</a></li>
+                            <li>تهئية النظام</li>
+                            <li>المستخدمين</li>
+                            <li>انشاء مستخدم</li>
+                        </ul>
+                    </div><!-- end breadcrumb-list -->
+                </div><!-- end col-lg-6 -->
+            </div><!-- end row -->
+        </div>
+    </div><!-- end dashboard-bread -->
+    <div class="dashboard-main-content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-box">
+                        <div class="form-title-wrap">
+                            <div>
+                                <h3 class="title"> انشاء مستخدم</h3>
+            @*<p class="font-size-14">إظهار 1 إلى 10 من أصل 20 مُدخل</p>*@
+        </div>
+
+                           
+
+                        </div>
+                        <div class="form-content">
+                           
+
+                                @using (Html.BeginForm())
+                                {
+                                    @Html.AntiForgeryToken()
+
+                                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-12 mb-md-0">
+                                            <label for="inputPasswordConfirm">اختار اذا كان موجود مسبقاً</label>
+                                            <select id="PERSON_ID" name="PERSON_ID" class="selectpicker  form-control" dir="rtl" data-live-search="true" onchange="personal()">
+                                                <option class="themeprimary">جديد</option>
+                                                @foreach (var item in ViewBag.personalinfo)
+                                                {
+
+                                                    <option class="themeprimary" value="@item.ID">
+                                                        @{ try
+                                                            { @item.AR_NAME }
+                                                        catch { } }
+                                                    </option>
+                                                }
+
+
+                                            </select>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-12 mb-md-0">
+                                            <label for="inputPasswordConfirm"> الاسم عربي</label>
+                                            @Html.EditorFor(model => model.PERSONAL_INFOTBL_Model.AR_NAME, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = " الاسم عربي" } })
+                                            @Html.ValidationMessageFor(model => model.PERSONAL_INFOTBL_Model.AR_NAME, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                   
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-12 mb-md-0">
+                                            <label for="inputPasswordConfirm"> الاسم انجليزي</label>
+                                            @Html.EditorFor(model => model.PERSONAL_INFOTBL_Model.EN_NAME, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = "الاسم انجليزي" } })
+                                            @Html.ValidationMessageFor(model => model.PERSONAL_INFOTBL_Model.EN_NAME, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-6 mb-md-0">
+                                            <label for="inputPasswordConfirm"> رقم الهوية</label>
+                                            @Html.EditorFor(model => model.PERSONAL_INFOTBL_Model.C_ID, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = "رقم الهوية" } })
+                                            @Html.ValidationMessageFor(model => model.PERSONAL_INFOTBL_Model.C_ID, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+                                </div>
+                                   
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-12 mb-md-0">
+                                            <label for="inputPasswordConfirm"> العنوان</label>
+                                            @Html.EditorFor(model => model.PERSONAL_INFOTBL_Model.ADDRESS1, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = "العنوان" } })
+                                            @Html.ValidationMessageFor(model => model.PERSONAL_INFOTBL_Model.ADDRESS1, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-6 mb-md-0">
+                                            <label for="inputPasswordConfirm"> الجوال</label>
+                                            @Html.EditorFor(model => model.PERSONAL_INFOTBL_Model.MOBILE_NO, new { htmlAttributes = new { @class = "form-control", @typ = "number", @placeholder = "الجوال" } })
+                                            @Html.ValidationMessageFor(model => model.PERSONAL_INFOTBL_Model.MOBILE_NO, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+                                <div class="row mb-3">
+
+
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-6 mb-md-0">
+                                            <label for="inputPasswordConfirm"> البريد الالكتروني </label>
+                                            @Html.EditorFor(model => model.PERSONAL_INFOTBL_Model.EMAIL_ADDRESS, new { htmlAttributes = new { @class = "form-control", @type = "email", @placeholder = " البريد الالكتروني", @autocomplete = "off" } })
+                                            @Html.ValidationMessageFor(model => model.PERSONAL_INFOTBL_Model.EMAIL_ADDRESS, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-12 mb-md-0">
+                                            <label for="inputPasswordConfirm"> الملاحظة</label>
+                                            @Html.EditorFor(model => model.NOTE, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = "الملاحظة", @autocomplete = "off" } })
+                                            @Html.ValidationMessageFor(model => model.NOTE, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                                   
+
+                                    @*<-->         login date       </-->*@
+                                    <span>بيانات الدخول</span>
+                                    <div class="row mb-3">
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-12 mb-md-0">
+                                                <label for="inputPasswordConfirm">اسم المستخدم</label>
+                                                @Html.EditorFor(model => model.LOGIN_NAME, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = "اسم المستخدم", @autocomplete = "off" } })
+                                                @Html.ValidationMessageFor(model => model.LOGIN_NAME, "", new { @class = "text-danger" })
+                                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="form-floating mb-12 mb-md-0">
+                                                <label for="inputPasswordConfirm">كلمة المرور</label>
+                                                @Html.EditorFor(model => model.LOGIN_PASS, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = "كلمة المرور", @autocomplete = "off" } })
+                                                @Html.ValidationMessageFor(model => model.LOGIN_PASS, "", new { @class = "text-danger" })
+
+
+                                            </div>
+                                        </div>
+
+                                    </div>
+
+                                    @*<-->         Role date       </-->*@
+
+
+                                    <input type="hidden" id="Role" name="Role" />
+                                    <div class="row mb-3">
+                                        <div class="col-md-12">
+
+                                            <div class="form-check form-switch col-md-12 p-0 ">
+                                                <div class="card mb-4 col-md-12  ">
+                                                    <div class="card-header ">
+                                                        <i class="fas fa-table me-1"></i>
+                                                        الصلاحيات
+
+                                                    </div>
+                                                    <div class="card-body">
+                                                        <table class="table table-bordered">
+                                                            <thead>
+                                                                <tr>
+                                                                    <th>الاسم</th>
+
+
+
+
+                                                                    <th></th>
+                                                                </tr>
+                                                            </thead>
+
+                                                            <tbody>
+                                                                @foreach (var item in ViewBag.Roll)
+                                                                {
+                                                                    var check = "";
+
+                                                                    //if (Model.USER_ROLETBLE_Collection.Where(x => x.ROLE_ID == item.ID).Count() > 0)
+                                                                    //{
+                                                                    //    check = "checked";
+                                                                    //}
+
+                                                                    <tr>
+
+                                                                        <td>
+                                                                            @{ try
+                                                                                { @item.NAME_AR }
+                                                                            catch
+                                                                            {
+
+                                                                            }
+                                                                            }
+                                                                        </td>
+
+
+
+
+                                                                        <td>
+                                                                            <div class="col-md-6">
+
+                                                                                <input class="form-check-input" name="checkk" type="checkbox" value="@item.ID" id="@item.ID" @check onclick="chickbox()" style="position: inherit;opacity:1;">
+
+                                                                            </div>
+                                                                        </td>
+                                                                    </tr>
+                                                                }
+
+
+                                                            </tbody>
+                                                        </table>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+
+
+
+
+                                    <div class="row mt-4 mb-0">
+                                        <div class="d-grid col-md-6 "><button class="btn btn-primary btn-block" type="submit">حفظ</button></div>
+
+                                        <div class="d-grid col-md-6"><a class="btn btn-danger btn-block" href="~/User/Index">رجوع</a></div>
+
+
+
+
+
+                                    </div>
+                                }
+
+
+
+                        </div>
+                    </div><!-- end form-box -->
+                </div><!-- end col-lg-12 -->
+            </div><!-- end row -->
+          
+            <div class="border-top mt-5"></div>
+            <div class="row align-items-center">
+                <div class="col-lg-7">
+                    <div class="copy-right padding-top-30px">
+                        <p class="copy__desc">
+                            &copy; Copyright Jeddah first 2022. Made with
+                            <span class="la la-heart"></span> by <a href="http://jeddah-first.com/">Noury</a>
+                        </p>
+                    </div><!-- end copy-right -->
+                </div><!-- end col-lg-7 -->
+                <div class="col-lg-5">
+                    <div class="footer-social-box text-right padding-top-30px">
+                        <ul class="social-profile">
+                            <li><a href="#"><i class="lab la-facebook-f"></i></a></li>
+                            <li><a href="#"><i class="lab la-twitter"></i></a></li>
+                            <li><a href="#"><i class="lab la-instagram"></i></a></li>
+                            <li><a href="#"><i class="lab la-linkedin-in"></i></a></li>
+                        </ul>
+                    </div><!-- end copy-right-content -->
+                </div><!-- end col-lg-5 -->
+            </div><!-- end row -->
+        </div><!-- end container-fluid -->
+    </div><!-- end dashboard-main-content -->
+</div><!-- end dashboard-content-wrap -->
+
+
+
+<script>
+    $(window).ready(function () {
+        chickbox()
+    });
+    function chickbox() {
+        debugger;
+        var Rolelist = [];
+
+        $('input:checkbox[name=checkk]').each(function () {
+            if ($(this).is(':checked')) {
+
+                Rolelist.push($(this).val())
+
+            }
+
+
+        });
+        $('#Role').val(Rolelist)
+
+    }
+
+    function personal() {
+
+        $('#PERSONAL_INFOTBL_Model_AR_NAME').val(null)
+        $('#PERSONAL_INFOTBL_Model_EN_NAME').val(null)
+        $('#PERSONAL_INFOTBL_Model_C_ID').val(null)
+        $('#PERSONAL_INFOTBL_Model_ADDRESS1').val(null)
+        $('#PERSONAL_INFOTBL_Model_MOBILE_NO').val(null)
+        $('#PERSONAL_INFOTBL_Model_EMAIL_ADDRESS').val(null)
+
+        var id = $('#PERSON_ID').val();
+
+        var ajaxMethodUrl = "/User/getPersondeteiles?id=" + id;
+
+        $.ajax({
+            async: false,
+            cache: true,
+            type: "Get",
+            url: ajaxMethodUrl,
+            success: function (data) {
+
+                $('#PERSONAL_INFOTBL_Model_AR_NAME').val(data[0])
+                //   $('#PERSONAL_INFOTBL_Model_AR_NAME').prop('disabled', true)
+                $('#PERSONAL_INFOTBL_Model_EN_NAME').val(data[1])
+                //  $('#PERSONAL_INFOTBL_Model_EN_NAME').prop('disabled', true)
+                $('#PERSONAL_INFOTBL_Model_C_ID').val(data[2])
+                //  $('#PERSONAL_INFOTBL_Model_C_ID').prop('disabled', true)
+                $('#PERSONAL_INFOTBL_Model_ADDRESS1').val(data[3])
+                //   $('#PERSONAL_INFOTBL_Model_ADDRESS1').prop('disabled', true)
+                $('#PERSONAL_INFOTBL_Model_MOBILE_NO').val(data[4])
+                //   $('#PERSONAL_INFOTBL_Model_MOBILE_NO').prop('disabled', true)
+                $('#PERSONAL_INFOTBL_Model_EMAIL_ADDRESS').val(data[5])
+                //  $('#PERSONAL_INFOTBL_Model_EMAIL_ADDRESS').prop('disabled', true)
+
+
+
+            },
+
+
+        });
+
+
+
+    }
+
+</script>

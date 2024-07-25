@@ -1,0 +1,516 @@
+﻿@model Spend.Models.ACCH_OPBOXTBL_Model
+@{
+    ViewBag.Title = "القيود";
+}
+
+
+
+<div class="container" dir="rtl">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="card shadow-lg border-0 rounded-lg mt-5">
+                <div class="card-header"><h3 class="text-center font-weight-light my-4">القيود</h3></div>
+                <div class="card-body">
+
+                    <form id="Add" method="post">
+
+                        @Html.AntiForgeryToken()
+
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        <div class="row mb-2">
+
+                            <div class="col-md-4">
+                                <div class="form-floating">
+                                    <label class=" col-form-label-sm" for="inputLastName">الطرف الاول </label>
+                                    <select id="INV_DUC_TYPE" name="INV_DUC_TYPE" dir="ltr" class="form-control selectpicker " data-live-search="true" onchange="GetAccCenterForProj()">
+
+                                        @foreach (var p in ViewBag.AccHolder)
+                                        {
+                                            <option class="themeprimary" value="@p.ACC_HOLDER_NO" selected> @p.ACC_HOLDER_NAME</option>
+                                        }
+
+                                    </select>
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="form-floating">
+                                    <label class="col-form-label-sm" for="inputLastName">صرف</label>
+                                    @Html.EditorFor(model => model.SPEND_COST, new { htmlAttributes = new { @class = "form-control", @type = "number", } })
+                                    @Html.ValidationMessageFor(model => model.SPEND_COST, "", new { @class = "text-danger" })
+
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="form-floating">
+                                    <label class="col-form-label-sm" for="inputLastName">قبض</label>
+                                    @Html.EditorFor(model => model.INCOME, new { htmlAttributes = new { @class = "form-control", @type = "number", } })
+                                    @Html.ValidationMessageFor(model => model.INCOME, "", new { @class = "text-danger" })
+
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-2">
+                                <div class="form-floating">
+                                    <label class=" col-form-label-sm" for="inputLastName">التاريخ الميلادي</label>
+                                    @Html.EditorFor(model => model.DATE_M, new { htmlAttributes = new { @class = "form-control", @type = "date", @placeholder = "dd-mm-yyyy" } })
+                                    @Html.ValidationMessageFor(model => model.DATE_M, "", new { @class = "text-danger" })
+
+                                </div>
+                            </div>
+                            <div class="col-md-2">
+                                <div class="form-floating">
+                                    <label class=" col-form-label-sm" for="inputLastName">التاريخ الهجري</label>
+                                    @Html.EditorFor(model => model.DATE_H, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = "التاريخ الهجري" } })
+                                    @Html.ValidationMessageFor(model => model.DATE_H, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                      
+
+
+                        <div class="row mb-4">
+
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <label class=" col-form-label-sm" for="inputLastName"> ملاحظة</label>
+                                    @Html.EditorFor(model => model.NOTE, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = "البيان" } })
+                                    @Html.ValidationMessageFor(model => model.NOTE, "", new { @class = "text-danger" })
+
+
+
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+                       
+                        <div class="row mb-3">
+
+                            <div class="col-md-4 p-1">
+                                <div class="form-floating">
+                                    <label class=" col-form-label-sm" for="inputLastName">الطرف الثاني </label>
+                                    <select id="two-Acch" name="two-Acch" dir="ltr" class="form-control selectpicker " data-live-search="true" onchange="GetAccCenterForProj()">
+
+                                        @foreach (var p in ViewBag.AccHolder)
+                                        {
+                                            <option class="themeprimary" value="@p.ACC_HOLDER_NO" selected> @p.ACC_HOLDER_NAME</option>
+                                        }
+
+                                    </select>
+
+                                </div>
+                            </div>
+                            <div class="col-md-2 p-1">
+                                <div class="form-floating">
+                                    <label class=" col-form-label-sm" for="inputLastName">المبلغ</label>
+                                    <input type="text" class="form-control" id="price"  />
+                                    
+
+                                </div>
+                            </div>
+                           
+                            <div class="col-md-1 ">
+                                <label class=" col-form-label-sm" for="inputLastName">اضافة</label>
+                                <div class="form-floating pt-6 mt-6 ">
+                                    <button class="btn btn-lg btn-primary btn-block " id="btnAdd" type="button" onclick="AddToOrderList()"><span class="la la-plus"></span></button>
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row mb-0">
+                            <div class="col-md-12">
+
+                                <div class="form-check form-switch col-md-12 p-0 ">
+                                    <div class="card mb-4 col-md-12  ">
+                                        <div class="card-header ">
+                                            <i class="fas fa-table me-1"></i>
+                                            الطرف الثاني
+
+                                        </div>
+                                        <div class="card-body">
+                                            <table id="myTable" class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>#</th>
+                                                        <th>الرقم</th>
+                                                        <th>الاسم</th>
+                                                        <th>صرف</th>
+                                                        <th>قبض</th>
+                                                       
+
+
+
+                                                        <th></th>
+                                                    </tr>
+                                                </thead>
+
+                                                <tbody>
+                                                </tbody>
+                                            </table>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-4">
+
+                            <div class="col-md-2">
+                                <div class="form-floating">
+                                    <label class=" col-form-label-sm" for="inputLastName">الصرف</label>
+                                    <input type="number" class="form-control" id="Totall-SPEND_COST" value="0" disabled />
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-2">
+                                <div class="form-floating">
+                                    <label class=" col-form-label-sm" for="inputLastName">القبض</label>
+                                    <input type="number" class="form-control" id="Totall-INCOME" value="0" disabled />
+
+
+
+                                </div>
+                            </div>
+                            <div class="col-md-2 ">
+                                <div class="form-floating">
+                                    <label class=" col-form-label-sm  " for="inputLastName">الاجمالي </label>
+                                    <input type="number" class="form-control" id="Totall" disabled />
+
+
+
+                                </div>
+
+                            </div>
+                          
+
+                        </div>
+
+
+
+                        <div class="row mt-4 mb-0">
+                            <div class="d-grid col-md-6 "><button class="btn btn-primary btn-block" id="btnSave" onclick="Save()" type="button">حفظ</button></div>
+                            @*<div class="d-grid col-md-3 "><button class="btn btn-primary btn-block" id="btnSave" onclick="Save(1)" type="button">حفظ وترحيل</button></div>*@
+
+                            <div class="d-grid col-md-6"><a class="btn btn-danger btn-block" href="~/puy_invoicetbl/Index">رجوع</a></div>
+
+
+
+
+
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-center py-3">
+                    <div class="small">جدة الأولى</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="sccece-model" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog " role="document">
+        <div class="modal-content">
+            <div class="modal-header justify-content-center" id="mesg">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+
+    $(document).ready(function () {
+        var today = moment().format('YYYY-MM-DD');
+
+        $('#DATE_M').val(today);
+        $('#ENTRY_DATE').val(today);
+      
+        $("#DATE_H").val(GetDate($("#DATE_M").val()))
+    });
+
+    $("#DATE_M").change(function () {
+
+
+        var year = moment($("#DATE_M").val(), 'YYYY/MM/DD').format("YYYY");
+
+      
+        $("#DATE_H").val(GetDate($("#DATE_M").val()))
+      
+    });
+
+    $("#DATE_H").change(function () {
+
+        $("#DATE_M").val(moment(GetDate($("#DATE_H").val())).format('YYYY-MM-DD'))
+
+
+    });
+
+
+    $("#SPEND_COST").change(function () {
+
+
+        $("#INCOME").val(0);
+
+    });
+
+    $("#INCOME").change(function () {
+
+
+        $("#SPEND_COST").val(0);
+
+    });
+
+
+    function GetDate(date) {
+        var reusert;
+
+        jQuery.ajax({
+
+            type: "Get",
+            async: false,
+            url: '/api/ApiDate/GetDate?date=' + date,
+            success: function (data) {
+                if (data.success == true) {
+                    reusert = data.data;
+
+                } else {
+                    reusert = null;
+                }
+
+            }
+
+        });
+
+        return reusert;
+    }
+
+   
+
+
+
+    var Itemlist = [];
+
+    function AddToOrderList() {
+
+        event.preventDefault();
+
+        $('button[data-id=two-Acch]').focus();
+        aCCH_NO = $("#two-Acch").val()
+        aCCH_NAME = $("#two-Acch option:selected").text()
+        if ($("#SPEND_COST").val() == 0) {
+            sPEND_COST = $("#price").val()
+            iNCOME = 0;
+        } else {
+            iNCOME = $("#price").val()
+            sPEND_COST=0
+        }
+       
+        
+
+        if (aCCH_NO > 0 && aCCH_NAME != "" && $("#price").val() != "" && $("#price").val()!=0) {
+            Itemlist.push({ ACC_HOLDER_NO: aCCH_NO, ACCH_NAME: aCCH_NAME, SPEND_COST: sPEND_COST, INCOME: iNCOME });
+            AddItemToTabel();
+        }
+    }
+
+
+
+    function AddItemToTabel() {
+        if (jQuery("#myTable tr").length > 1) {
+            DeleteTabel()
+        }
+        for (var i = 0; i < Itemlist.length; i++) {
+            var table = document.getElementById("myTable");
+            var rowindex = $("#myTable tr").length;
+            var id = 'cell' + (rowindex);
+            var row = table.insertRow();
+            var cell0 = row.insertCell(0);
+            var cell1 = row.insertCell(1);
+            var cell2 = row.insertCell(2);
+            var cell3 = row.insertCell(3);
+            var cell4 = row.insertCell(4);
+            var cell5 = row.insertCell(5);
+           
+            cell0.innerHTML = $("#myTable tr").length - 1;
+            cell1.innerHTML = Itemlist[i].ACC_HOLDER_NO;
+            cell2.innerHTML = Itemlist[i].ACCH_NAME;
+            cell3.innerHTML = Itemlist[i].SPEND_COST;
+            cell4.innerHTML = Itemlist[i].INCOME;
+       
+            cell5.id = id;
+            
+            $('#' + id).append('<button class="btn btn-danger btn-sm "  type="button" onclick="DeletedItem(' + i + ')"> <i class="la la-trash"></i>  </button>');
+
+        }
+        $('#price').val(0);
+
+
+      
+        Calculator()
+
+
+    }
+
+
+
+    function DeletedItem(i) {
+        Itemlist.splice(i, 1);
+        AddItemToTabel();
+    }
+    function DeleteTabel() {
+
+        var g = $("#myTable tr").length;
+        for (var i = 1; i < $("#myTable tr").length; i) {
+            document.getElementById("myTable").deleteRow(1);
+        }
+    }
+
+
+
+    function Calculator() {
+        Totall = 0;
+        Totall_INCOME = parseFloat($("#INCOME").val());
+        Totall_SPEND_COST = parseFloat($("#SPEND_COST").val());
+        
+        for (let item of Itemlist) {
+            Totall_INCOME += parseFloat(item.INCOME)
+            Totall_SPEND_COST += parseFloat(item.SPEND_COST)
+        }
+        Totall = Totall_INCOME - Totall_SPEND_COST;
+
+        $("#Totall-SPEND_COST").val(Totall_SPEND_COST);
+        $("#Totall-INCOME").val(Totall_INCOME);
+        $("#Totall").val(Totall);
+
+    }
+
+
+ 
+
+   function Save() {
+
+        jQuery('#Add').parsley().whenValidate({
+
+        }).done(function () {
+
+            if (Itemlist.length > 0) {
+
+                create();
+            } else {
+                alert("لايوجد اصناف في الفاتورة")
+            }
+
+        });
+
+    }
+
+
+
+    function create() {
+        trans = 0;
+        if ($("#INV_TRANSED").is(":checked")) {
+            trans = 1;
+        }
+
+        var Item = $("#CREDITOR_ID").val();
+        var b = JSON.parse(Item)
+        var inv = {
+
+            INV_NO: $("#INV_NO").val(),
+            DATE_H: $("#DATE_H").val(),
+            DATE_M: $("#DATE_M").val(),
+            ENTRY_DATE: $("#ENTRY_DATE").val(),
+            PROJ_NO: $("#PROJ_NO").val(),
+            ACC_NO: $("#ACC_NO").val(),
+            UNDER_NO: $("#UNDER_NO").val(),
+            INV_COST: $("#INV_COST").val(),
+            DISCOUNT: $("#DISCOUNT").val(),
+            NOTE: $("#NOTE").val(),
+            FISCAL_YEAR: $("#FISCAL_YEAR").val(),
+            INV_TYPE: $("#INV_TYPE").val(),
+            INV_SERIAL: $("#INV_SERIAL").val(),
+            PUR_COST: $("#PUR_COST").val(),
+            STAGE_NO: $("#STAGE_NO").val(),
+            ACC_PARENT: $("#ACC_PARENT").val(),
+            DEBTOR_ACC: $("#DEBTOR_ACC").val(),
+            INV_WONER: $("#INV_WONER").val(),
+            M_INV: $("#M_INV").is(":checked"),
+            VAT_AMOUNT: $("#VAT_AMOUNT").val(),
+            CUST_VATNO: $("#CUST_VATNO").val(),
+            VAT_ACC: $("#VAT_ACC").val(),
+            INV_DUC_TYPE: $("#INV_DUC_TYPE").val(),
+            VAT_UP: $("#VAT_UP").val(),
+
+            CREDITOR_ID: b.INFO_ID,
+            SUPP_INV_NO: $("#SUPP_INV_NO").val(),
+            EMP_NO: $("#EMP_NO").val(),
+            INV_TRANSED: trans,
+
+            INV_DTTBL_Collection: Itemlist
+
+
+
+
+        }
+
+
+        jQuery.ajax({
+            async: false,
+            cache: false,
+            type: "Post",
+            data: inv,
+            url: '/api/PUY_INVOICE/Add',
+            success: function (data) {
+                if (data.success == true) {
+                    $("#mesg").empty()
+                    $("#mesg").append('<h4 class="modal-title text-success" >تم الحفظ بنجاح</h4> ')
+
+                    $('#sccece-model').modal('show');
+                    Itemlist = [];
+                    $("#SUPP_INV_NO").val("")
+                    AddItemToTabel();
+
+                } else {
+                    $("#mesg").empty()
+                    $("#mesg").append('<h4 class="modal-title text-danger" >لم يتم  الحفظ\n' + data.Message+'</h4> ')
+
+
+                    $('#sccece-model').modal('show');
+
+                }
+
+
+
+
+
+
+            }
+
+        });
+
+    }
+
+
+
+
+
+
+
+
+</script>

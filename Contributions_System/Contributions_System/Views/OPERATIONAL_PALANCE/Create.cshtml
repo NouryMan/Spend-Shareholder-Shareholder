@@ -1,0 +1,748 @@
+﻿@model IEnumerable<Spend.Models.ACC_HOLDERTBL_Model>
+@{
+    ViewBag.Title = " تعريف مساهمة ";
+
+    var totalb = Model.Sum(x => x.BALANCE);
+}
+
+
+
+<div class="dashboard-content-wrap">
+    <div class="dashboard-bread dashboard--bread dashboard-bread-2">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="breadcrumb-content">
+                        <div class="section-heading">
+                            <h2 class="sec__title font-size-30 text-white">تعريف مساهمة</h2>
+                        </div>
+                    </div><!-- end breadcrumb-content -->
+                </div><!-- end col-lg-6 -->
+                <div class="col-lg-6">
+                    <div class="breadcrumb-list text-right">
+                        <ul class="list-items">
+                            <li><a href="~" class="text-white">الصفحة الرئيسية</a></li>
+                            <li>ادارة المساهمين </li>
+
+
+                        </ul>
+                    </div><!-- end breadcrumb-list -->
+                </div><!-- end col-lg-6 -->
+            </div><!-- end row -->
+        </div>
+    </div><!-- end dashboard-bread -->
+    <div class="dashboard-main-content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-box">
+                        <div class="form-title-wrap">
+                            <div>
+                                <h3 class="title"> تعريف مساهمة</h3>
+                                @*<p class="font-size-14">إظهار 1 إلى 10 من أصل 20 مُدخل</p>*@
+                            </div>
+
+
+
+                        </div>
+                        <div class="form-content">
+
+
+                            @using (Html.BeginForm())
+                            {
+                                @Html.AntiForgeryToken()
+
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+
+                                <div class="row mb-3">
+
+                                    <div class="col-md-12 p-1">
+                                        <div class="form-floating">
+                                            <label class=" col-form-label-sm" for="inputLastName">اسم المشروع</label>
+                                            <select id="PROJ_NO" name="PROJ_NO" dir="ltr" class="form-control selectpicker " onchange="Show()" data-live-search="true" required>
+                                                <option value="">اختار المشروع</option>
+                                                @foreach (var p in ViewBag.PROJ)
+                                                {
+                                                    <option class="themeprimary" value="@p.PROJECT_NO"> @p.PROJECT_NAME</option>
+                                                }
+
+                                            </select>
+
+                                        </div>
+                                    </div>
+
+                                </div>
+
+                                <div class="row mb-0">
+                                    <div class="col-md-12">
+
+                                        <div class="form-check form-switch col-md-12 p-0 ">
+                                            <div class="card mb-4 col-md-12  ">
+
+                                                <div class="card-body">
+                                                    <table id="parent-table" class="table  table-bordered">
+                                                        <thead>
+                                                            <tr>
+
+                                                                <th>رقم المساهم</th>
+                                                                <th>المساهم</th>
+
+                                                                <th>اجمالي الرصيد</th>
+                                                                <th>الرصيد المحدد</th>
+                                                                <th>نسبة المساهمة</th>
+                                                                <th>تعديل المساهمة</th>
+                                                                <th>
+                                                                    <div class=" col-12">
+                                                                        <input type="checkbox" value="" name="flexCheckDefault" id="flexCheckDefault" checked onclick="checkAll()">
+                                                                    </div>
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+                                                        @*@foreach (var items in Model.GroupBy(x=>x.PARENT_ACCH))*@
+                                                        @foreach (var item in Model.Where(x => x.PARENT_ACCH == null || x.PARENT_ACCH == 0 || x.ACC_HOLDER_NO == x.PARENT_ACCH))
+
+                                                        {
+                                                            //var item = items.FirstOrDefault().ACC_HOLDERTBL_Model.ACC_HOLDERTBL_Models;
+                                                            var id = item.ACC_HOLDER_NO;
+                                                            var tr = "tr" + id;
+                                                            <tr onclick="Show('@tr')">
+
+                                                                <td id="ACC_HOLDER_NO_@id">@item.ACC_HOLDER_NO</td>
+                                                                <td>@item.ACC_HOLDER_NAME</td>
+
+
+                                                                <td id="OP_PALANCE_@id">@item.ACC_HOLDERTBL_Model_Collection.Sum(x => x.BALANCE)</td>
+
+
+                                                                @if (item.MAIN_FIXED_PERCENT > 0)
+                                                                {
+                                                                    <td>
+
+                                                                        <input class="col-12" type="number" id="DET_COST_@id" value="0" onclick="Show()" />
+
+                                                                    </td>
+
+                                                                    <td>
+
+                                                                        <input class="col-12" type="number" id="PERCENT_@id" value="@item.MAIN_FIXED_PERCENT" />
+
+                                                                    </td>
+                                                                    <td> <input checked type="checkbox" value="" name="IS_DETERMINED_@item.ACC_HOLDER_NO" id="IS_DETERMINED_@item.ACC_HOLDER_NO" onclick="Show()"></td>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <td>
+
+
+                                                                        <input class="col-12" type="number" id="DET_COST_@id" value="0" disabled onclick="Show()" />
+
+                                                                    </td>
+                                                                    <td>
+                                                                        @{var p = item.ACC_HOLDERTBL_Model_Collection.Sum(x => x.BALANCE) / totalb;}
+                                                                        <input class="col-12" type="number" id="PERCENT_@id" value="" disabled />
+
+
+                                                                    </td>
+                                                                    <td> <input type="checkbox" value="" name="IS_DETERMINED_@item.ACC_HOLDER_NO" id="IS_DETERMINED_@item.ACC_HOLDER_NO" onclick="Show()"></td>
+                                                                }
+                                                                <td>
+                                                                    <div class=" col-12">
+                                                                        <input checked name="parent-check" type="checkbox" value="@item.ACC_HOLDER_NO" id="@item.ACC_HOLDER_NO">
+                                                                    </div>
+                                                                </td>
+
+
+
+
+                                                            </tr>
+
+
+                                                        }
+                                                        <tr>
+                                                            <td></td>
+                                                            <td>الاجمالي</td>
+                                                            <td>
+                                                                <input class="col-12" type="number" id="PTotalBalance" value="" disabled="disabled" />
+
+                                                            </td>
+                                                            <td>
+                                                                <input class="col-12" type="number" id="PTotalDterBalance" value="" disabled="disabled" />
+
+                                                            </td>
+                                                            <td>
+                                                                <input class="col-12" type="number" id="PTotalPersent" value="" disabled="disabled" />
+
+                                                            </td>
+                                                            <td></td>
+
+                                                        </tr>
+                                                        <tbody>
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+                                <div class="row mb-0">
+                                    <div class="col-md-12">
+
+                                        <div class="form-check form-switch col-md-12 p-0 ">
+                                            <div class="card mb-4 col-md-12  ">
+
+                                                <div class="card-body">
+                                                    <table id="child-table" class="table  table-sm table-responsive-sm  table-bordered">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>رقم المساهم</th>
+                                                                <th>المساهم</th>
+                                                                <th>الاب</th>
+                                                                <th> اجمالي الرصيد الفعلي</th>
+                                                                <th>  الرصيد محدد</th>
+                                                                <th>نسبة المساهمة</th>
+                                                                <th>تعديل النسبة</th>
+                                                                <th> نسبة المساهمة الكلية</th>
+                                                                <th>
+                                                                </th>
+                                                            </tr>
+                                                        </thead>
+
+                                                        <tbody>
+                                                            @foreach (var item in Model.Where(x => x.PARENT_ACCH > 0 && x.PARENT_ACCH != 0))
+                                                            {
+                                                                var id = item.ACC_HOLDER_NO;
+
+                                                                var tr = "tr" + @item.PARENT_ACCH;
+                                                                <tr class="@tr">
+
+                                                                    <td id="C_ACC_HOLDER_NO_@id">@item.ACC_HOLDER_NO</td>
+                                                                    <td>@item.ACC_HOLDER_NAME</td>
+                                                                    <td>
+                                                                        @item.ACC_HOLDERTBL_Models.ACC_HOLDER_NAME
+
+                                                                    </td>
+
+                                                                    <td id="C_BALANCE_@id">@item.BALANCE</td>
+
+                                                                    @if (item.CHILD_FIXED_PERCENT > 0)
+                                                                    {
+                                                                        <td>
+
+                                                                            <input class="col-12" type="number" id="C_DET_COST_@id" value="0" onclick="getAll()" />
+
+                                                                        </td>
+                                                                        <td>
+
+
+
+                                                                            <input class="input-group bb col-12" type="number" id="C_SPEND_PERCENT_@id" value="@item.CHILD_FIXED_PERCENT" onkeyup="getAll()" disabled />
+
+                                                                        </td>
+
+
+                                                                        <td>
+                                                                            <input checked type="checkbox" value="" name="C_IS_DETERMINED_@item.ACC_HOLDER_NO" id="C_IS_DETERMINED_@item.ACC_HOLDER_NO" onclick="getAll()">
+                                                                        </td>
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        <td>
+
+                                                                            <input class="col-12" type="number" id="C_DET_COST_@id" value="0" disabled onclick="getAll()" />
+
+                                                                        </td>
+                                                                        <td>
+
+                                                                            @{var p = item.BALANCE / item.ACC_HOLDERTBL_Models.ACCH_BALANCEV_Model_Collection.Sum(x => x.BALANCE); }
+
+                                                                            <input class="input-group bb col-12" type="number" id="C_SPEND_PERCENT_@id" value="@p" onkeyup="getAll()" disabled />
+
+                                                                        </td>
+
+
+                                                                        <td>
+                                                                            <input type="checkbox" value="" name="C_IS_DETERMINED_@item.ACC_HOLDER_NO" id="C_IS_DETERMINED_@item.ACC_HOLDER_NO" onclick="getAll()">
+                                                                        </td>
+                                                                    }
+                                                                    <td id="C_PARENT_PERCENT_@id">@{var Allp = item.ACC_HOLDERTBL_Models.ACCH_BALANCEV_Model_Collection.Sum(x => x.BALANCE) / totalb;@Allp } </td>
+
+                                                                    <td>
+                                                                        <div class=" col-12">
+                                                                            <input onchange=" getAll()" checked name="child-check-@item.PARENT_ACCH" type="checkbox" value="@item.ACC_HOLDER_NO" id="child-check-@item.ACC_HOLDER_NO">
+                                                                        </div>
+
+                                                                    </td>
+
+                                                                </tr>
+                                                            }
+
+
+                                                  
+                                                        </tbody>
+                                                        <tfoot>
+                                                            <tr>
+                                                                <td></td>
+                                                                <td><h4> الاجمالي</h4></td>
+                                                                <td></td>
+                                                                <td>
+                                                                    <input class="col-12" type="number" id="CTotalBalance" value="" disabled="disabled" />
+
+                                                                </td>
+                                                                <td>
+                                                                    <input class="col-12" type="number" id="CTotalDterBalance" value="" disabled="disabled" />
+
+                                                                </td>
+                                                                <td>
+                                                                    <input class="col-12" type="number" id="CTotalPersent" value="" disabled="disabled" />
+
+                                                                </td>
+                                                                <td></td>
+                                                                <td></td>
+                                                                <td></td>
+
+                                                            </tr>
+                                                        </tfoot>
+                                                    </table>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+                                <div class="row mt-4 mb-0">
+                                    <div class="d-grid col-md-6 "><button class="btn btn-primary btn-block" type="button" onclick="Save()">حفظ</button></div>
+
+                                    <div class="d-grid col-md-6"><a class="btn btn-danger btn-block" href="~/ACC_HOLDER/Index">رجوع</a></div>
+
+
+
+
+
+                                </div>
+                            }
+
+                        </div>
+                    </div><!-- end form-box -->
+                </div><!-- end col-lg-12 -->
+            </div><!-- end row -->
+
+            <div class="border-top mt-5"></div>
+            <div class="row align-items-center">
+                <div class="col-lg-7">
+                    <div class="copy-right padding-top-30px">
+
+                        <p class="copy__desc">
+                            &copy; Copyright Tech Light 2022. Made with
+                            <span class="la la-heart"></span> by <a href="http://TechLightsa.com/">Noury</a>
+                        </p>
+
+                    </div><!-- end copy-right -->
+                </div><!-- end col-lg-7 -->
+                <div class="col-lg-5">
+                    <div class="footer-social-box text-right padding-top-30px">
+                        <ul class="social-profile">
+                            <li><a href="#"><i class="  lab la-facebook-f"></i></a></li>
+                            <li><a href="#"><i class="lab la-twitter"></i></a></li>
+                            <li><a href="#"><i class="lab la-instagram"></i></a></li>
+                            <li><a href="#"><i class="lab la-linkedin-in"></i></a></li>
+                        </ul>
+                    </div><!-- end copy-right-content -->
+                </div><!-- end col-lg-5 -->
+            </div><!-- end row -->
+        </div><!-- end container-fluid -->
+    </div><!-- end dashboard-main-content -->
+</div><!-- end dashboard-content-wrap -->
+<style>
+    .zero {
+        color: red;
+        font-weight: bold;
+    }
+</style>
+<script>
+
+    jQuery(document).ready(function () {
+
+
+        parent_table = jQuery('#parent-table').DataTable({
+        });
+
+
+        child_table = jQuery('#child1-table').DataTable({
+        });
+
+        $('#parent-table tbody').on('click', 'tr', function () {
+            if ($(this).hasClass('selected')) {
+                $(this).removeClass('selected');
+            }
+            else {
+                parent_table.$('tr.selected').removeClass('selected');
+                $(this).addClass('selected');
+
+            }
+        });
+
+
+        Show();
+
+  
+
+    });
+    function checkAll() {
+
+
+        /* $(this).is(':checked')*/
+        if ($('#flexCheckDefault').is(':checked')) {
+
+            $('input:checkbox[name=parent-check]').each(function () {
+
+
+                this.checked = true;
+
+
+
+
+            });
+        } else {
+
+            $('input:checkbox[name=parent-check]').each(function () {
+
+
+                this.checked = false;
+
+
+
+
+            });
+
+
+        }
+        Show()
+
+    }
+   var P_id=0
+    function Show(id) {
+
+        c = '.' + id;
+        $('#child-table').find('tbody  tr').hide();
+
+
+        $(c).show();
+
+        getAll()
+
+        P_id = id.replace("tr", "")
+       
+        TotalChildCollection();
+    }
+
+
+    var list = []
+
+
+    function getAll() {
+        list = []
+
+        $('input:checkbox[name=parent-check]').each(function () {
+
+
+            id = $(this).val()
+            iS_DETERMINED = $("#IS_DETERMINED_" + id).is(':checked')
+
+            if (iS_DETERMINED == true) {
+                $("#PERCENT_" + id).removeAttr('disabled');
+                $("#DET_COST_" + id).removeAttr('disabled');
+            } else {
+                $("#PERCENT_" + id).attr('disabled', 'disabled');
+                $("#DET_COST_" + id).attr('disabled', 'disabled');
+                $("#DET_COST_" + id).val(0)
+
+            }
+            tARGET_PROJ = $("#PROJ_NO").val()
+            aCC_HOLDER_NO = $("#ACC_HOLDER_NO_" + id).text()
+            oP_PALANCE = $("#OP_PALANCE_" + id).text()
+            dET_COST = $("#DET_COST_" + id).val()
+            cHECK = $(this).is(':checked')
+
+            if (!$(this).is(':checked'))
+            {
+                $("#PERCENT_" + id).val(0)
+                $("#DET_COST_" + id).val(0)
+            }
+
+            if (dET_COST > 0) {
+                $("#PERCENT_" + id).val(0)
+            }
+            if ($("#PERCENT_" + id).val() == "") {
+                $("#PERCENT_" + id).val(0)
+
+            }
+            pERCENT = $("#PERCENT_" + id).val()
+           
+            var childList = []
+
+          
+
+                $('input:checkbox[name=child-check-' + id + ']').each(function () {
+                    C_id = $(this).val()
+                    C_iS_DETERMINED = $("#C_IS_DETERMINED_" + C_id).is(':checked')
+
+                    if (C_iS_DETERMINED == true) {
+                        $("#C_SPEND_PERCENT_" + C_id).removeAttr('disabled');
+                        $("#C_DET_COST_" + C_id).removeAttr('disabled');
+                    } else {
+                        $("#C_SPEND_PERCENT_" + C_id).attr('disabled', 'disabled');
+                        $("#C_DET_COST_" + C_id).attr('disabled', 'disabled');
+                        $("#C_DET_COST_" + C_id).val(0);
+                    }
+
+                    C_tARGET_PROJ = $("#PROJ_NO").val()
+                    C_ACC_HOLDER_NO = $("#C_ACC_HOLDER_NO_" + C_id).text();
+                    C_DET_COST = $("#C_DET_COST_" + C_id).val();
+                    C_cHECK = $("#child-check-" + C_id).is(':checked')
+
+                    if (C_DET_COST > 0) {
+                        $("#C_SPEND_PERCENT_" + C_id).val(0)
+                    }
+
+
+                    if (!$(this).is(':checked') || (pERCENT == 0 && dET_COST==0)) {
+                        $("#C_SPEND_PERCENT_" + C_id).val(0)
+                        $("#C_PARENT_PERCENT_" + C_id).empty()
+                    }
+                    
+                    C_SPEND_PERCENT = $("#C_SPEND_PERCENT_" + C_id).val();
+                    C_BALANCE = $("#C_BALANCE_" + C_id).text();
+                    C_PARENT_PERCENT = $("#C_PARENT_PERCENT_" + C_id).text();
+
+                  
+
+                    childList.push({ ACC_HOLDER_NO: C_ACC_HOLDER_NO, TARGET_PROJ: C_tARGET_PROJ, BALANCE: C_BALANCE, DET_COST: C_DET_COST, SPEND_PERCENT: C_SPEND_PERCENT, PARENT_PERCENT: C_PARENT_PERCENT, SPEND_DETERMINED: C_iS_DETERMINED, CHECK: C_cHECK })
+                   
+
+                       
+
+                    
+                });
+
+            list.push({ ACC_HOLDER_NO: aCC_HOLDER_NO, TARGET_PROJ: tARGET_PROJ, OP_PALANCE: oP_PALANCE, PERCENT: pERCENT, PERCENT_EST_Collection: childList, IS_DETERMINED: iS_DETERMINED, DET_COST: dET_COST, CHECK: cHECK });
+           
+
+
+
+
+           
+
+
+
+
+        });
+
+        ParentCollection()
+        ChildCollection()
+
+    }
+
+
+    function ParentCollection() {
+        total = 0;
+        percent = 1;
+
+        for (let item of list) {
+            if (item.CHECK == true) {
+                if (item.IS_DETERMINED == true) {
+
+                    percent -= parseFloat(item.PERCENT)
+                } else {
+                    if (parseFloat(item.OP_PALANCE) > 0) {
+                        total += parseFloat(item.OP_PALANCE) //حساب اجمالي الرصيد
+                    }
+                }
+        }
+    
+
+        }
+
+        var PTotalPersent = 0
+        var PTotalDterBalance = 0
+        var PTotalBalance = 0
+
+
+        for (let item of list) {
+         
+            if (item.CHECK == true) {
+            if (item.IS_DETERMINED == false) {
+                
+                    if (parseFloat(item.OP_PALANCE) > 0 && item.CHECK == true) {
+                        item.PERCENT = (parseFloat(item.OP_PALANCE) / total) * percent.toFixed(9)  //حساب نسبة الاب غير المحدد
+                    }
+
+                    $("#PERCENT_" + item.ACC_HOLDER_NO).val(item.PERCENT) //تعديل نسبة الاب في الجدول
+
+
+                }
+
+                PTotalPersent += parseFloat(item.PERCENT);
+                PTotalDterBalance += parseFloat(item.DET_COST);
+                PTotalBalance += parseFloat(item.OP_PALANCE);
+            }
+
+
+        }
+
+        $("#PTotalPersent").val(PTotalPersent);
+        $("#PTotalDterBalance").val(PTotalDterBalance);
+        $("#PTotalBalance").val(PTotalBalance);
+    }
+
+    
+
+
+    function ChildCollection() {
+
+
+        for (let item of list) {
+            if (item.CHECK == true) {
+                childTotal = 0;
+                percent = 1;
+
+                for (let child of item.PERCENT_EST_Collection) {
+                    if (child.CHECK == true) {
+                        child.PARENT_PERCENT = item.PERCENT; //حساب نسبة الابن الرئسية
+
+                        $("#C_PARENT_PERCENT_" + child.ACC_HOLDER_NO).empty()
+                        $("#C_PARENT_PERCENT_" + child.ACC_HOLDER_NO).text(child.PARENT_PERCENT); //تعديل نسبة الابن الرئسية في الجدول
+
+                        if (child.SPEND_DETERMINED == true) {
+
+                            percent -= parseFloat(child.SPEND_PERCENT)
+                        } else {
+                            if (parseFloat(child.BALANCE) > 0) {
+                                childTotal += parseFloat(child.BALANCE)//حساب اجمالي الرصيد
+                            }
+                        }
+
+                    }
+                }
+
+                for (let child of item.PERCENT_EST_Collection) {
+                    if (child.CHECK == true) {
+                        if (child.SPEND_DETERMINED == false) {
+                            if (parseFloat(child.BALANCE) > 0 && item.CHECK == true) {
+                                child.SPEND_PERCENT = (parseFloat(child.BALANCE) / childTotal) * percent.toFixed(9)  //حساب نسبة الاب غير المحدد
+
+
+
+                            } else {
+                                child.SPEND_PERCENT = 0
+                            }
+                            $("#C_SPEND_PERCENT_" + child.ACC_HOLDER_NO).val(child.SPEND_PERCENT);//تعديل نسبة الابن  في الجدول
+                        }
+                    }
+
+
+
+
+
+
+
+                }
+            }
+}
+        TotalChildCollection();
+    }
+
+    function TotalChildCollection() {
+        var CTotalPersent = 0
+        var CTotalDterBalance = 0
+        var CTotalBalance = 0
+
+        for (let item of list) {
+
+            if (item.ACC_HOLDER_NO == P_id) {
+                for (let child of item.PERCENT_EST_Collection) {
+                    if (child.CHECK == true) {
+                        CTotalPersent += parseFloat(child.SPEND_PERCENT);
+                        CTotalDterBalance += parseFloat(child.DET_COST);
+                        CTotalBalance += parseFloat(child.BALANCE);
+                    }
+                }
+            }
+        }
+
+        $("#CTotalPersent").val(CTotalPersent);
+        $("#CTotalDterBalance").val(CTotalDterBalance);
+        $("#CTotalBalance").val(CTotalBalance);
+    }
+
+
+    function Save() {
+
+        ParentTotal = 0;
+        if ($("#PROJ_NO").val() > 0) {
+            for (let item of list) {
+                childTotal = 0;
+                for (let child of item.PERCENT_EST_Collection) {
+                    childTotal += parseFloat(child.SPEND_PERCENT)
+                }
+
+                if (item.PERCENT != 0 && childTotal.toFixed(9) != 1) {
+
+                    return alert("هناك خطاء في نسبة الابناء للاب " + item.ACC_HOLDER_NO)
+
+                }
+
+
+                ParentTotal += parseFloat(item.PERCENT)
+            }
+        if (ParentTotal.toFixed(9) != 1) {
+
+                return alert("هناك خطاء في نسبة  الاباء ")
+            }
+
+
+
+
+
+            var data = {
+                list: list
+            }
+
+
+
+            jQuery.ajax({
+
+                type: "Post",
+                data: data,
+                url: '/api/ApiOPERATIONAL_PALANCE/Add',
+                success: function (data) {
+
+                    if (data.success == true) {
+                        alert("تم الحفظ بنجاح")
+                        window.location.href = "index";
+                    } else {
+                        alert("هناك خطاء لم يتم الحفظ ")
+                    }
+
+                }
+
+
+            });
+
+        } else {
+            alert("يجب اختيار المشروع ")
+        }
+    }
+
+
+</script>

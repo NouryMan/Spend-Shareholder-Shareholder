@@ -1,0 +1,635 @@
+﻿@model IEnumerable<Spend.Models.INV_DTTBL_Model>
+
+@{
+    ViewBag.Title = "تقرير حركة صنف ";
+
+}
+
+
+
+
+
+
+<div class="dashboard-content-wrap">
+    <div class="dashboard-bread dashboard--bread dashboard-bread-2">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="breadcrumb-content">
+                        <div class="section-heading">
+                            <h2 class="sec__title font-size-30 text-white">تقرير حركة صنف </h2>
+                        </div>
+                    </div><!-- end breadcrumb-content -->
+                </div><!-- end col-lg-6 -->
+                <div class="col-lg-6">
+                    <div class="breadcrumb-list text-right">
+                        <ul class="list-items">
+                            <li><a href="~" class="text-white">الصفحة الرئيسية</a></li>
+                            <li>ادارة الاصناف</li>
+
+                        </ul>
+                    </div><!-- end breadcrumb-list -->
+                </div><!-- end col-lg-6 -->
+            </div><!-- end row -->
+        </div>
+    </div><!-- end dashboard-bread -->
+    <div class="dashboard-main-content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-box">
+
+                        <div class="form-content">
+
+
+
+                            @using (Html.BeginForm())
+                            {
+
+
+
+                                <div class=" row input-group ">
+
+
+
+                                    <div class="col-md-3 col-sm-6  ">
+
+                                        <select id="ItemNo" name="ItemNo" dir="ltr" class="form-control selectpicker " data-live-search="true" required>
+                                            <option value="">اختار صنف</option>
+                                            @foreach (var p in ViewBag.AllItemNo)
+                                            {
+
+                                                try
+                                                {
+                                                    if (p.ITEM_NO == ViewBag.ItemNo)
+                                                    {
+                                                        <option selected class="themeprimary" value='@p.ITEM_NO'>
+                                                            @p.ITEM_NAME
+                                                        </option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option class="themeprimary" value='@p.ITEM_NO'>
+                                                            @p.ITEM_NAME
+                                                        </option>
+                                                    }
+                                                }
+                                                catch { }
+
+
+
+                                            }
+
+                                        </select>
+                                    </div>
+                                    <div class="col-md-3 col-sm-6  ">
+
+                                        <select id="Project" name="Project" dir="ltr" class="form-control selectpicker " data-live-search="true">
+                                            <option value="0">كل المشاريع</option>
+                                            @foreach (var p in ViewBag.Project)
+                                            {
+                                                if (p.PROJECT_NO == ViewBag.PROJECT_NO)
+                                                {
+                                                    <option selected class="themeprimary" value='@p.PROJECT_NO'>
+                                                        @p.PROJECT_NAME
+                                                    </option>
+                                                }
+                                                else
+                                                {
+                                                    <option class="themeprimary" value='@p.PROJECT_NO'>
+                                                        @p.PROJECT_NAME
+                                                    </option>
+                                                }
+
+
+
+                                            }
+
+                                        </select>
+                                    </div>
+
+                                    <div class="col-md-2 col-sm-6  ">
+
+                                        <input type="date" id="FromDate" name="FromDate" />
+                                    </div>
+                                    <div class="col-md-2 col-sm-6  ">
+
+                                        <input type="date" id="ToDate" name="ToDate" />
+                                    </div>
+
+
+                                    <div class="col-md-1 nopadding">
+                                        <button class="btn btn-primary" type="submit"><i class="la la-search"></i></button>
+                                    </div>
+
+
+                                </div>
+                            }
+
+
+
+                            @if (Model != null)
+                            {
+
+                                <div class="mt-4 " @*style=" overflow-x: scroll; width: 100%;  "*@>
+                                    <table id="ReportTable" class="display  table-responsive table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th>رقم الصنف</th>
+                                                <th>اسم الصنف</th>
+                                                @*<th>رقم الفاتورة </th>
+                                                    <th>التاريخ </th>*@
+                                                <th>اسم المورد </th>
+                                                <th>الكمية الداخلة </th>
+                                                <th>الكمية الخارجة </th>
+                                                <th> التكلفة </th>
+                                                <th> اجمالي التكلفة </th>
+
+
+                                            </tr>
+
+
+
+
+                                            @foreach (var item in Model.GroupBy(x => x.INVOICETBL_Model.ACC_NO))
+                                            {
+
+                                                <tr class=" " onclick="Tree(@item.FirstOrDefault().INV_NO)">
+                                                    <td class="dt-control">
+                                                        <i class="la la-plus-circle text-success btn-lg text-lg-center"></i>
+                                                    </td>
+                                                    <td>
+
+                                                        @{ try
+                                                            {
+                                                                @item.FirstOrDefault().ITEM_NO
+                                                            }
+                                                            catch
+                                                            {
+
+                                                            }
+                                                        }
+
+
+                                                    </td>
+                                                    <td>
+
+                                                        @{ try
+                                                            {
+                                                                @item.FirstOrDefault().ITEMTBL_Model.ITEM_NAME
+                                                            }
+                                                            catch
+                                                            {
+
+                                                            }
+                                                        }
+
+
+                                                    </td>
+                                                    <td>
+
+                                                        @{ try
+                                                            {
+                                                                @item.FirstOrDefault().INVOICETBL_Model.ALL_ACC_CREDITOR_Model.ACC_NAME
+                                                            }
+                                                            catch
+                                                            {
+
+                                                            }
+                                                        }
+                                                    </td>
+                                                    <td>
+
+                                                        @{ try
+                                                            {
+
+                                                                @item.Where(x => x.INVOICETBL_Model.INV_DUC_TYPE == 8 || x.INVOICETBL_Model.INV_DUC_TYPE == 9 || x.INVOICETBL_Model.INV_DUC_TYPE == 33).Sum(x => x.QNTY)
+
+                                                            }
+                                                            catch
+                                                            {
+
+                                                            }
+                                                        }
+                                                    </td>
+                                                    <td>
+
+                                                        @{ try
+                                                            {
+
+
+                                                                @item.Where(x => x.INVOICETBL_Model.INV_DUC_TYPE == 10 || x.INVOICETBL_Model.INV_DUC_TYPE == 11 || x.INVOICETBL_Model.INV_DUC_TYPE == 34).Sum(x => x.QNTY)
+
+                                                            }
+                                                            catch
+                                                            {
+
+                                                            }
+                                                        }
+                                                    </td>
+                                                    <td>
+
+                                                        @{ try
+                                                            {
+
+
+                                                                var b = item.Where(x => x.INVOICETBL_Model.INV_DUC_TYPE == 8 || x.INVOICETBL_Model.INV_DUC_TYPE == 9 || x.INVOICETBL_Model.INV_DUC_TYPE == 33).Sum(x => x.SING_PRICE) - item.Where(x => x.INVOICETBL_Model.INV_DUC_TYPE == 10 || x.INVOICETBL_Model.INV_DUC_TYPE == 11 || x.INVOICETBL_Model.INV_DUC_TYPE == 34).Sum(x => x.SING_PRICE);
+                                                                @b
+                                                            }
+                                                            catch
+                                                            {
+
+                                                            }
+                                                        }
+                                                    </td>
+                                                    <td>
+
+                                                        @{ try
+                                                            {
+                                                                @*if (item.INVOICETBL_Model.INV_DUC_TYPE == 8 || item.INVOICETBL_Model.INV_DUC_TYPE == 9 || item.INVOICETBL_Model.INV_DUC_TYPE == 33)
+                                                                    {
+
+
+                                                                        @item.TOTAL_PRICE
+
+                                                                    }
+                                                                    else
+                                                                    {
+                                                                        var s = item.TOTAL_PRICE * -1;
+                                                                        @s
+                                                                    }*@
+
+                                                                var b = item.Where(x => x.INVOICETBL_Model.INV_DUC_TYPE == 8 || x.INVOICETBL_Model.INV_DUC_TYPE == 9 || x.INVOICETBL_Model.INV_DUC_TYPE == 33).Sum(x => x.TOTAL_PRICE) - item.Where(x => x.INVOICETBL_Model.INV_DUC_TYPE == 10 || x.INVOICETBL_Model.INV_DUC_TYPE == 11 || x.INVOICETBL_Model.INV_DUC_TYPE == 34).Sum(x => x.TOTAL_PRICE);
+
+                                                                @b
+                                                            }
+                                                            catch
+                                                            {
+
+                                                            }
+                                                        }
+                                                    </td>
+
+
+                                                </tr>
+
+                                                var id = "i" + item.FirstOrDefault().INV_NO;
+                                                <tr style="display: none;" id="@id">
+                                                    <td colspan="8">
+                                                        <font size="3" face="arial">
+                                                            <table class="display " width="100%">
+
+                                                                <tbody>
+                                                                    <tr>
+                                                                        <th>رقم الفاتورة </th>
+                                                                        <th>التاريخ </th>
+
+                                                                        <th>الكمية الداخلة </th>
+                                                                        <th>الكمية الخارجة </th>
+                                                                        <th> التكلفة </th>
+                                                                        <th> اجمالي التكلفة </th>
+                                                                    </tr>
+
+                                                                    @foreach (var child in item)
+                                                                    {
+                                                                        <tr>
+                                                                            <td>
+                                                                                @{ try
+                                                                                    {
+                                                                                        @child.HD_INV_SERIAL
+                                                                                    }
+                                                                                    catch
+                                                                                    {
+
+                                                                                    }
+
+
+                                                                                }
+                                                                            </td>
+
+                                                                            <td>
+                                                                                @{ try
+                                                                                    {
+                                                                                        @child.INVOICETBL_Model.DATE_M.Value.ToString("dd/MM/yyyy")
+                                                                                    }
+                                                                                    catch
+                                                                                    {
+
+                                                                                    }
+                                                                                }
+                                                                            </td>
+
+                                                                            <td>
+
+                                                                                @{ try
+                                                                                    {
+                                                                                        if (child.INVOICETBL_Model.INV_DUC_TYPE == 8 || child.INVOICETBL_Model.INV_DUC_TYPE == 9 || child.INVOICETBL_Model.INV_DUC_TYPE == 33)
+                                                                                        {
+                                                                                            @child.QNTY}
+                                                                                        else
+                                                                                        { <span>0</span>}
+
+                                                                                    }
+                                                                                    catch
+                                                                                    {
+
+                                                                                    }
+                                                                                }
+                                                                            </td>
+                                                                            <td>
+                                                                                @{ try
+                                                                                    {
+                                                                                        if (child.INVOICETBL_Model.INV_DUC_TYPE == 10 || child.INVOICETBL_Model.INV_DUC_TYPE == 11 || child.INVOICETBL_Model.INV_DUC_TYPE == 34)
+                                                                                        {
+                                                                                            @child.QNTY}
+                                                                                        else
+                                                                                        { <span>0</span>}
+
+
+                                                                                    }
+                                                                                    catch
+                                                                                    {
+
+                                                                                    }
+                                                                                }
+                                                                            </td>
+                                                                            <td>
+                                                                                @{ try
+                                                                                    {
+                                                                                        if (child.INVOICETBL_Model.INV_DUC_TYPE == 8 || child.INVOICETBL_Model.INV_DUC_TYPE == 9 || child.INVOICETBL_Model.INV_DUC_TYPE == 33)
+                                                                                        {
+
+
+                                                                                            @child.SING_PRICE
+
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            var s = child.SING_PRICE * -1;
+                                                                                            @s
+                                                                                        }
+
+
+                                                                                    }
+                                                                                    catch
+                                                                                    {
+
+                                                                                    }
+                                                                                }
+                                                                            </td>
+                                                                            <td>
+                                                                                @{ try
+                                                                                    {
+                                                                                        if (child.INVOICETBL_Model.INV_DUC_TYPE == 8 || child.INVOICETBL_Model.INV_DUC_TYPE == 9 || child.INVOICETBL_Model.INV_DUC_TYPE == 33)
+                                                                                        {
+
+
+                                                                                            @child.TOTAL_PRICE
+
+                                                                                        }
+                                                                                        else
+                                                                                        {
+                                                                                            var s = child.TOTAL_PRICE * -1;
+                                                                                            @s
+                                                                                        }
+
+
+
+                                                                                    }
+                                                                                    catch
+                                                                                    {
+
+                                                                                    }
+                                                                                }
+                                                                            </td>
+                                                                        </tr>
+                                                                    }
+
+
+                                                                </tbody>
+                                                            </table>
+
+                                                        </font>
+                                                    </td>
+
+
+                                                </tr>
+
+
+
+                                            }
+
+
+                                        </thead>
+                                        <tfoot>
+                                            <tr>
+                                                <td>الاجمالي</td>
+                                                <td></td>
+                                                <td></td>
+                                                @*<td></td>
+                                                    <td></td>*@
+                                                <td></td>
+
+                                                <td>
+                                                    @try
+                                                    {
+                                                        @Model.Where(item => item.INVOICETBL_Model.INV_DUC_TYPE == 8 || item.INVOICETBL_Model.INV_DUC_TYPE == 9 || item.INVOICETBL_Model.INV_DUC_TYPE == 33).Sum(x => x.QNTY).Value.ToString("0.##")
+                                                    }
+                                                    catch { }
+                                                </td>
+                                                <td>
+                                                    @try
+                                                    {
+                                                        @Model.Where(item => item.INVOICETBL_Model.INV_DUC_TYPE == 10 || item.INVOICETBL_Model.INV_DUC_TYPE == 11 || item.INVOICETBL_Model.INV_DUC_TYPE == 34).Sum(x => x.QNTY).Value.ToString("0.##")
+                                                    }
+                                                    catch { }
+                                                </td>
+                                                <td>
+                                                    @try
+                                                    {
+                                                        @Model.Average(x => x.SING_PRICE).Value.ToString("0.##")
+                                                    }
+                                                    catch { }
+                                                </td>
+                                                <td>
+                                                    @{ try
+                                                        {
+                                                            var total = Model.Where(item => item.INVOICETBL_Model.INV_DUC_TYPE == 8 || item.INVOICETBL_Model.INV_DUC_TYPE == 9 || item.INVOICETBL_Model.INV_DUC_TYPE == 33).Sum(x => x.TOTAL_PRICE) - Model.Where(item => item.INVOICETBL_Model.INV_DUC_TYPE == 10 || item.INVOICETBL_Model.INV_DUC_TYPE == 11 || item.INVOICETBL_Model.INV_DUC_TYPE == 34).Sum(x => x.TOTAL_PRICE);
+                                                            @total.Value.ToString("0.##")
+                                                        }
+                                                        catch { }
+                                                    }
+                                                </td>
+                                            </tr>
+                                        </tfoot>
+                                    </table>
+
+
+                                </div>
+                            }
+
+                        </div>
+                    </div><!-- end form-box -->
+                </div><!-- end col-lg-12 -->
+            </div><!-- end row -->
+
+            <div class="border-top mt-5"></div>
+            <div class="row align-items-center">
+                <div class="col-lg-7">
+                    <div class="copy-right padding-top-30px">
+                        <p class="copy__desc">
+                            &copy; Copyright Jeddah first 2022. Made with
+                            <span class="la la-heart"></span> by <a href="http://jeddah-first.com/">Noury</a>
+                        </p>
+                    </div><!-- end copy-right -->
+                </div><!-- end col-lg-7 -->
+                <div class="col-lg-5">
+                    <div class="footer-social-box text-right padding-top-30px">
+                        <ul class="social-profile">
+                            <li><a href="#"><i class="lab la-facebook-f"></i></a></li>
+                            <li><a href="#"><i class="lab la-twitter"></i></a></li>
+                            <li><a href="#"><i class="lab la-instagram"></i></a></li>
+                            <li><a href="#"><i class="lab la-linkedin-in"></i></a></li>
+                        </ul>
+                    </div><!-- end copy-right-content -->
+                </div><!-- end col-lg-5 -->
+            </div><!-- end row -->
+        </div><!-- end container-fluid -->
+    </div><!-- end dashboard-main-content -->
+</div><!-- end dashboard-content-wrap -->
+
+
+
+
+
+<script>
+
+
+
+        jQuery(document).ready(function () {
+
+             var FromDate = moment('@ViewBag.FromDate',"YYYY-MM-DD").format('YYYY-MM-DD');
+            var ToDate = moment('@ViewBag.ToDate',"YYYY-MM-DD").format('YYYY-MM-DD');
+
+            $('#FromDate').val(FromDate);
+            $('#ToDate').val(ToDate);
+
+        ReportTabl = jQuery('#ReportTable').DataTable({
+            "pagingType": "simple_numbers",
+            "pageLength": 100,
+            "ordering": false,
+            "searching": false,
+            "columnDefs": [{
+                "targets": 'no-sort',
+                "orderable": false,
+            }], dom: 'Bfrtip',
+            responsive: true,
+            buttons: [
+                { extend: 'copy', text: 'نسخ' },
+                { extend: 'csv', text: 'csv' },
+                {
+                    extend: 'excelHtml5',
+                    title:'حركة صنف ' +$("#ItemNo option:selected").text()+'من تاريخ : '+'@ViewBag.FromDate'+'الى : '+'@ViewBag.ToDate',
+                    text: ' اكسل',
+                    titleAttr: 'تصدير اكسل',
+                    customizeData: function (data) { // for long number
+                        for (var i = 0; i < data.body.length; i++) {
+                            for (var j = 0; j < data.body[i].length; j++) {
+                                data.body[i][j] = '\u200C' + data.body[i][j];
+                            }
+                        }
+                    },
+
+},
+                {
+                    extend: 'pdf', text: 'Pdf', customize: function (win) {
+
+                        jQuery(win.document.body)
+                            .css('font-size', '10pt')
+                            .prepend(
+                                '<h4 class="text-center"></h4>'
+                            );
+
+                        jQuery(win.document.body).find('table')
+                            .addClass('compact')
+                            .css('font-size', 'inherit');
+                    }},
+                {
+                    extend: 'print', text: 'طباعة', customize: function (win) {
+
+                        jQuery(win.document.body)
+                            .css('font-size', '10pt')
+                            .prepend(
+                                '<h4 class="text-center"></h4>'
+                            );
+
+                        jQuery(win.document.body).find('table')
+                            .addClass('compact')
+                            .css('font-size', 'inherit');
+                    }
+                },
+
+
+
+
+            ],
+
+
+              });
+
+
+
+        });
+
+
+    //$('#ReportTable tbody').on('click', 'td.dt-control', function () {
+    //    var tr = $(this).closest('tr');
+    //    var row = table.row(tr);
+
+    //    if (tr.child.show()) {
+    //        // This row is already open - close it
+    //        tr.child.hide();
+    //      //  tr.removeClass('shown');
+    //    } else {
+    //        // Open this row
+    //        //row.child(format(row.data())).show();
+    //        tr.child.show();
+    //        this.addClass('shown');
+    //    }
+    //});
+
+
+    function Tree(id) {
+        var tr ="#i"+id
+        var row = ReportTabl.row(tr);
+
+        if ($(tr).is(":visible")) {
+            $(tr).hide();
+            $(tr).addClass('shown')
+
+        } else {
+
+            $(tr).show();
+            $(tr).removeClass('shown')
+        }
+    }
+
+
+    //$('#ReportTable tbody').on('click', 'td.dt-control', function () {
+    //    var tr = $(this).closest('tr');
+    //    var row = ReportTabl.row(tr);
+
+    //    if ( row.child.hide()) {
+    //        // This row is already open - close it
+    //        row.child.hide();
+    //       tr.removeClass('shown');
+    //    } else {
+    //        // Open this row
+    //        row.child().show();
+    //        tr.addClass('shown');
+    //    }
+    //});
+
+</script>
+

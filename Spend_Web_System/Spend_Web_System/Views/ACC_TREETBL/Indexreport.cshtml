@@ -1,0 +1,407 @@
+﻿@model IEnumerable<Spend.Models.ACC_TREETBL_Model>
+@{
+    ViewBag.Title = "الحسابات";
+}
+
+
+
+
+@if (Model != null)
+{
+
+
+
+
+    <div class="dashboard-content-wrap">
+        <div class="dashboard-bread dashboard--bread dashboard-bread-2">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="col-lg-6">
+                        <div class="breadcrumb-content">
+                            <div class="section-heading">
+                                <h2 class="sec__title font-size-30 text-white">الحسابات</h2>
+                            </div>
+                        </div><!-- end breadcrumb-content -->
+                    </div><!-- end col-lg-6 -->
+                    <div class="col-lg-6">
+                        <div class="breadcrumb-list text-right">
+                            <ul class="list-items">
+                                <li><a href="index.html" class="text-white">الصفحة الرئيسية</a></li>
+                                <li>الحسابات</li>
+                                @*<li>الصلاحيات</li>*@
+                            </ul>
+                        </div><!-- end breadcrumb-list -->
+                    </div><!-- end col-lg-6 -->
+                </div><!-- end row -->
+            </div>
+        </div><!-- end dashboard-bread -->
+        <div class="dashboard-main-content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-box">
+                            <div class="form-title-wrap">
+
+
+                                <a href="~/ACC_TREETBL/create" class="btn btn-primary btn-sm "> <i class="fa fa-plus"> </i> انشاء حساب </a>
+
+
+
+                            </div>
+                            <div class="form-content">
+                                @*@using (Html.BeginForm())
+                                    {
+
+
+
+                                        <div class=" row input-group mb-4 ">
+                                            <div class="col-md-3 col-sm-8  ">
+
+                                                <input class="form-control" name="search" id="search" type="text" placeholder="بحث..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+
+                                            </div>
+                                            <div class="col-md-3 pr-0">
+                                                <button class="btn btn-primary" type="submit"><i class="la la-search"></i></button>
+                                            </div>
+
+
+                                        </div>
+                                    }*@
+                                <div class="table-responsive" >
+
+                                    <table id="data-table" class="table  tree-1 table-bordered table-striped table-condensed ">
+                                        <thead class="flip-content bordered-gold">
+                                            <tr>
+
+                                                <th class="text-align-center">
+                                                    <span class="font-110"> رقم الحساب</span>
+
+                                                </th>
+                                                <th class="text-align-center">
+                                                    <span class="font-110">اسم الحساب</span>
+
+                                                </th>
+                                                <th class="text-align-center">
+                                                    <span class="font-110">الحساب الاب</span>
+
+                                                </th>
+                                                <th class="text-align-center">
+                                                    <span class="font-110">نوع الحساب</span>
+
+                                                </th>
+                                                <th class="text-align-center">
+                                                    <span class="font-110">طبيعة الحساب</span>
+
+                                                </th>
+                                                @*<th class="text-align-center">
+                                                        <span class="font-110">المؤسسة</span>
+
+                                                    </th>*@
+                                                <th class="text-align-center">
+                                                    <span class="font-110">المستوى</span>
+
+                                                </th>
+                                                <th class="text-align-center">
+                                                    <span class="font-110">حساب تحليلي</span>
+
+                                                </th>
+                                                <th class="text-align-center">
+                                                    <span class="font-110">الحالة</span>
+
+                                                </th>
+                                                <th class="text-align-center">
+
+
+                                                </th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (Spend.Models.ACC_TREETBL_Model item in Model.OrderBy(x => x.ACC_NO.ToString()))
+                                            {
+
+
+                                                <tr>
+                                                    <td>@item.ACC_NO</td>
+                                                    <td>@item.ACC_NAME</td>
+                                                    <td>@item.ACC_PARENT</td>
+                                                    <td>@item.ACC_TYPETBL_Model.ACC_TYPE</td>
+                                                    <td>
+                                                        @try
+                                                        {@item.ACC_NATTBL_Model.ACC_NAT}
+                                                    catch { }
+                                                    </td>
+                                                    @*<td>@item.COMP_NO</td>*@
+                                                    <td>@item.ACC_LEVEL</td>
+
+                                                    @if (item.OP_ACC == true)
+                                                    {
+                                                        <td> نعم </td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td> لا </td>
+                                                    }
+
+                                                    @if (item.IS_ENABLE == true)
+                                                    {
+                                                        <td> نشط </td>
+                                                    }
+                                                    else
+                                                    {
+                                                        <td> متوقف </td>
+                                                    }
+
+                                                    <td>
+                                                        <div class="row ">
+                                                            <div class="col-md-4  ">
+                                                                <a href="~/ACC_TREETBL/Details/@item.ACC_NO" class="btn btn-success btn-sm "> <i class="la  la-eye"> </i></a>
+                                                            </div>
+                                                            <div class="col-md-4">
+
+
+                                                                <a href="~/ACC_TREETBL/Update/@item.ACC_NO" class="btn btn-info btn-sm "> <i class="la  la-edit"></i></a>
+                                                            </div>
+                                                            <div class="col-md-4">
+
+
+                                                                <button onclick="DeleteConfirmbox(@item.ACC_NO)" class="btn btn-danger btn-sm "> <i class="la  la-trash"></i></button>
+                                                            </div>
+
+                                                        </div>
+                                                    </td>
+                                                </tr>
+
+                                            }
+                                        </tbody>
+
+                                    </table>
+                                </div>
+
+
+                            </div>
+                        </div><!-- end form-box -->
+                    </div><!-- end col-lg-12 -->
+                </div><!-- end row -->
+
+                <div class="border-top mt-5"></div>
+                <div class="row align-items-center">
+                    <div class="col-lg-7">
+                        <div class="copy-right padding-top-30px">
+                            <p class="copy__desc">
+                                &copy; Copyright Tech Light 2022. Made with
+                                <span class="la la-heart"></span> by <a href="http://Tech-Light.com/">Noury</a>
+                            </p>
+                        </div><!-- end copy-right -->
+                    </div><!-- end col-lg-7 -->
+                    <div class="col-lg-5">
+                        <div class="footer-social-box text-right padding-top-30px">
+                            <ul class="social-profile">
+                                <li><a href="#"><i class="lab la-facebook-f"></i></a></li>
+                                <li><a href="#"><i class="lab la-twitter"></i></a></li>
+                                <li><a href="#"><i class="lab la-instagram"></i></a></li>
+                                <li><a href="#"><i class="lab la-linkedin-in"></i></a></li>
+                            </ul>
+                        </div><!-- end copy-right-content -->
+                    </div><!-- end col-lg-5 -->
+                </div><!-- end row -->
+            </div><!-- end container-fluid -->
+        </div><!-- end dashboard-main-content -->
+    </div><!-- end dashboard-content-wrap -->
+
+
+
+
+
+
+
+}
+
+<style>
+    hr {
+        border: 1px solid;
+        border-color: #17a2b8
+        /*  border-radius: 1px;*/
+    }
+</style>
+<script>
+
+    pdfMake.fonts = {
+        Arial: {
+            normal: 'https://localhost:44319/assets/fonts/arial.ttf',
+            bold: 'https://localhost:44319/assets/fonts/arial.ttf',
+            italics: 'https://localhost:44319/assets/fonts/arial.ttf',
+            bolditalics: 'https://localhost:44319/assets/fonts/arial.ttf'
+        },
+        Cairo: {
+
+            normal: 'https://localhost:44319/assets/fonts/Cairo-Regular.ttf',
+            bold: 'https://localhost:44319/assets/fonts/Cairo-Regular.ttf',
+            italics: 'https://localhost:44319/assets/fonts/Cairo-Regular.ttf',
+            bolditalics: 'https://localhost:44319/assets/fonts/Cairo-Regular.ttf'
+        }
+        //Roboto: {
+        //    normal: 'Roboto-Regular.ttf',
+        //    bold: 'Roboto-Medium.ttf',
+        //    italics: 'Roboto-Italic.ttf',
+        //    bolditalics: 'Roboto-Italic.ttf'
+        //},
+    };
+
+    jQuery(document).ready(function () {
+
+        ReportTabl = jQuery('#data-table').DataTable({
+            "pagingType": "simple_numbers",
+
+            order: [[8, 'desc']],
+
+            dom: 'Bfrtip',
+            responsive: true,
+            buttons: [
+                { extend: 'copy', text: 'نسخ' },
+
+                {
+                    extend: 'excel',
+                    text: 'اكسل',
+                },
+                //{
+                //    extend: 'pdfHtml5', text: ' PDF', /*exportOptions: { columns: ':visible' },*/
+                //    customize: function (doc) {
+
+                //     //   doc.defaultStyle.font_family = 'Arial';
+                //       doc.defaultStyle.font = 'Arial';
+                //    },
+                //    // titleAttr: 'Generate PDF',
+                //    //className: 'btn-outline-danger btn-sm ',
+                //    //exportOptions: {
+                //    //    columns: ':not(.select-checkbox)',
+                //    //    modifier: { order: 'index' }
+                //    //},
+                //    exportOptions: {
+                //        orthogonal: "myExport"
+                //    }
+
+
+
+                //},
+                //{
+                //    extend: 'pdf',
+                //    text: 'PDF',
+                //    customize: function (doc) {
+                //        doc.defaultStyle =
+                //        {
+                //            font: 'Arial',
+                //        };
+                //    },
+                //    titleAttr: 'Generate PDF',
+                //    className: 'btn-outline-danger btn-sm ',
+                //    exportOptions: {
+                //        columns: ':not(.select-checkbox)',
+                //        orthogonal: "myExport",
+                //        modifier: { order: 'index', page: 'current' }
+                //    },
+                //},
+
+
+                {  extend: 'print', text: 'طباعة', title: 'الدليل المحاسبي ',
+
+
+                     customize: function (win) {
+                        $(win.document.body)
+                            .css('font-size', '10pt')
+                            .prepend(
+                                `  <div class=" row m-4 " dir="rtl">
+                                    <div class="row ">
+                                        <div class="col-md-4 ">
+                                            <div class="text-center  h4"> شركة اتحاد الماسة </div>
+                                            <div class="text-center  h4"> للمقاولات</div>
+                                            <div class="text-center h5"> قـسـم الحـسـابـات</div>
+                                            <div class="text-center text-150 h5">www.union-diamond.net</div>
+                                        </div>
+                                        <div class="col-md-4 mt-2">
+                                            <center><img src="http://uniondiamond-co.com:8888/assets/images/CompnyLogo.png" style="width:280px;height:150px" /></center>
+                                         </div>
+                                        <div class="col-md-4  justify-content-start" >
+                                            <div class="text-center h4">Union Diamond Contracting Company</div>
+                                            <div class="text-center h5 ">  Accounts Department</div>
+                                            <div class="text-center text-150 h5">www.union-diamond.net</div>
+                                        </div>
+                                    </div>
+                                 </div>
+                               <div class="row">
+                                 <div class="col-md-12 mt-4 mb-2"><hr/> </div>
+                               </div>`  );
+
+                        $(win.document.body).find('table')
+                            .addClass('compact')
+                             .css('font-size', 'inherit');
+
+                         $(win.document.body).find('h1').css('font-size', '18pt');
+                         $(win.document.body).find('h1').css('text-align', 'center');
+
+                         $(win.document.body).find('table tbody td:nth-child(1)').css('text-align', 'right');
+                         $(win.document.body).find('table').attr("dir", "rtl");
+                         $(win.document.body).find('table').css("margin-top","30px");
+          /*               $(win.document.body).find('table').css("margin-right","50px");*/
+                       /*  $(win.document.body).find('table').css("margin-left","50px"); */
+                         $(win.document.body).find('table').css("margin-bottom", "30px");
+                         $(win.document.body).find('table').css("padding", "50px");
+
+
+                        /* $(win.document.body).find('table').ddClass("m-4"); */
+
+
+                    }
+},
+
+
+
+            ],
+            columnDefs: [
+                //revese arabic words for pdf exporting
+                {
+                    // target columns to reverse words
+                    targets: [0,1,2, 3, 4, 5],
+                    render: function (data, type, row) {
+                        if (type === 'myExport') {
+                            return data.split(' ').reverse().join(' ');
+                        }
+                        return data;
+                    }
+                }]
+
+
+        });
+    });
+
+     function DeleteConfirmbox(id) {
+
+        var result = confirm('هل انت متاكد من عملية الحذف?');
+        if (result) {
+            $.ajax({
+                type: 'POST',
+                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                url: '@Url.Action("delete")', // this for calling the web method function in cs code.
+                data: { id: id },// empid value
+
+                success: function (response) {
+
+                    if (response == "True") {
+
+                        window.location.reload(true);
+                        //window.location.replace("~/reserv/project/index/");
+                    }
+                    else {
+                        alert("error" + "خطاء في البيانات .. لم يتم الحذف");
+                    }
+                }
+
+
+            });
+
+            return false;
+        }
+    }
+
+
+</script>

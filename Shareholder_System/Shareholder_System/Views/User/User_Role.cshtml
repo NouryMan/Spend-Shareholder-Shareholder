@@ -1,0 +1,205 @@
+﻿@model Spend.Models.USERSTBL_Model
+@{
+    ViewBag.Title = " صلاحية المستخدم";
+}
+
+
+<div class="dashboard-content-wrap">
+    <div class="dashboard-bread dashboard--bread dashboard-bread-2">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="breadcrumb-content">
+                        <div class="section-heading">
+                            <h2 class="sec__title font-size-30 text-white">صلاحية المستخدم</h2>
+                        </div>
+                    </div><!-- end breadcrumb-content -->
+                </div><!-- end col-lg-6 -->
+                <div class="col-lg-6">
+                    <div class="breadcrumb-list text-right">
+                        <ul class="list-items">
+                            <li><a href="~" class="text-white">الصفحة الرئيسية</a></li>
+                            <li>تهئية النظام</li>
+                            <li>المستخدمين</li>
+                            <li>صلاحية المستخدم</li>
+                        </ul>
+                    </div><!-- end breadcrumb-list -->
+                </div><!-- end col-lg-6 -->
+            </div><!-- end row -->
+        </div>
+    </div><!-- end dashboard-bread -->
+    <div class="dashboard-main-content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-box">
+                        <div class="form-title-wrap">
+                            <div>
+                                <h3 class="title"> صلاحية المستخدم</h3>
+                                @*<p class="font-size-14">إظهار 1 إلى 10 من أصل 20 مُدخل</p>*@
+                            </div>
+
+
+
+                        </div>
+                        <div class="form-content">
+
+
+                            @using (Html.BeginForm())
+                            {
+                                @Html.AntiForgeryToken()
+
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                <input type="hidden" id="Role" name="Role" />
+                                <input type="hidden" id="USER_ID" name="USER_ID" value="@Model.USER_ID" />
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        <div class="form-floating mb-12 mb-md-0">
+                                            <label for="inputPasswordConfirm">الاسم المستخدم</label>
+                                            <span class="form-control">@Model.PERSONAL_INFOTBL_Model.AR_NAME</span>
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+
+
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+
+                                        <div class="form-check form-switch col-md-12 p-0 ">
+                                            <div class="card mb-4 col-md-12  ">
+                                                <div class="card-header ">
+                                                    <i class="fas fa-table me-1"></i>
+                                                    الصلاحيات
+
+                                                </div>
+                                                <div class="card-body">
+                                                    <table class="table table-bordered">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>الاسم</th>
+
+
+
+
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+
+                                                        <tbody>
+                                                            @foreach (var item in ViewBag.Roll)
+                                                            {
+                                                                var check = "";
+
+                                                                if (Model.USER_ROLETBLE_Collection.Where(x => x.ROLE_ID == item.ID).Count() > 0)
+                                                                {
+                                                                    check = "checked";
+                                                                }
+
+                                                                <tr>
+
+                                                                    <td>
+                                                                        @{ try
+                                                                            { @item.NAME_AR }
+                                                                        catch
+                                                                        {
+
+                                                                        }
+                                                                        }
+                                                                    </td>
+
+
+
+
+                                                                    <td>
+                                                                        <div class="col-md-6">
+
+                                                                            <input class="form-check-input" name="checkk" type="checkbox" value="@item.ID" id="@item.ID" @check onclick="chickbox()" style="position: inherit;opacity:1;">
+
+                                                                        </div>
+                                                                    </td>
+                                                                </tr>
+                                                            }
+
+
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="row mt-4 mb-0">
+                                    <div class="d-grid col-md-6 "><button class="btn btn-primary btn-block" type="submit">حفظ</button></div>
+
+                                    <div class="d-grid col-md-6"><a class="btn btn-danger btn-block" href="~/User/Index">رجوع</a></div>
+
+
+
+
+
+                                </div>
+                            }
+
+
+                        </div>
+                    </div><!-- end form-box -->
+                </div><!-- end col-lg-12 -->
+            </div><!-- end row -->
+
+            <div class="border-top mt-5"></div>
+            <div class="row align-items-center">
+                <div class="col-lg-7">
+                    <div class="copy-right padding-top-30px">
+                        <p class="copy__desc">
+                            &copy; Copyright Tech Light 2022. Made with
+                            <span class="la la-heart"></span> by <a href="http://TechLightsa.com/">Noury</a>
+                        </p>
+                    </div><!-- end copy-right -->
+                </div><!-- end col-lg-7 -->
+                <div class="col-lg-5">
+                    <div class="footer-social-box text-right padding-top-30px">
+                        <ul class="social-profile">
+                            <li><a href="#"><i class="lab la-facebook-f"></i></a></li>
+                            <li><a href="#"><i class="lab la-twitter"></i></a></li>
+                            <li><a href="#"><i class="lab la-instagram"></i></a></li>
+                            <li><a href="#"><i class="lab la-linkedin-in"></i></a></li>
+                        </ul>
+                    </div><!-- end copy-right-content -->
+                </div><!-- end col-lg-5 -->
+            </div><!-- end row -->
+        </div><!-- end container-fluid -->
+    </div><!-- end dashboard-main-content -->
+</div><!-- end dashboard-content-wrap -->
+
+
+
+
+
+<script>
+    $(window).ready(function () {
+        chickbox()
+    });
+    function chickbox() {
+        debugger;
+        var Rolelist = [];
+
+        $('input:checkbox[name=checkk]').each(function () {
+            if ($(this).is(':checked')) {
+
+                Rolelist.push($(this).val())
+
+            }
+
+
+        });
+        $('#Role').val(Rolelist)
+
+    }
+
+</script>

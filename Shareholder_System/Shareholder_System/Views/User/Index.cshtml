@@ -1,0 +1,211 @@
+﻿@model IEnumerable<Spend.Models.USERSTBL_Model>
+@{
+    ViewBag.Title = "المستخدمين";
+}
+
+
+@if (Model != null)
+{
+    <div class="dashboard-content-wrap">
+        <div class="dashboard-bread dashboard--bread dashboard-bread-2">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="col-lg-6">
+                        <div class="breadcrumb-content">
+                            <div class="section-heading">
+                                <h2 class="sec__title font-size-30 text-white">المستخدمين</h2>
+                            </div>
+                        </div><!-- end breadcrumb-content -->
+                    </div><!-- end col-lg-6 -->
+                    <div class="col-lg-6">
+                        <div class="breadcrumb-list text-right">
+                            <ul class="list-items">
+                                <li><a href="~" class="text-white">الصفحة الرئيسية</a></li>
+                                <li>تهئية النظام</li>
+                                <li>المستخدمين</li>
+                            </ul>
+                        </div><!-- end breadcrumb-list -->
+                    </div><!-- end col-lg-6 -->
+                </div><!-- end row -->
+            </div>
+        </div><!-- end dashboard-bread -->
+        <div class="dashboard-main-content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-box">
+                            <div class="form-title-wrap">
+                                @*<div>
+                                        <h3 class="title">قوائم المسافر</h3>
+                                        <p class="font-size-14">إظهار 1 إلى 10 من أصل 20 مُدخل</p>
+                                    </div>*@
+
+                                <a href="~/User/create" class="btn btn-primary btn-sm "> <i class="fa fa-plus"> </i> انشاء مستخدم </a>
+
+                            </div>
+                            <div class="form-content">
+                                <div class="table-form table-responsive">
+                                    <table class="table">
+                                        <thead>
+                                            <tr>
+                                                <th>اسم المستخدم</th>
+                                                <th>الجوال</th>
+                                                <th>الاميل</th>
+
+
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            @foreach (var item in Model)
+                                            {
+
+
+                                                <tr>
+
+                                                    <td>
+                                                        @{ try
+                                                            { @item.PERSONAL_INFOTBL_Model.AR_NAME }
+                                                        catch
+                                                        {
+
+                                                        }
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        @{ try
+                                                            {@item.PERSONAL_INFOTBL_Model.MOBILE_NO }
+                                                        catch
+                                                        {
+
+                                                        }
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        @{ try
+                                                            {@item.PERSONAL_INFOTBL_Model.EMAIL_ADDRESS }
+                                                        catch
+                                                        {
+
+                                                        }
+                                                        }
+                                                    </td>
+
+
+
+
+
+
+
+                                                    <td>
+                                                        <div class="row ">
+                                                            <div class="col-md-4  ">
+                                                                <a href="~/User/User_Login_date/@item.USER_ID" class="btn btn-success btn-sm ">بيانات الدخول <i class="fa  fa-lock"> </i></a>
+                                                            </div>
+                                                            <div class="col-md-4">
+
+
+                                                                <a href="~/User/User_Role/@item.USER_ID" class="btn btn-info btn-sm ">الصلاحيات <i class="fas fa-user-shield"></i></a>
+                                                            </div>
+
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            }
+
+
+                                        </tbody>
+                                    </table>
+
+
+                                </div>
+                            </div>
+                        </div><!-- end form-box -->
+                    </div><!-- end col-lg-12 -->
+                </div><!-- end row -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <nav aria-label="Page navigation example">
+                            <ul class="pagination">
+                                <li class="page-item">
+                                    <a class="page-link page-link-nav" href="#" aria-label="Previous">
+                                        <span aria-hidden="true"><i class="la la-angle-left"></i></span>
+                                        <span class="sr-only">Previous</span>
+                                    </a>
+                                </li>
+                                <li class="page-item"><a class="page-link page-link-nav" href="#">1</a></li>
+                                <li class="page-item active">
+                                    <a class="page-link page-link-nav" href="#">2 <span class="sr-only">(current)</span></a>
+                                </li>
+                                <li class="page-item"><a class="page-link page-link-nav" href="#">3</a></li>
+                                <li class="page-item">
+                                    <a class="page-link page-link-nav" href="#" aria-label="Next">
+                                        <span aria-hidden="true"><i class="la la-angle-right"></i></span>
+                                        <span class="sr-only">Next</span>
+                                    </a>
+                                </li>
+                            </ul>
+                        </nav>
+                    </div>
+                </div>
+                <div class="border-top mt-5"></div>
+                <div class="row align-items-center">
+                    <div class="col-lg-7">
+                        <div class="copy-right padding-top-30px">
+                            <p class="copy__desc">
+                                &copy; Copyright Tech Light 2022. Made with
+                                <span class="la la-heart"></span> by <a href="http://TechLightsa.com/">Noury</a>
+                            </p>
+                        </div><!-- end copy-right -->
+                    </div><!-- end col-lg-7 -->
+                    <div class="col-lg-5">
+                        <div class="footer-social-box text-right padding-top-30px">
+                            <ul class="social-profile">
+                                <li><a href="#"><i class="lab la-facebook-f"></i></a></li>
+                                <li><a href="#"><i class="lab la-twitter"></i></a></li>
+                                <li><a href="#"><i class="lab la-instagram"></i></a></li>
+                                <li><a href="#"><i class="lab la-linkedin-in"></i></a></li>
+                            </ul>
+                        </div><!-- end copy-right-content -->
+                    </div><!-- end col-lg-5 -->
+                </div><!-- end row -->
+            </div><!-- end container-fluid -->
+        </div><!-- end dashboard-main-content -->
+    </div><!-- end dashboard-content-wrap -->
+  
+ }
+
+
+    <script>
+        function DeleteConfirmbox(id) {
+
+            var result = confirm('هل انت متاكد من عملية الحذف?');
+            if (result) {
+                $.ajax({
+                    type: 'POST',
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    url: 'delete', // this for calling the web method function in cs code.
+                    data: { id: id },// empid value
+
+                    success: function (response) {
+
+                        if (response == "True") {
+
+                            window.location.reload(true);
+                            //window.location.replace("~/reserv/project/index/");
+                        }
+                        else {
+                            alert("error" + "خطاء في البيانات .. لم يتم الحذف");
+                        }
+                    }
+
+
+                });
+
+                return false;
+            }
+        }
+
+    </script>
+

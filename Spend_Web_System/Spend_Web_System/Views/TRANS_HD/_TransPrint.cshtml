@@ -1,0 +1,335 @@
+﻿@model Spend.Models.TRANS_HD_Model
+@using System.Globalization;
+@{
+    Layout = "";
+    ViewBag.Title = "القيود";
+    int i = 1;
+    decimal total = 0;
+
+
+
+
+    NumberFormatInfo nfi = new CultureInfo("en-US", false).NumberFormat;
+    nfi.CurrencyDecimalDigits = 2;
+    nfi.NumberDecimalDigits = 2;
+    nfi.CurrencyDecimalSeparator = ".";
+    nfi.CurrencyGroupSeparator = ",";
+    nfi.CurrencySymbol = "";
+    nfi.CurrencyNegativePattern = 1;
+    //var answer = Convert.ToDecimal(xyz).
+}
+
+
+
+
+
+
+<div class="m-4 p-4 bg-white  " id="transprintDiv" dir="rtl">
+
+
+    <div class=" row ">
+
+
+
+        <div class="col-md-4 pl-4">
+
+            <center>
+
+                <img src="~/assets/images/logoWithoutText.png" width="270" height="100" />
+                @*<img src="~/assets/images/Logo.svg" style="width:300px;height:200px" />*@
+
+            </center>
+
+        </div>
+        <div class="col-md-6 mt-2">
+
+
+            <center>
+
+                <img src="~/assets/images/logoText.png" width="250" height="50" />
+                @*<img src="~/assets/images/CompnyLogo.png" style="width:280px;height:150px" />*@
+
+            </center>
+
+        </div>
+        <div class="col-md-2  justify-content-end">
+
+
+
+
+        </div>
+
+
+
+
+
+    </div>
+
+    <div class="row">
+        @*<div class="col-md-12 mt-4 p-1 bg-info"> </div>*@
+        <div class="col-md-12">
+            <div class="form-floating">
+                @*<hr />*@
+            </div>
+
+        </div>
+    </div>
+
+    <div class="row bg-info">
+
+        <div class="col-md-12 mt-2">
+            <center>
+
+                <h4 style="font-family:'Times New Roman'" for="inputLastName" id="type">قيد :  @Model.DUC_TYPETBL_Model.ACC_AR_NAME </h4>
+
+            </center>
+        </div>
+    </div>
+    <font size="2" style="font-weight:bold" face="Times New Roman">
+        <div class=" row bg-light">
+            <div class="col-12">
+                <div class="row   p-1 ">
+
+                    <div class="col-md-8">
+                        <div class="form-floating  ">
+                            رقم القيد : @Model.JOURNAL_NO
+
+                        </div>
+
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            تاريخ القيد : @Model.DATE_CR.Value.ToString("dd-MM-yyyy")
+
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+                <div class="row   p-1 ">
+
+                    <div class="col-md-8 ">
+                        <div class="form-floating  ">
+                            البيان : @try
+                            {@Model.NOTE}
+                        catch { }
+
+
+                        </div>
+
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            رقم الحركة : @try
+                            {@Model.DOC_NO}
+                        catch { }
+
+                        </div>
+                    </div>
+
+
+                </div>
+
+                <div class="row   p-1 ">
+
+                    <div class="col-md-8 ">
+                        <div class="form-floating  ">
+                            العملة : ريال سعودي
+
+                        </div>
+
+                    </div>
+                    <div class="col-md-4">
+                        <div class="form-floating">
+                            كود المستخدم : @try
+                            {@Model.USER_CR}
+                        catch { }
+                        </div>
+                    </div>
+
+
+                </div>
+
+
+            </div>
+
+
+
+
+
+        </div>
+    </font>
+    <div class="row ">
+
+        <div class="col-md-12">
+            <div class="form-floating">
+                <hr />
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="row margin-50 mb-5 pb-4  justify-content-center">
+
+        <div class="col-12">
+            <font size="1" face="Times New Roman">
+
+                <table class="table table-borderless  table-sm table-striped " style="">
+                    <thead class=" ">
+                        <tr class="bg-info">
+
+
+
+                            <th style="font-size:10pt">#</th>
+                            <th style="font-size:10pt">مدين</th>
+                            <th style="font-size:10pt">دئن</th>
+                            <th width="15%" style="font-size:8pt">رقم الحساب</th>
+                            <th style="font-size:10pt"> الحساب</th>
+                            <th style="font-size:10pt">البيان </th>
+                            <th style="font-size:10pt">المشروع  </th>
+
+
+
+                        </tr>
+                    </thead>
+
+                    <tbody>
+
+                        @foreach (var item in Model.ACCOUNTTBL_Collection.OrderByDescending(x => x.FROM_HIM))
+                        {
+
+
+                            <tr>
+
+                                <td>
+
+                                    @{ try
+                                        {
+                                            @i
+
+                                        }
+                                        catch
+                                        {
+
+                                        }
+                                    }
+
+                                </td>
+                                <td>
+                                    @{ try
+                                        {@Convert.ToDecimal(item.FROM_HIM).ToString("C", nfi) }
+                                    catch
+                                    {
+
+                                    }
+                                    }
+                                </td>
+                                <td>
+                                    @{ try
+                                        { @Convert.ToDecimal(item.FOR_HIM).ToString("C", nfi) }
+                                    catch
+                                    {
+
+                                    }
+                                    }
+                                </td>
+
+
+
+                                <td>
+                                    @{ try
+                                        {@item.ACC_NO
+                                    }
+                                    catch
+                                    {
+
+                                    }
+                                    }
+                                </td>
+                                <td>
+                                    @{ try
+                                        {
+                                            @item.ALL_ACC_NOTBL_Model.ACC_NAME
+
+                                        }
+                                        catch
+                                        {
+
+                                        }
+                                    }
+                                </td>
+                                <td>
+                                    @{ try
+                                        {@item.NOTE
+                                    }
+                                    catch
+                                    {
+
+                                    }
+                                    }
+
+                                </td>
+                                <td>
+                                    @{ try
+                                        {@item.PROJECTTBL_Model.PROJECT_NAME
+                                    }
+                                    catch
+                                    {
+
+                                    }
+                                    }
+
+                                </td>
+
+
+
+
+                            </tr>
+
+
+                            i++;
+                        }
+                        <tr>
+                            <th>الاجمالي</th>
+                            <th>@Convert.ToDecimal(Model.ACCOUNTTBL_Collection.Sum(x => x.FROM_HIM)).ToString("C", nfi)</th>
+                            <th>@Convert.ToDecimal(Model.ACCOUNTTBL_Collection.Sum(x => x.FOR_HIM)).ToString("C", nfi)</th>
+                            <th colspan="4"></th>
+
+                        </tr>
+
+
+                    </tbody>
+                </table>
+            </font>
+        </div>
+    </div>
+
+
+
+
+
+
+</div>
+
+
+
+
+
+
+
+<style>
+    hr {
+        border: 1px solid;
+        border-color: #17a2b8
+        /*  border-radius: 1px;*/
+    }
+
+    /*tablestyle, tr, td, th, thead {
+        border: 2px solid black;*/
+    /*  border-radius: 1px;*/
+    /*}*/
+</style>

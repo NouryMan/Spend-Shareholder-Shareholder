@@ -1,0 +1,396 @@
+﻿@model IEnumerable<Spend.Models.TRANS_HD_Model>
+@using System.Globalization;
+@{
+    ViewBag.Title = "القيود";
+
+    NumberFormatInfo nfi = new CultureInfo("en-US", false).NumberFormat;
+    nfi.CurrencyDecimalDigits = 2;
+    nfi.NumberDecimalDigits = 2;
+    nfi.CurrencyDecimalSeparator = ".";
+    nfi.CurrencyGroupSeparator = ",";
+    nfi.CurrencySymbol = "";
+    nfi.CurrencyNegativePattern = 1;
+
+    int i = 0;
+}
+
+
+@if (Model != null)
+{
+    <div class="dashboard-content-wrap">
+        <div class="dashboard-bread dashboard--bread dashboard-bread-2">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="col-lg-6">
+                        <div class="breadcrumb-content">
+                            <div class="section-heading">
+                                <h2 class="sec__title font-size-30 text-white">القيود</h2>
+                            </div>
+                        </div><!-- end breadcrumb-content -->
+                    </div><!-- end col-lg-6 -->
+                    <div class="col-lg-6">
+                        <div class="breadcrumb-list text-right">
+                            <ul class="list-items">
+                                <li><a href="index.html" class="text-white">الصفحة الرئيسية</a></li>
+
+                                <li>العمليات المحاسبية</li>
+                            </ul>
+                        </div><!-- end breadcrumb-list -->
+                    </div><!-- end col-lg-6 -->
+                </div><!-- end row -->
+            </div>
+        </div><!-- end dashboard-bread -->
+        <div class="dashboard-main-content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-box">
+                            <div class="form-title-wrap">
+                                @*<div>
+                            <h3 class="title">قوائم المسافر</h3>
+                            <p class="font-size-14">إظهار 1 إلى 10 من أصل 20 مُدخل</p>
+                        </div>*@
+
+                                @*<a href="~/ACC_HOLDER/create" class="btn btn-primary btn-sm "> <i class="fa fa-plus"> </i> انشاء مساهم </a>*@
+
+                            </div>
+                            <div class="form-content ">
+                                <div class="table-form table-responsive">
+                                    <table class="table  table-responsive-sm " id="data-table">
+                                        <thead>
+                                            <tr>
+                                                <th>#</th>
+                                                <th>رقم القيد</th>
+                                                <th>المشروع</th>
+                                                @*<th>الحساب</th>*@
+                                                <th>التاريخ ميلادي </th>
+                                                <th>التاريخ هجري </th>
+                                                <th>البيان </th>
+                                                <th>نوع الحركة</th>
+                                                <th>رقم الحركة </th>
+                                                <th>مدين </th>
+                                                <th>دائن</th>
+
+
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            @foreach (var item in Model)
+                                            {
+                                                i++;
+
+                                                <tr>
+                                                    <td>@i</td>
+                                                    <td>
+                                                        @{ try
+                                                            { @item.JOURNAL_NO }
+                                                        catch
+                                                        {
+
+                                                        }
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        @{ try
+                                                            {@item.PROJECTTBL_Model.PROJECT_NAME }
+                                                        catch
+                                                        {
+
+                                                        }
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        @{ try
+                                                            {@item.JOURNAL_MDATE.Value.ToString("dd/MM/yyyy") }
+                                                        catch
+                                                        {
+
+                                                        }
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        @{ try
+                                                            {@item.JOURNAL_HDATE }
+                                                        catch
+                                                        {
+
+                                                        }
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        @{ try
+                                                            {@item.NOTE }
+                                                        catch
+                                                        {
+
+                                                        }
+                                                        }
+                                                    </td>
+
+                                                    <td>
+                                                        @{ try
+                                                            {@item.DUC_TYPETBL_Model.ACC_AR_NAME }
+                                                        catch
+                                                        {
+
+                                                        }
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        @{ try
+                                                            {@item.DOC_NO }
+                                                        catch
+                                                        {
+
+                                                        }
+                                                        }
+                                                    </td>
+
+                                                    <td>
+                                                        @{ try
+                                                            {@item.ACCOUNTTBL_Collection.Sum(x => x.FROM_HIM).Value.ToString("C", nfi) }
+                                                        catch
+                                                        {
+
+                                                        }
+                                                        }
+                                                    </td>
+
+                                                    <td>
+                                                        @{ try
+                                                            {@item.ACCOUNTTBL_Collection.Sum(x => x.FOR_HIM).Value.ToString("C", nfi) }
+                                                        catch
+                                                        {
+
+                                                        }
+                                                        }
+                                                    </td>
+
+
+
+
+                                                    <td>
+                                                        <div class=" col-12">
+                                                            <div class="row">
+                                                                <div class="col-md-3 m-1">
+                                                                    <a href="~/TRANS_HD/details/@item.ID" class="btn btn-info btn-sm " title="عرض"> <i class="la  la-eye"> </i></a>
+                                                                </div>
+                                                                <div class="col-md-3 m-1">
+                                                                    <button onclick="print(@item.ID)" class="btn btn-success btn-sm " title="طباعة"> <i class="la  la-print"> </i></button>
+
+
+                                                                </div>
+                                                            </div>
+                                                        </div>
+
+                                                    </td>
+                                                </tr>
+                                            }
+
+
+                                        </tbody>
+                                    </table>
+
+
+                                </div>
+                            </div>
+                        </div><!-- end form-box -->
+                    </div><!-- end col-lg-12 -->
+                </div><!-- end row -->
+                <div id="PrintDiv" hidden="hidden" >
+                  
+                </div>
+
+                <div class="border-top mt-5"></div>
+                <div class="row align-items-center">
+                    <div class="col-lg-7">
+                        <div class="copy-right padding-top-30px">
+                            <p class="copy__desc">
+                                &copy; Copyright Tech Light 2022. Made with
+                                <span class="la la-heart"></span> by <a href="http://Tech-Light.com/">Noury</a>
+                            </p>
+                        </div><!-- end copy-right -->
+                    </div><!-- end col-lg-7 -->
+                    <div class="col-lg-5">
+                        <div class="footer-social-box text-right padding-top-30px">
+                            <ul class="social-profile">
+                                <li><a href="#"><i class="lab la-facebook-f"></i></a></li>
+                                <li><a href="#"><i class="lab la-twitter"></i></a></li>
+                                <li><a href="#"><i class="lab la-instagram"></i></a></li>
+                                <li><a href="#"><i class="lab la-linkedin-in"></i></a></li>
+                            </ul>
+                        </div><!-- end copy-right-content -->
+                    </div>
+
+
+
+                    <!-- end col-lg-5 -->
+                </div><!-- end row -->
+            </div><!-- end container-fluid -->
+        </div><!-- end dashboard-main-content -->
+    </div><!-- end dashboard-content-wrap -->
+
+
+}
+
+
+<script>
+
+    jQuery(document).ready(function () {
+
+        ReportTabl = jQuery('#data-table').DataTable({
+
+                        "pagingType": "simple_numbers",
+            "pageLength": 100,
+            "ordering": false,
+            "searching": true,
+
+            "columnDefs": [{
+                "targets": 'no-sort',
+                "orderable": false,
+            }], dom: 'Bfrtip',
+            "language": {
+                search: 'بـحــث : ',
+
+            },
+            responsive: true,
+            buttons: [
+                { extend: 'copy', text: 'نسخ' },
+
+                {
+                    extend: 'excelHtml5',
+                  //  title:'كشف حساب'+$("#AccounNo option:selected").text()+'من تاريخ:'+'@ViewBag.FromDate'+'الى:'+'@ViewBag.ToDate',
+                    text: ' اكسل',
+                    titleAttr: 'تصدير اكسل',
+                    customizeData: function (data) { // for long number
+                        //for (var i = 0; i < data.body.length; i++) {
+                        //    //for (var j = 0; j < data.body[i].length; j++) {
+                        //    //    data.body[i][j] = '\u200C' + data.body[i][j];
+                        //    //}
+
+
+                        //}
+                    },
+
+},
+                //{
+                //    extend: 'pdf', text: 'Pdf', customize: function (win) {
+
+                //        jQuery(win.document.body)
+                //            .css('font-size', '10pt')
+                //            .prepend(
+                //                '<h4 class="text-center"></h4>'
+                //            );
+
+                //        jQuery(win.document.body).find('table')
+                //            .addClass('compact')
+                //            .css('font-size', 'inherit');
+                //    }},
+                {
+                    extend: 'print', text: 'طباعة', customize: function (win) {
+
+                        jQuery(win.document.body)
+                            .css('font-size', '10pt')
+                            .prepend(
+                                '<h4 class="text-center"></h4>'
+                            );
+
+                        jQuery(win.document.body).find('table')
+                            .addClass('compact')
+                            .css('font-size', 'inherit');
+                    }
+                },
+
+
+
+
+            ],
+
+
+
+
+        });
+    });
+
+
+    function DeleteConfirmbox(id) {
+
+
+
+        var result = confirm('هل انت متاكد من عملية الحذف?');
+        if (result) {
+            $.ajax({
+                type: 'POST',
+                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                url: 'delete', // this for calling the web method function in cs code.
+                data: { id: id },// empid value
+
+                success: function (response) {
+
+                    if (response == "True") {
+
+                        window.location.reload(true);
+                        //window.location.replace("~/reserv/project/index/");
+                    }
+                    else {
+                        alert("error" + "خطاء في البيانات .. لم يتم الحذف");
+                    }
+                }
+
+
+            });
+
+            return false;
+        }
+    }
+
+
+    function print(id) {
+
+        $("#PrintDiv").html(null);
+
+      
+
+      
+     
+
+        $.get("/TRANS_HD/TransPrint/" + id, function (data) {
+
+            $("#PrintDiv").html(data); // the div to load content in
+            printTransRoll()
+        });
+
+
+    }
+
+    function printTransRoll() {
+
+        printJS({
+
+            printable: "transprintDiv",
+
+            type: "html",
+            style: "*",
+            maxWidth: "800",
+            targetStyles: "*",
+            css: "*",
+            font_size: "10",
+            scanStyles: "false",
+            header: '',
+            //  onPrintDialogClose: printJobComplete,
+
+
+        });
+        // window.location.href = "/Spend/SALES_INVTBL/index";
+
+
+
+    }
+
+
+
+
+</script>
+

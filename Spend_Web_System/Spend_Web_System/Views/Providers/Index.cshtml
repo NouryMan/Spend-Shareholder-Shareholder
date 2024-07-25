@@ -1,0 +1,82 @@
+﻿@model IEnumerable<Spend.Models.PERSON_ACCTBL_Model>
+@{
+    ViewBag.Title = "المقاولون";
+}
+
+
+
+
+@if (Model != null)
+{
+
+    <div class="container-fluid px-4">
+        <h1 class="mt-4">المقاولون</h1>
+        <ol class="breadcrumb mb-4">
+            <li class="breadcrumb-item"><a href="~/">الرئسية</a></li>
+            <li class="breadcrumb-item active">المقاولون</li>
+        </ol>
+        <div class="card mb-4">
+            <div class="card-body">
+              noury table
+                <a target="_blank" href=""></a>
+                .
+            </div>
+        </div>
+        <div class="card mb-4">
+            <div class="card-header">
+                <i class="fas fa-table me-1"></i>
+                المقاولون
+            </div>
+            <div class="card-body">
+                <table id="datatablesSimple">
+                    <thead>
+                        <tr>
+                            <th>الاسم</th>
+                            <th>رقم الحساب</th>
+                            <th>Office</th>
+                            <th>Age</th>
+                            <th>Start date</th>
+                            <th>ملاحظة</th>
+                        </tr>
+                    </thead>
+                    <tfoot>
+                        <tr>
+                            <th>الاسم</th>
+                            <th>رقم الحساب</th>
+                            <th>Office</th>
+                            <th>Age</th>
+                            <th>Start date</th>
+                            <th>ملاحظة</th>
+                        </tr>
+                    </tfoot>
+                    <tbody>
+                        @foreach (var item in Model)
+                        {
+
+                            <tr>
+                                <td> @{ try
+                                    {
+                                        @item.PERSONAL_INFOTBL_Model.AR_NAME}
+                                        catch
+                                        {
+
+                                        }
+                                    }
+                                </td>
+                                <td>@item.ACC_NO</td>
+                                <td>Edinburgh</td>
+                                <td>61</td>
+                                <td>2011/04/25</td>
+                                <td>@item.NOTE</td>
+                            </tr>
+                        }
+                      
+                      
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+
+ }
+

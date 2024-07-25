@@ -1,0 +1,319 @@
+﻿@model IEnumerable<Spend.Models.CREDENCE_DTTBL_Model>
+@{
+    ViewBag.Title = "الاستحقاقات";
+
+
+
+}
+
+
+
+
+@if (Model != null)
+{
+
+    <div class="dashboard-content-wrap">
+        <div class="dashboard-bread dashboard--bread dashboard-bread-2">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="col-lg-6">
+                        <div class="breadcrumb-content">
+                            <div class="section-heading">
+                                <h2 class="sec__title font-size-30 text-white"> @ViewBag.project_name</h2>
+                            </div>
+                        </div><!-- end breadcrumb-content -->
+                    </div><!-- end col-lg-6 -->
+                    <div class="col-lg-6">
+                        <div class="breadcrumb-list text-right">
+                            <ul class="list-items">
+                                @{ if (ViewBag.redirct == "Agreement")
+                                    {
+                                        <li class=""><a href="~/">الرئسية</a></li>
+                                        <li class=""><a href="~/Agreement/Indexproject">المشاريع</a></li>
+                                        <li class=""><a href="~/Agreement/indexUtlst/@ViewBag.project_id">نوعية المقاولة</a></li>
+                                        <li class=""><a href="~/Agreement/index//@ViewBag.utlist_id?project_id=@ViewBag.project_id"> الاتفاقيات</a></li>
+                                        <li class=" active">الاستحقاقات</li>
+                                    }
+                                    else
+                                    {
+                                        <li class=""><a href="~/">الرئسية</a></li>
+                                        <li class=""><a href="~/credence_dt/Indexproject">المشاريع</a></li>
+                                        <li class=""><a href="~/credence_dt/Index_person_acc_project/@ViewBag.project_id">الاتفاقيات</a></li>
+                                        <li class="active">الاستحقاقات</li>
+                                    }
+                                }
+
+                            </ul>
+                        </div><!-- end breadcrumb-list -->
+                    </div><!-- end col-lg-6 -->
+                </div><!-- end row -->
+            </div>
+        </div><!-- end dashboard-bread -->
+        <div class="dashboard-main-content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-box">
+                            <div class="form-title-wrap">
+
+
+                                <a href="~/Credence_DT/CreateForAll/@ViewBag.per_acc_proj_id?redirct=@ViewBag.redirct" class="btn btn-primary btn-sm "> <i class="la la-plus"> </i> انشاء استحقاق </a>
+
+
+
+                            </div>
+                            <div class="form-content">
+
+
+
+
+
+
+                                <div class="card mb-4">
+                                    <div class="card-header">
+                                        <i class="fas fa-table me-1"></i>
+                                        @ViewBag.Utl_Name
+
+                                    </div>
+                                    <div class="card-body">
+                                        <table id="datatablesSimple">
+                                            <thead>
+                                                <tr>
+                                                    <th>رقم الاستحقاق</th>
+                                                    <th>اسم الاستحقاق</th>
+                                                    <th>اسم المقاولة</th>
+                                                    <th>اسم المقاول</th>
+                                                    <th>الموظف</th>
+                                                    <th>المبلغ</th>
+                                                    <th>التاريخ </th>
+                                                    <th> تاريخ الاستحقاق</th>
+                                                    <th> السبب</th>
+                                                    <th> الحالة</th>
+                                                    <th>ملاحظة</th>
+                                                    <th></th>
+                                                </tr>
+                                            </thead>
+                                            <tfoot>
+
+                                            </tfoot>
+                                            <tbody>
+                                                @foreach (var item in Model.OrderByDescending(x => x.CR_DATE))
+                                                {
+                                                    string tr_color = "";
+                                                    string Done = "لم يتم التعميد";
+                                                    if (item.APPROVED == true)
+                                                    {
+                                                        tr_color = "bg-info";
+                                                        Done = "معمد";
+
+                                                    }
+                                                    if (item.DONE == true)
+                                                    {
+                                                        tr_color = "bg-success";
+                                                        Done = "تم الدفع";
+                                                    }
+
+                                                    <tr class="@tr_color ">
+                                                        <td>
+                                                            @{ try
+                                                                {
+                                                                    @item.DT_ID
+                                                                }
+                                                                catch
+                                                                {
+
+                                                                }
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            @{ try
+                                                                {
+
+                                                                    <a href="~/credence_dt/details/@item.DT_ID?Hd_Id=@item.HD_ID">
+                                                                        @item.CREDENCETBL_Model.CRED_NAME
+                                                                    </a>}
+                                                                catch
+                                                                {
+
+                                                                }
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            @{ try
+                                                                {@item.PERSON_ACC_PROJTBL_Model.UTLISTTBL_Model.UTL_NAME }
+                                                            catch
+                                                            {
+
+                                                            }
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            @{ try
+                                                                {@item.PERSON_ACC_PROJTBL_Model.PERSON_ACCTBL_Model.PERSONAL_INFOTBL_Model.AR_NAME }
+                                                            catch
+                                                            {
+
+                                                            }
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            @{ try
+                                                                {@item.USERSTBL_Model.PERSONAL_INFOTBL_Model.AR_NAME }
+                                                            catch
+                                                            {
+
+                                                            }
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            @{ try
+                                                                {@item.AMMOUNT }
+                                                            catch
+                                                            {
+
+                                                            }
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            @{ try
+                                                                { @item.EXEC_DATE_M.Value.ToShortDateString() }
+                                                            catch { } }
+                                                        </td>
+                                                        <td>
+                                                            @{ try
+                                                                { @item.ACT_EXEC_DATE_M.Value.ToShortDateString() }
+                                                            catch { } }
+
+
+                                                        </td>
+                                                        <td>@item.REASON </td>
+                                                        <td>@Done </td>
+                                                        <td>@item.NOTE </td>
+
+
+
+                                                        <td>
+                                                            <div class="row">
+                                                                @if (item.DONE == false && item.APPROVED == false)
+                                                                {
+                                                                    <div class="col-md-5 m-1">
+                                                                        <a href="~/credence_dt/edit/@item.DT_ID?Hd_Id=@item.HD_ID" class="btn btn-info btn-sm "> <i class="la  la-edit"> </i>  </a>
+                                                                    </div>
+                                                                    <div class="col-md-5 m-1">
+
+
+                                                                        <button onclick="DeleteConfirmbox(@item.DT_ID,@item.HD_ID)" class="btn btn-danger btn-sm "> <i class="la la-trash"></i>  </button>
+                                                                    </div>
+                                                                }
+                                                            </div>
+                                                        </td>
+                                                    </tr>
+                                                }
+
+
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+
+
+
+
+
+                            </div>
+                        </div><!-- end form-box -->
+                    </div><!-- end col-lg-12 -->
+                </div><!-- end row -->
+                <div class="border-top mt-5"></div>
+                <div class="row align-items-center">
+                    <div class="col-lg-7">
+                        <div class="copy-right padding-top-30px">
+                            <p class="copy__desc">
+                                &copy; Copyright Tech Light 2022. Made with
+                                <span class="la la-heart"></span> by <a href="http://Tech-Light.com/">Noury</a>
+                            </p>
+                        </div><!-- end copy-right -->
+                    </div><!-- end col-lg-7 -->
+                    <div class="col-lg-5">
+                        <div class="footer-social-box text-right padding-top-30px">
+                            <ul class="social-profile">
+                                <li><a href="#"><i class="lab la-facebook-f"></i></a></li>
+                                <li><a href="#"><i class="lab la-twitter"></i></a></li>
+                                <li><a href="#"><i class="lab la-instagram"></i></a></li>
+                                <li><a href="#"><i class="lab la-linkedin-in"></i></a></li>
+                            </ul>
+                        </div><!-- end copy-right-content -->
+                    </div><!-- end col-lg-5 -->
+                </div><!-- end row -->
+            </div><!-- end container-fluid -->
+        </div><!-- end dashboard-main-content -->
+    </div><!-- end dashboard-content-wrap -->
+
+
+
+}
+
+
+<script>
+    jQuery(document).ready(function () {
+        ReportTabl = jQuery('#datatablesSimple').DataTable({
+            "pagingType": "simple_numbers",
+
+            "columnDefs": [{
+                "targets": 'no-sort',
+                "orderable": false,
+            }], dom: 'Bfrtip',
+            responsive: true,
+            buttons: [
+                { extend: 'copy', text: 'نسخ' },
+                { extend: 'csv', text: 'csv' },
+                { extend: 'excel', text: 'اكسل' },
+                { extend: 'pdf', text: 'Pdf' },
+                { extend: 'print', text: 'طباعة' }
+
+
+            ],
+
+        });
+
+
+
+    });
+
+
+    function DeleteConfirmbox(dt_id,hd_id) {
+
+        var result = confirm('هل انت متاكد من عملية الحذف?');
+        if (result) {
+            $.ajax({
+                type: 'get',
+                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                url: '@Url.Action("delete")', // this for calling the web method function in cs code.
+                data: { dt_id: dt_id, hd_id: hd_id },// empid value
+
+                success: function (response) {
+
+                    if (response == "True") {
+
+                        window.location.reload(true);
+                        //window.location.replace("~/reserv/project/index/");
+                    }
+                    else {
+                        alert("error" + "خطاء في البيانات .. لم يتم الحذف");
+                    }
+                }
+
+
+            });
+
+            return false;
+        }
+
+    }
+
+
+
+
+
+</script>
+

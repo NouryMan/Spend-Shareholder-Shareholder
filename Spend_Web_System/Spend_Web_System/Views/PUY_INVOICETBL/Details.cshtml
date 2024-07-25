@@ -1,0 +1,635 @@
+﻿@model Spend.Models.INVOICETBL_Model
+@using Spend.Models;
+@using System.Linq;
+@{
+    ViewBag.Title = "فاتورة مشتريات";
+
+    int i = 1;
+
+}
+
+
+
+<div class="container" dir="rtl">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="card shadow-lg border-0 rounded-lg mt-5">
+                <div class="card-header"><h3 class="text-center font-weight-light my-4">  فاتورة مشتريات </h3></div>
+                <div class="card-body">
+
+                    <form id="Add" method="post">
+
+                        @Html.AntiForgeryToken()
+
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        <div class="row mb-2">
+
+                            <div class="col-md-3">
+                                <div class="form-floating">
+                                    <label  class=" col-form-label-sm" for="inputLastName">نوع الفاتورة</label>
+                                    <select id="INV_DUC_TYPE" name="INV_DUC_TYPE" dir="ltr" class="form-control selectpicker " data-live-search="true" disabled onchange="GetAccCenterForProj()">
+
+                                        @foreach (var p in ViewBag.Duc_Type)
+                                        {
+                                            if (Model.INV_DUC_TYPE == p.ID)
+                                            {
+                                                <option class="themeprimary" value="@p.ID" selected> @p.ACC_AR_NAME</option>
+                                            }
+                                            else
+                                            {
+                                                <option class="themeprimary" value="@p.ID"> @p.ACC_AR_NAME</option>
+                                            }
+
+                                        }
+
+                                    </select>
+
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-floating">
+                                    <label  class=" col-form-label-sm" for="inputLastName">اسم المشروع</label>
+                                    <select id="PROJ_NO" name="PROJ_NO" dir="ltr" onchange="GetAccCenterForProj()" class="form-control selectpicker " disabled data-live-search="true" required data-parsley-error-message="حقل مطلوب">
+                                        <option value="">اختار المشروع</option>
+                                        @foreach (var p in ViewBag.proj)
+                                        {
+                                            if (Model.PROJ_NO == p.PROJECT_NO)
+                                            {
+                                                <option class="themeprimary" value="@p.PROJECT_NO" selected> @p.PROJECT_NAME</option>
+                                            }
+                                            else
+                                            {
+                                                <option class="themeprimary" value="@p.PROJECT_NO"> @p.PROJECT_NAME</option>
+                                            }
+
+                                        }
+
+                                    </select>
+
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-floating">
+                                    <label  class=" col-form-label-sm" for="inputLastName">مرحلة العمل</label>
+                                    <select id="STAGE_NO" name="STAGE_NO" dir="ltr" class="form-control selectpicker " data-live-search="true" disabled required data-parsley-error-message="حقل مطلوب">
+                                        <option value="">اختار مرحلة العمل</option>
+                                        @foreach (var p in ViewBag.STAGES)
+                                        {
+                                            if (Model.STAGE_NO == p.STAGE_NO)
+                                            {
+                                                <option class="themeprimary" value="@p.STAGE_NO" selected> @p.STAGE_NAME</option>
+                                            }
+                                            else
+                                            {
+                                                <option class="themeprimary" value="@p.STAGE_NO"> @p.STAGE_NAME</option>
+                                            }
+
+                                        }
+
+                                    </select>
+
+                                </div>
+                            </div>
+                            <div class="col-md-3  row ">
+                                <div class="col-md-5 p-0">
+                                    <div class="form-floating">
+                                        <label  class=" col-form-label-sm" for="inputLastName">طريقة الدفع </label>
+                                        <select id="INV_TYPE" name="INV_TYPE" dir="ltr" class="form-control selectpicker " data-live-search="true" disabled onchange="InvTypeChang()">
+                                            @if (Model.INV_TYPE == 1)
+                                            {
+                                                <option value="1" selected>اجلة /عهدة</option>
+                                                <option value="2">نقدية </option>
+                                            }
+                                            else
+                                            {
+                                                <option value="2" selected>نقدية </option>
+                                                <option value="1">اجلة /عهدة</option>
+                                            }
+
+
+
+
+                                        </select>
+
+                                    </div>
+                                </div>
+
+
+                                <div class="form-floating col-md-7   ">
+                                    <label  class=" col-form-label-sm" for="inputLastName">نوع العهدة</label>
+                                    <select id="INV_WONER" name="INV_WONER" disabled dir="ltr" class="form-control selectpicker " data-live-search="true">
+                                        @if (Model.INV_WONER == 1)
+                                        {
+                                            <option value="1" selected>عهدة مورد</option>
+                                            <option value="2">عهدة موظف</option>
+                                        }
+                                        else if (Model.INV_WONER == 2)
+                                        {
+                                            <option value="1">عهدة مورد</option>
+                                            <option value="2" selected>عهدة موظف</option>
+
+                                        }
+                                        else
+                                        {
+                                            <option value="1">عهدة مورد</option>
+                                            <option value="2">عهدة موظف</option>
+
+                                        }
+
+                                    </select>
+
+                                </div>
+                            </div>
+
+                        </div>
+
+
+
+                        <div class="row mb-2">
+                            <div class="col-md-3 ">
+
+                                <div class="form-floating">
+                                    <label  class=" col-form-label-sm" for="inputLastName">الموظف المستلم</label>
+                                    <select id="EMP_NO" name="EMP_NO" dir="ltr" class="form-control selectpicker " disabled data-live-search="true">
+                                        <option value="">الموظف المستلم</option>
+                                        @foreach (var p in ViewBag.pERSONAL)
+                                        {
+                                            if (Model.EMP_NO == p.PERSON_ID)
+                                            {
+                                                <option class="themeprimary" value="@p.PERSON_ID" selected> @p.PERSONAL_INFOTBL_Model.AR_NAME</option>
+                                            }
+                                            else
+                                            {
+                                                <option class="themeprimary" value="@p.PERSON_ID"> @p.PERSONAL_INFOTBL_Model.AR_NAME</option>
+                                            }
+
+                                        }
+
+                                    </select>
+
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-floating">
+                                    <label  class=" col-form-label-sm" for="inputLastName">التاريخ الميلادي</label>
+
+                                    @Html.EditorFor(model => model.DATE_M, new { htmlAttributes = new { @id = "DATE_M", @class = "form-control", @type = "text", @Value = Model.DATE_M, @placeholder = "", @disabled = "disabled" } })
+
+                                    @Html.ValidationMessageFor(model => model.DATE_M, "", new { @class = "text-danger" })
+
+
+
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-floating">
+                                    <label  class=" col-form-label-sm" for="inputLastName">التاريخ الهجري</label>
+                                    @Html.EditorFor(model => model.DATE_H, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = "التاريخ الهجري", @disabled = "disabled" } })
+                                    @Html.ValidationMessageFor(model => model.DATE_H, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="col-md-3 row">
+
+                                <div class="form-floating col-md-7 p-0">
+                                    <label  class=" col-form-label-sm" for="inputLastName">تاريخ الادخال</label>
+                                    @Html.EditorFor(model => model.ENTRY_DATE, new { htmlAttributes = new { @class = "form-control", @type = "date", @Value = Model.ENTRY_DATE, @placeholder = "", @disabled = "disabled" } })
+                                    @Html.ValidationMessageFor(model => model.ENTRY_DATE, "", new { @class = "text-danger" })
+
+
+                                </div>
+                                <div class="form-floating col-md-5 ">
+                                    <label  class=" col-form-label-sm" for="inputLastName">السنة المالية </label>
+                                    @Html.EditorFor(model => model.FISCAL_YEAR, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = "السنة المالية", @disabled = "disabled" } })
+                                    @Html.ValidationMessageFor(model => model.FISCAL_YEAR, "", new { @class = "text-danger" })
+
+
+                                </div>
+                            </div>
+
+
+
+
+
+                        </div>
+
+
+                        <div class="row mb-2">
+
+                            <div class="col-md-3">
+                                <div class="form-floating">
+                                    <label  class=" col-form-label-sm" for="inputLastName">الرقم التسلسلي للفاتورة</label>
+                                    <input type="text" class="form-control" id="INV_SERIAL" name="INV_SERIAL" disabled value="@Model.INV_SERIAL" />
+
+                                    @Html.ValidationMessageFor(model => model.INV_SERIAL, "", new { @class = "text-danger" })
+
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-floating">
+                                    <label  class=" col-form-label-sm" for="inputLastName">رقم القيد </label>
+                                    <input type="text" class="form-control" id="UNDER_NO" name="UNDER_NO" disabled value="@ViewBag.UNDER_NO" />
+
+                                    @Html.ValidationMessageFor(model => model.UNDER_NO, "", new { @class = "text-danger" })
+
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-floating">
+                                    <label  class=" col-form-label-sm" for="inputLastName">رقم فاتورة المورد</label>
+                                    @Html.EditorFor(model => model.SUPP_INV_NO, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = "رقم فاتورة المورد", @required = "required", @data_parsley_error_message = "حقل مطلوب", @disabled = "disabled" } })
+                                    @Html.ValidationMessageFor(model => model.SUPP_INV_NO, "", new { @class = "text-danger" })
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-3 row">
+                                <div class="col-md-6">
+                                    <label  class=" col-form-label-sm" for="inputPasswordConfirm">احتساب الضريبة</label>
+                                    <div class="switch-h d-flex justify-content-between align-items-center border p-1 ">
+                                        <h5 class="font-size-h4 text-dark mb-0">نعم</h5>
+                                        <div class="custom-control switch custom-switch-info custom-switch custom-control-inline mr-0">
+                                            @*@Html.CheckBoxFor(model => model.VAT_ACC, new { @class = "custom-control-input", @id = "RECEIVED", @checked = "checked", })*@
+                                            @if (Model.VAT_AMOUNT > 0)
+                                            {
+                                                <input type="checkbox" class="custom-control-input" id="ISVAT" disabled checked="checked" onchange="IsVat()" />
+                                            }
+                                            else
+                                            {
+                                                <input type="checkbox" class="custom-control-input" id="ISVAT" disabled onchange="IsVat()" />
+                                            }
+                                            <label  class=" col-form-label-sm custom-control-label mr-1" for="ISVAT">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <label  class=" col-form-label-sm" for="inputPasswordConfirm">فاتورة صيانة</label>
+                                    <div class="switch-h d-flex justify-content-between align-items-center border p-1 ">
+                                        <h5 class="font-size-h4 text-dark mb-0">نعم</h5>
+                                        <div class="custom-control switch custom-switch-info custom-switch custom-control-inline mr-0">
+                                            @Html.CheckBoxFor(model => model.M_INV.Value, new { @class = "custom-control-input", @id = "M_INV", @disabled = "disabled" })
+                                            <label  class=" col-form-label-sm custom-control-label mr-1" for="M_INV">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-2">
+
+                            <div class="col-md-3">
+                                <div class="form-floating">
+                                    <label  class=" col-form-label-sm" for="inputLastName">حساب المدين</label>
+
+                                    <select id="DEBTOR_ACC" name="DEBTOR_ACC" dir="ltr" class="form-control selectpicker " data-live-search="true" disabled required data-parsley-error-message="حقل مطلوب">
+                                        <option value="">اختار المدين</option>
+                                        @foreach (var p in ViewBag.AllAcc)
+                                        {
+                                            if (Model.DEBTOR_ACC == p.ACC_NO)
+                                            {
+                                                <option class="themeprimary" selected value="@p.ACC_NO"> @p.ACC_NAME (@p.ACC_NO)(@p.NOTE)</option>
+                                            }
+                                            else
+                                            {
+                                                <option class="themeprimary" value="@p.ACC_NO"> @p.ACC_NAME (@p.ACC_NO)(@p.NOTE)</option>
+                                            }
+
+                                        }
+
+                                    </select>
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-floating">
+                                    <label  class=" col-form-label-sm" for="inputLastName"> المورد </label>
+                                    <select id="CREDITOR_ID" name="CREDITOR_ID" dir="ltr" disabled class="form-control selectpicker " data-live-search="true" required data-parsley-error-message="حقل مطلوب" onchange="CreditorSelect()">
+                                        <option value="">اختار المورد</option>
+                                        @foreach (var p in ViewBag.AllAcc)
+                                        {
+                                            if (Model.ACC_NO == p.ACC_NO)
+                                            {
+                                                <option class="themeprimary" selected value='{"ACC_NO":"@p.ACC_NO","ACC_PARENT":"@p.ACC_PARENT","INFO_ID":"@p.PERSONAL_NO","VAT_NO":"@try
+                                            {@p.PERSONAL_INFOTBL_Model.VAT_NO} catch { } "} '>
+                                                    @p.ACC_NAME (@p.NOTE)
+                                                </option>
+                                            }
+                                            else
+                                            {
+                                                <option class="themeprimary" value='{"ACC_NO":"@p.ACC_NO","ACC_PARENT":"@p.ACC_PARENT","INFO_ID":"@p.PERSONAL_NO","VAT_NO":"@try
+                                            {@p.PERSONAL_INFOTBL_Model.VAT_NO} catch { } "} '>
+                                                    @p.ACC_NAME (@p.NOTE)
+                                                </option>
+                                            }
+
+                                        }
+
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-floating">
+                                    <label  class=" col-form-label-sm" for="inputLastName">الرقم الضريببي</label>
+
+                                    <input type="text" class="form-control" id="CUST_VATNO" name="CUST_VATNO" disabled />
+                                    @Html.ValidationMessageFor(model => model.CUST_VATNO, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+                            <div class="col-md-3 row">
+                                <div class="form-floating col-md-6 p-0">
+                                    <label  class=" col-form-label-sm" for="inputLastName">حساب المورد</label>
+                                    <input type="text" class="form-control text-sm-center" id="ACC_NO" name="ACC_NO" disabled />
+                                    @*@Html.ValidationMessageFor(model => model.DEBTOR_ACC, "", new { @class = "text-danger" })*@
+                                </div>
+                                <div class="form-floating col-md-6 ">
+                                    <label  class=" col-form-label-sm" for="inputLastName">الحساب الرئيسي </label>
+                                    <input type="text" class="form-control" id="ACC_PARENT" name="ACC_PARENT" disabled />
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row mb-4">
+
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <label  class=" col-form-label-sm" for="inputLastName"> ملاحظة</label>
+                                    @Html.EditorFor(model => model.NOTE, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = "البيان", @disabled = "disabled" } })
+                                    @Html.ValidationMessageFor(model => model.NOTE, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-floating">
+                                    <label  class=" col-form-label-sm" for="inputPasswordConfirm">ترحيل</label>
+                                    <div class="switch-h d-flex justify-content-between align-items-center border p-1 ">
+                                        <h5 class="font-size-h4 text-dark mb-0">نعم</h5>
+                                        <div class="custom-control switch custom-switch-info custom-switch custom-control-inline mr-0">
+                                            @if (Model.INV_TRANSED == 1)
+                                            {
+                                                <input type="checkbox" checked class="custom-control-input" id="INV_TRANSED" name="INV_TRANSED" />
+                                            }
+                                            else
+                                            {
+                                                <input type="checkbox" class="custom-control-input" id="INV_TRANSED" name="INV_TRANSED" />
+                                            }
+                                            <label  class=" col-form-label-sm custom-control-label mr-1" for="INV_TRANSED">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+
+
+                        <div class="row mb-0">
+                            <div class="col-md-12">
+
+                                <div class="form-check form-switch col-md-12 p-0 ">
+                                    <div class="card mb-4 col-md-12  ">
+                                        <div class="card-header bg-success ">
+                                            <i class="fas fa-table me-1"></i>
+                                            التفاصيل
+
+                                        </div>
+                                        <div class="card-body">
+                                            <table id="myTable" class="table table-bordered">
+                                                <thead>
+                                                    <tr>
+                                                        <th>الرقم</th>
+                                                        <th>البيان</th>
+                                                        <th>اسعر افرادي</th>
+                                                        <th>الكمية</th>
+                                                        <th>اجمالي الخصم</th>
+                                                        <th>صافي المبلغ</th>
+                                                        <th>نسبة الضريبة</th>
+                                                        <th>قيمة الضريبة الاجمالية</th>
+                                                        <th>الاجمالي</th>
+
+
+
+
+                                                    </tr>
+
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var item in Model.INV_DTTBL_Collection)
+                                                    {
+                                                        decimal total = 0;
+                                                        decimal vat = 0;
+                                                        decimal TOTAL_DISC=  0;
+                                                        decimal VAT_AMOUNT =  0;
+                                                        decimal TOTAL_PRICE = 0;
+
+                                                        try { TOTAL_DISC = item.TOTAL_DISC.Value; } catch { }
+                                                        try { VAT_AMOUNT = item.VAT_AMOUNT.Value; } catch { }
+                                                        try { TOTAL_PRICE = item.TOTAL_PRICE.Value; } catch { }
+
+                                                        total = TOTAL_PRICE + VAT_AMOUNT - TOTAL_DISC;
+                                                        vat = (item.VAT_AMOUNT.Value / (total - item.VAT_AMOUNT.Value)) * 100;
+                                                        <tr>
+                                                            <td>@i</td>
+                                                            <td>@item.ITEMTBL_Model.ITEM_NAME</td>
+                                                            <td>@item.SING_PRICE</td>
+                                                            <td>@item.QNTY</td>
+                                                            <td>@item.TOTAL_DISC</td>
+                                                            <td>@item.TOTAL_PRICE</td>
+                                                            <td>@vat</td>
+
+                                                            <td>@item.VAT_AMOUNT</td>
+                                                            <td>@total</td>
+                                                        </tr>
+                                                        i++;
+                                                    }
+                                                </tbody>
+                                                <tfoot>
+
+
+
+                                                    <tr class="h5">
+                                                        <td colspan="4">الاجمالي</td>
+                                                        <td>@Model.DISCOUNT</td>
+                                                        <td>@Model.INV_COST</td>
+                                                        <td></td>
+                                                        <td>@Model.VAT_AMOUNT</td>
+                                                        <td>@Model.PUR_COST</td>
+                                                    </tr>
+                                                </tfoot>
+                                            </table>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row mb-0">
+                            <div class="col-md-12">
+
+                                <div class="form-check form-switch col-md-12 p-0 ">
+                                    <div class="card mb-4 col-md-12  ">
+                                        <div class="card-header bg-primary">
+                                            <i class="fas fa-table me-1"></i>
+                                            القيد
+
+                                        </div>
+                                        <div class="card-body">
+                                            <table id="myTable" class="table table-bordered table-sm table-striped">
+                                                <thead>
+                                                    <tr>
+                                                        <th>الحساب</th>
+
+                                                        <th>مدين</th>
+                                                        <th>دائن </th>
+
+
+
+
+
+                                                    </tr>
+
+                                                </thead>
+                                                <tbody>
+                                                    @foreach (var item in ViewBag.Acc)
+                                                    {
+
+
+
+                                                        <tr>
+                                                            <td>@item.ALL_ACC_NOTBL_Model.ACC_NAME </td>
+                                                            <td>@item.FROM_HIM</td>
+                                                            <td>@item.FOR_HIM</td>
+
+
+                                                        </tr>
+
+                                                    }
+                                                <tr class="h5">
+                                                    <td>الاجمالي</td>
+                                                    <td>@ViewBag.FROM_HIM</td>
+                                                    <td>@ViewBag.FOR_HIM</td>
+
+                                                </tr>
+                                                </tbody>
+
+                                            </table>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+
+                        <div class="row mt-4 mb-0">
+                            @if (Model.INV_TRANSED != 1)
+                            {
+                                <div class="d-grid col-md-6 "><a class="btn btn-primary btn-block" id="btnSave" href="~/PUY_INVOICETBL/Update/@Model.INV_SERIAL">تعديل</a></div>
+                                <div class="d-grid col-md-6"><a class="btn btn-danger btn-block" href="~/puy_invoicetbl/Index">رجوع</a></div>
+
+                            }
+                            else
+                            {
+                                <div class="d-grid col-md-12"><a class="btn btn-danger btn-block" href="~/puy_invoicetbl/Index">رجوع</a></div>
+
+                            }
+                        
+
+
+                        </div>
+                    </form>
+                </div>
+                <div class="card-footer text-center py-3">
+                    <div class="small">Tech Light</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div class="modal fade" id="sccece-model" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog " role="document">
+        <div class="modal-content">
+            <div class="modal-header justify-content-center" id="mesg">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+
+
+
+    var Itemlist = [];
+    var vat;
+
+    $(document).ready(function () {
+        GetAccCenterForProj();
+        CreditorSelect();
+
+    });
+
+
+
+    function CreditorSelect() {
+
+        var CREDITOR = $("#CREDITOR_ID").val();
+        var b = JSON.parse(CREDITOR)
+        $("#ACC_NO").val(b.ACC_NO);
+        $("#ACC_PARENT").val(b.ACC_PARENT);
+        $("#CUST_VATNO").val(b.VAT_NO);
+
+
+    }
+
+
+    function GetAccCenterForProj() {
+        id = $("#PROJ_NO").val();
+        $.ajax({
+            async: 'false',
+            Cache: 'false',
+            type: 'get',
+            contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+            url: '/api/PUY_INVOICE/GetAccCenterForProj/' + id, // this for calling the web method function in cs code.
+
+
+            success: function (response) {
+                type = $("#INV_DUC_TYPE").val();
+                vat = response.data.VATTBL_Model.VAT_PERCENT * 100
+                $("#VAT_ACC").val(response.data.VAT_ACC)
+
+                $("#VAT").val(vat)
+
+
+                if (type == 8) {
+                    $('select[name=DEBTOR_ACC]').val(response.data.CASH_PUR_ACC);
+                    $('#DEBTOR_ACC').selectpicker('refresh')
+
+                } else if (type == 9) {
+                    $('select[name=DEBTOR_ACC]').val(response.data.FUTURES_ACC);
+                    $('#DEBTOR_ACC').selectpicker('refresh')
+                }
+
+
+
+            }
+
+
+        });
+
+
+    }
+
+</script>

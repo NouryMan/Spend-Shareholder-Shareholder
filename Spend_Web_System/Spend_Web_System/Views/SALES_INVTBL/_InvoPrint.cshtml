@@ -1,0 +1,471 @@
+﻿
+
+@model Spend.Models.SALES_INVTBL_Model
+@using System.Globalization;
+@{
+    Layout = "";
+    ViewBag.Title = "تفاصيل فواتير المبيعات";
+    int i = 1;
+    decimal total = 0;
+
+    try
+    {
+        total = Model.PRICE.Value + Model.VAT_AMOUNT.Value;
+
+    }
+    catch
+    {
+
+    }
+
+
+    NumberFormatInfo nfi = new CultureInfo("en-US", false).NumberFormat;
+    nfi.CurrencyDecimalDigits = 2;
+    nfi.NumberDecimalDigits = 2;
+    nfi.CurrencyDecimalSeparator = ".";
+    nfi.CurrencyGroupSeparator = ",";
+    nfi.CurrencySymbol = "";
+    nfi.CurrencyNegativePattern = 1;
+    //var answer = Convert.ToDecimal(xyz).
+}
+
+
+
+
+
+
+
+<div class="m-4 p-4 border border-primary" id="invoprintDiv">
+
+
+    <div class=" row  ">
+
+
+        <div class="row ">
+
+            <div class="col-md-4 pl-4">
+
+
+                <div class="text-center  h4">
+
+                   شركة مجموعة جدة الأولى 
+
+                </div>
+                <div class="text-center  h4">
+
+                       للاستثمارات العقارية
+
+                </div>
+                <div class="text-center h5">
+
+                    قـسـم الحـسـابـات
+
+                </div>
+                <div class="text-center text-150 h5">
+
+                    www.Jeddah-first.com
+
+                </div>
+
+            </div>
+            <div class="col-md-4 mt-2">
+
+
+                <center>
+
+
+                    <img src="~/assets/images/CompnyLogo.png" style="width:280px;height:150px" />
+
+                </center>
+
+            </div>
+            <div class="col-md-4  justify-content-end">
+
+
+                <div class="text-center h4">
+
+                    First Jeddah Group Company
+
+                </div>
+                <div class="text-center h5 ">
+
+                    Accounts Department
+
+                </div>
+                <div class="text-center text-150 h5">
+
+                    www.Jeddah-first.com
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 mt-4">
+
+            @*<hr />*@
+        </div>
+
+    </div>
+
+    <div class="row bg-info">
+
+        <div class="col-md-12 mt-2">
+            <center>
+
+                <h1 for="inputLastName" style="font-family:'Times New Roman'  " id="type"> @Model.DUC_TYPETBL_Model.ACC_AR_NAME </h1>
+
+            </center>
+        </div>
+    </div>
+
+    <div class="row bg-light" dir="rtl">
+        <div class="col-md-12">
+            <div class="row  p-2 ">
+
+                <div class="col-md-8 ">
+                    <div class="form-floating  ">
+                        رقم الفاتورة : @Model.INV_NO
+
+                    </div>
+
+                </div>
+                <div class="col-md-4">
+                    <div class="form-floating">
+                        تاريخ الفاتورة : @Model.DATE_M.Value.ToString("dd-MM-yyyy") .
+
+                    </div>
+                </div>
+
+
+            </div>
+            <div class="row p-2  ">
+
+                <div class="col-md-8">
+                    <div class="form-floating">
+                        اسم العميل : @try
+                        {@Model.SALES_CUSTTBL_Model.CUST_NAME_AR <span> .</span>}
+                    catch { }
+
+                    </div>
+
+                </div>
+                <div class="col-md-4">
+                    <div class="form-floating">
+
+                        رقم جوال العميل : @try
+                        {@Model.SALES_CUSTTBL_Model.PHONE}
+                    catch { }
+
+                        .
+                    </div>
+                </div>
+
+
+            </div>
+
+
+            <div class="row   p-2 ">
+
+                <div class="col-md-8">
+                    <div class="form-floating">
+                        ملاحظة : @Model.NOTE .
+
+                    </div>
+
+                </div>
+
+
+
+            </div>
+
+        </div>
+    </div>
+    <div class="row ">
+
+        <div class="col-md-12">
+            <div class="form-floating">
+                <hr />
+                @*<br />*@
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="row margin-50 mb-5 pb-4 ">
+
+        <div class="col-12">
+
+            <table class="table  table-responsive-sm table-striped " style="">
+                <thead>
+
+
+                    <tr class="bg-info">
+
+
+
+                        <th><h6>رقم</h6> </th>
+                        <th><h6>البيان</h6></th>
+                        <th><h6>اسم المشروع</h6></th>
+                        @*<th><h6>العمارة</h6></th>
+                        <th><h6>الشقة</h6></th>
+                        <th><h6>الكمية</h6></th>*@
+                        <th><h6>التكلفة</h6></th>
+                        <th><h6>نسبة الضريبة</h6> </th>
+                        <th><h6>قيمة الضريبة </h6> </th>
+                        <th><h6>الخصم</h6> </th>
+                        <th><h6>المجموع</h6> </th>
+
+                        @*<th></th>*@
+                    </tr>
+                </thead>
+                <tbody>
+
+
+                    @foreach (var item in Model.SALES_INVDTTBL_Collection)
+                    {
+
+
+                        <tr>
+
+                            <td>
+
+                                @{ try
+                                    {
+                                        @i
+
+                                    }
+                                    catch
+                                    {
+
+                                    }
+                                }
+
+                            </td>
+                            <td>
+                                @{ try
+                                    {@item.DISCRIPTION }
+                                catch
+                                {
+
+                                }
+                                }
+                            </td>
+                            <td>
+                                @{ try
+                                    { @item.PROJECTTBL_Model.PROJECT_NAME }
+                                catch
+                                {
+
+                                }
+                                }
+                            </td>
+
+
+
+                            <td>
+                                @{ try
+                                    {@Convert.ToDecimal(item.PRICE).ToString("C", nfi)
+                                }
+                                catch
+                                {
+
+                                }
+                                }
+                            </td>
+                            <td>
+                                @{ try
+                                    {
+                                        decimal p = item.VAT_AMOUNT.Value / item.PRICE.Value;
+                                        p = p * 100;
+                                        <span>@p % </span>
+
+                                    }
+                                    catch
+                                    {
+
+                                    }
+                                }
+                            </td>
+                            <td>
+                                @{ try
+                                    {@Convert.ToDecimal(item.VAT_AMOUNT).ToString("C", nfi)
+                                }
+                                catch
+                                {
+
+                                }
+                                }
+
+                            </td>
+                            <td>
+                                @{ try
+                                    {@Convert.ToDecimal(item.DISCOUNT.Value).ToString("C", nfi);
+                                }
+                                catch
+                                {
+
+                                }
+                                }
+
+                            </td>
+                            <td>
+                                @{ try
+                                    {
+                                        @Convert.ToDecimal(item.PUR_PRICE).ToString("C", nfi)
+                                    }
+                                    catch
+                                    {
+
+                                    }
+                                }
+
+                            </td>
+
+
+
+
+                            @*<td>
+
+
+                                <div class="row">
+                                    <div class="col-md-5 m-1">
+                                        <a href="~/Agreement/edit/@item.INV_NO" class="btn btn-info btn-sm "> <i class="fa  fa-edit"> </i>  </a>
+                                    </div>
+
+                                    <div class="col-md-5 m-1">
+
+
+                                        <a href="~/Agreement/create/@ViewBag.utlist_id?project_id=@ViewBag.project_id" class="btn btn-danger btn-sm "> <i class="fa fa-trash"></i>  </a>
+                                    </div>
+
+                                </div>
+
+                            </td>*@
+                        </tr>
+
+
+                        i++;
+                    }
+
+
+                </tbody>
+            </table>
+
+        </div>
+        </div>
+
+
+
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+
+        <hr />
+
+
+        <div class="row m-3 " dir="ltr">
+            <div class="col-md-3">
+                <div class="">
+
+                    <table class="table  table-info table-striped  " dir="rtl">
+
+                        <tbody>
+                            <tr>
+                                <td><h6>الصافي :@Convert.ToDecimal(Model.PRICE).ToString("C", nfi) </h6></td>
+
+
+
+                            </tr>
+                            <tr>
+
+                                <td><h6>الخصم :@Convert.ToDecimal(Model.DISCOUNT).ToString("C", nfi)</h6></td>
+
+                            </tr>
+                            <tr>
+
+                                <td><h6>الضريبة :@Convert.ToDecimal(Model.VAT_AMOUNT).ToString("C", nfi)</h6></td>
+
+                            </tr>
+                            <tr>
+
+                                <td><h6>الاجمالي :@Convert.ToDecimal(Model.INV_PUR).ToString("C", nfi)</h6></td>
+
+                            </tr>
+
+
+                        </tbody>
+                    </table>
+
+
+                </div>
+            </div>
+
+            <div class="col-md-9">
+                <div class="form-floating">
+
+                    <div class="col-12 col-sm-9 text-grey-d2 text-95 mt-2 mt-lg-0">
+                        <center>
+                            <textarea hidden id="qrcodeValue">@Model.QRCODE</textarea>
+
+
+                            <div class="qrcode"></div>
+                        </center>
+                    </div>
+
+
+                </div>
+
+            </div>
+
+
+        </div>
+
+
+
+
+    </div>
+
+
+
+
+<style>
+    hr {
+        border: 1px solid ;
+        border-color: #17a2b8
+        /*  border-radius: 1px;*/
+    }
+
+    /*tablestyle, tr, td, th, thead {
+        border: 2px solid black;*/
+        /*  border-radius: 1px;*/
+    /*}*/
+</style>
+
+
+
+
+

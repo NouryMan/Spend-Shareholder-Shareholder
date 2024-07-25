@@ -1,0 +1,278 @@
+﻿
+
+
+
+
+
+
+
+<div class="m-4 p-4" id="invoprintDiv"style="margin-top:20px; width: 50rem;" >
+
+
+    <div class=" row ">
+
+
+        <div class="row ">
+
+            <div class="col-md-3 pl-4">
+
+
+                <div class="text-center  h4">
+
+                    شركة اتحاد الماسة للمقاولات
+
+                </div>
+                <div class="text-center h5">
+
+                    قسم التسويق
+
+                </div>
+                <div class="text-center text-150 h5">
+
+                    www.union-diamond.net
+
+                </div>
+
+            </div>
+            <div class="col-md-6 mt-2">
+
+
+                <center>
+
+
+                    <img src="~/assets/images/CompnyLogo.png" style="width:280px;height:150px" />
+
+                </center>
+
+            </div>
+            <div class="col-md-3  justify-content-end">
+
+
+                <div class="text-center h4">
+
+                    Union Diamond Contracting Company
+
+                </div>
+                <div class="text-center h5 ">
+
+                    Marketing Department
+
+                </div>
+                <div class="text-center text-150 h5">
+
+                    www.union-diamond.net
+
+                </div>
+
+            </div>
+
+        </div>
+
+
+
+    </div>
+
+    <div class="row">
+        <div class="col-md-12 mt-4">
+
+            <hr />
+        </div>
+
+    </div>
+
+    <div class="row ">
+
+        <div class="col-md-12 mt-2">
+            <center>
+
+                <h2 for="inputLastName" id="PDUC_TYPE"> </h2>
+
+            </center>
+        </div>
+    </div>
+
+    <div class="" dir="rtl">
+
+        <div class="row  ml-4 ">
+
+            <div class="col-md-8 ">
+                <div class="form-floating  ">
+                    رقم الفاتورة :<span id="PINV_NO"></span>
+                  
+                </div>
+
+            </div>
+            <div class="col-md-4">
+                <div class="form-floating">
+                   تاريخ الفاتورة : <span id="PDATE_M"></span>
+                   
+                </div>
+            </div>
+
+
+        </div>
+        <div class="row ml-4 ">
+
+            <div class="col-md-8">
+                <div class="form-floating">
+                 اسم العميل :<span id="PCUST_NAME_AR"></span>
+          
+                </div>
+
+            </div>
+            <div class="col-md-4">
+                <div class="form-floating">
+                    
+                        رقم جوال العميل :<span id="PPHONE"></span>
+                 
+                  
+                </div>
+            </div>
+
+
+        </div>
+
+
+        <div class="row   ml-4">
+
+            <div class="col-md-8">
+                <div class="form-floating">
+                  ملاحظة :<span id="PNOTE"></span>
+        
+                </div>
+
+            </div>
+
+
+
+        </div>
+
+    </div>
+
+    <div class="row ">
+
+        <div class="col-md-12">
+            <div class="form-floating">
+                <hr />
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="row margin-50 mb-5 pb-4 ">
+
+
+
+        <table id="Print-table" class="table table-bordered table-responsive-sm ">
+            <thead class="thead-dark">
+                <tr>
+
+
+                    <th><h6>رقم</h6> </th>
+                    <th><h6>البيان</h6></th>
+                    @*<th><h6>اسم المشروع</h6></th>*@
+                    @*<th><h6>العمارة</h6></th>
+                    <th><h6>الشقة</h6></th>
+                    <th><h6>الكمية</h6></th>*@
+                    <th><h6>التكلفة</h6></th>
+                    @*<th><h6>الضريبة</h6> </th>*@
+                    <th><h6>قيمة الضريبة </h6> </th>
+                    <th><h6>الخصم</h6> </th>
+                    <th><h6>المجموع</h6> </th>
+
+
+                    @*<th></th>*@
+                </tr>
+            </thead>
+
+            <tbody>
+            </tbody>
+        </table>
+
+     
+    </div>
+
+  
+  
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <br />
+    <hr />
+
+
+    <div class="row m-3 " dir="ltr">
+        <div class="col-md-3">
+            <div class="">
+
+                <table class="table table-bordered " dir="ltr">
+
+                    <tbody>
+                        <tr>
+                            <td><h6>الصافي :<span id="PPRICE"></span> </h6></td>
+
+
+
+                        </tr>
+                        <tr>
+
+                            <td><h6>الخصم :<span id="PDISCOUNT"></span></h6></td>
+
+                        </tr>
+                        <tr>
+
+                            <td><h6>الضريبة :<span id="PVAT_AMOUNT"></span></h6></td>
+
+                        </tr>
+                        <tr>
+
+                            <td><h6>الاجمالي :<span id="PINV_PUR"></span></h6></td>
+
+                        </tr>
+
+
+                    </tbody>
+                </table>
+
+
+            </div>
+        </div>
+
+        <div class="col-md-9">
+            <div class="form-floating">
+
+                <div class="col-12 col-sm-9 text-grey-d2 text-95 mt-2 mt-lg-0">
+                    <center>
+                        <input type="text" hidden id="qrcodeValue"/>
+
+
+                        <div class="qrcode"></div>
+                    </center>
+                </div>
+
+
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+
+
+</div>
+
+
+
+
+
+
+
+
+
+

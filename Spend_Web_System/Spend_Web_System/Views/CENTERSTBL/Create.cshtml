@@ -1,0 +1,644 @@
+﻿@model Spend.Models.CENTERSTBL_Model
+@{
+    ViewBag.Title = "ربط الحسابات بالمراكز";
+}
+
+
+
+
+
+
+
+
+
+<div class="dashboard-content-wrap">
+    <div class="dashboard-bread dashboard--bread dashboard-bread-2">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="breadcrumb-content">
+                        <div class="section-heading">
+                            <h2 class="sec__title font-size-30 text-white">ربط جديد</h2>
+                        </div>
+                    </div><!-- end breadcrumb-content -->
+                </div><!-- end col-lg-6 -->
+                <div class="col-lg-6">
+                    <div class="breadcrumb-list text-right">
+                        <ul class="list-items">
+                            <li><a href="index.html" class="text-white">الصفحة الرئيسية</a></li>
+                            <li>تهئية النظام</li>
+                            <li>ربط الحسابات بالمراكز</li>
+                            <li>انشاء ربط جديد</li>
+                        </ul>
+                    </div><!-- end breadcrumb-list -->
+                </div><!-- end col-lg-6 -->
+            </div><!-- end row -->
+        </div>
+    </div><!-- end dashboard-bread -->
+    <div class="dashboard-main-content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-box">
+                        <div class="form-title-wrap">
+                            <div>
+                                <h3 class="title"> بطاقة ربط</h3>
+                                @*<p class="font-size-14">إظهار 1 إلى 10 من أصل 20 مُدخل</p>*@
+                            </div>
+
+
+
+                        </div>
+                        <div class="form-content">
+
+
+                            @using (Html.BeginForm())
+                            {
+                                @Html.AntiForgeryToken()
+
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+
+
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        <div class="form-floating mb-12 mb-md-0">
+                                            <label for="inputPasswordConfirm"> المشروع</label>
+                                            <select id="PROJECT_NO" name="PROJECT_NO" class="selectpicker  form-control" dir="rtl" data-live-search="true" required >
+                                                <option value=""> المشروع</option>
+                                                @foreach (var item in ViewBag.project)
+                                                {
+
+                                                    <option class="themeprimary" value="@item.PROJECT_NO">
+                                                        @{ try
+                                                            { @item.PROJECT_NAME <span>&nbsp;</span> @item.PROJECT_NO }
+                                                        catch { } }
+                                                    </option>
+                                                }
+
+
+                                            </select>
+                                            @Html.ValidationMessageFor(model => model.PROJECT_NO, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+
+                                <div class="row mb-3">
+
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-6 mb-md-0">
+                                            <label for="inputPasswordConfirm">حساب المالك</label>
+                                            <select id="OWNER_ACC" name="OWNER_ACC" class="selectpicker  form-control" dir="rtl" data-live-search="true" >
+                                                <option value=""> المالك</option>
+                                                @foreach (var item in ViewBag.Owner)
+                                                {
+
+                                                    <option class="themeprimary" value="@item.OWNER_NO">
+                                                        @{ try
+                                                            { @item.OWNER_NAME <span>&nbsp;</span> @item.ACC_NO }
+                                                        catch { } }
+                                                    </option>
+                                                }
+
+                                            </select>
+                                            @Html.ValidationMessageFor(model => model.OWNER_ACC, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-6 mb-md-0">
+                                            <label for="inputPasswordConfirm">حساب البنك</label>
+                                            <select id="BANK_ACC" name="BANK_ACC" class="selectpicker  form-control" dir="rtl" data-live-search="true" required>
+                                                <option value=""> البنك</option>
+                                                @foreach (var item in ViewBag.Bank)
+                                                {
+
+                                                    <option class="themeprimary" value="@item.BANK_NO">
+                                                        @{ try
+                                                            { @item.BANK_NAME <span>&nbsp;</span> @item.ACC_NO }
+                                                        catch { } }
+                                                    </option>
+                                                }
+
+                                            </select>
+                                            @Html.ValidationMessageFor(model => model.BANK_ACC, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-12 mb-md-0">
+                                            <label for="inputPasswordConfirm">حساب النقدية</label>
+                                            <select id="CASH_ACC" name="CASH_ACC" class="selectpicker  form-control" dir="rtl" data-live-search="true" >
+                                                <option value=""> حساب النقدية</option>
+                                                @foreach (var item in ViewBag.ACC)
+                                                {
+
+                                                    <option class="themeprimary" value="@item.ACC_NO">
+                                                        @{ try
+                                                            { @item.ACC_NAME <span>&nbsp;</span> @item.ACC_NO }
+                                                        catch { } }
+                                                    </option>
+                                                }
+
+
+                                            </select>
+                                            @Html.ValidationMessageFor(model => model.CASH_ACC, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-12 mb-md-0">
+                                            <label for="inputPasswordConfirm">حساب المشتريات النقدية</label>
+                                            <select id="CASH_PUR_ACC" name="CASH_PUR_ACC" class="selectpicker  form-control" dir="rtl" data-live-search="true" >
+                                                <option value=""> حساب المشتريات النقدية</option>
+                                                @foreach (var item in ViewBag.ACC)
+                                                {
+
+                                                    <option class="themeprimary" value="@item.ACC_NO">
+                                                        @{ try
+                                                            { @item.ACC_NAME <span>&nbsp;</span> @item.ACC_NO }
+                                                        catch { } }
+                                                    </option>
+                                                }
+
+
+                                            </select>
+                                            @Html.ValidationMessageFor(model => model.CASH_PUR_ACC, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-12 mb-md-0">
+                                            <label for="inputPasswordConfirm">حساب المشتريات الاجلة</label>
+                                            <select id="FUTURES_ACC" name="FUTURES_ACC" class="selectpicker  form-control" dir="rtl" data-live-search="true" >
+                                                <option value=""> حساب المشتريات الاجلة</option>
+                                                @foreach (var item in ViewBag.ACC)
+                                                {
+
+                                                    <option class="themeprimary" value="@item.ACC_NO">
+                                                        @{ try
+                                                            { @item.ACC_NAME <span>&nbsp;</span> @item.ACC_NO }
+                                                        catch { } }
+                                                    </option>
+                                                }
+
+
+                                            </select>
+                                            @Html.ValidationMessageFor(model => model.FUTURES_ACC, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-12 mb-md-0">
+                                            <label for="inputPasswordConfirm">حساب المبيعات</label>
+                                            <select id="SALES_ACC" name="SALES_ACC" class="selectpicker  form-control" dir="rtl" data-live-search="true" >
+                                                <option value=""> حساب المبيعات</option>
+                                                @foreach (var item in ViewBag.ACC)
+                                                {
+
+                                                    <option class="themeprimary" value="@item.ACC_NO">
+                                                        @{ try
+                                                            { @item.ACC_NAME <span>&nbsp;</span> @item.ACC_NO }
+                                                        catch { } }
+                                                    </option>
+                                                }
+
+
+                                            </select>
+                                            @Html.ValidationMessageFor(model => model.SALES_ACC, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-12 mb-md-0">
+                                            <label for="inputPasswordConfirm">حساب المسوق</label>
+                                            <select id="MARKETER_ACC" name="MARKETER_ACC" class="selectpicker  form-control" dir="rtl" data-live-search="true">
+                                                <option value=""> حساب المسوق</option>
+                                                @foreach (var item in ViewBag.Markting)
+                                                {
+
+                                                    <option class="themeprimary" value="@item.ID_NO">
+                                                        @{ try
+                                                            { @item.M_NAME <span>&nbsp;</span> @item.ACC_NO }
+                                                        catch { } }
+                                                    </option>
+                                                }
+
+
+                                            </select>
+                                            @Html.ValidationMessageFor(model => model.MARKETER_ACC, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-12 mb-md-0">
+                                            <label for="inputPasswordConfirm">حساب مشتريات العهد</label>
+                                            <select id="FUT_PUR_CASH" name="FUT_PUR_CASH" class="selectpicker  form-control" dir="rtl" data-live-search="true" >
+                                                <option value=""> حساب مشتريات العهد</option>
+                                                @foreach (var item in ViewBag.ACC)
+                                                {
+
+                                                    <option class="themeprimary" value="@item.ACC_NO">
+                                                        @{ try
+                                                            { @item.ACC_NAME <span>&nbsp;</span> @item.ACC_NO }
+                                                        catch { } }
+                                                    </option>
+                                                }
+
+
+                                            </select>
+                                            @Html.ValidationMessageFor(model => model.FUT_PUR_CASH, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-12 mb-md-0">
+                                            <label for="inputPasswordConfirm">حساب عمولات تنفيذ الاعمال</label>
+                                            <select id="SALES_COMM_ACC" name="SALES_COMM_ACC" class="selectpicker  form-control" dir="rtl" data-live-search="true" >
+                                                <option value=""> حساب عمولات تنفيذ الاعمال</option>
+                                                @foreach (var item in ViewBag.ACC)
+                                                {
+
+                                                    <option class="themeprimary" value="@item.ACC_NO">
+                                                        @{ try
+                                                            { @item.ACC_NAME <span>&nbsp;</span> @item.ACC_NO }
+                                                        catch { } }
+                                                    </option>
+                                                }
+
+
+                                            </select>
+                                            @Html.ValidationMessageFor(model => model.SALES_COMM_ACC, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-12 mb-md-0">
+                                            <label for="inputPasswordConfirm">نسبة تنفيذ الاعمال</label>
+                                            @Html.EditorFor(model => model.WORKING_COMM_PERCENT, new { htmlAttributes = new { @class = "form-control", @type = "number" } })
+
+                                            @Html.ValidationMessageFor(model => model.WORKING_COMM_PERCENT, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-12 mb-md-0">
+                                            <label for="inputPasswordConfirm">صندوق الصرفية</label>
+                                            <select id="SPEND_BOX" name="SPEND_BOX" class="selectpicker  form-control" dir="rtl" data-live-search="true">
+                                                <option value=""> صندوق الصرفية</option>
+                                                @foreach (var item in ViewBag.Box)
+                                                {
+
+                                                    <option class="themeprimary" value="@item.BOX_NO">
+                                                        @{ try
+                                                            { @item.BOX_NO <span>&nbsp;</span> @item.BOX_NAME }
+                                                        catch { } }
+                                                    </option>
+                                                }
+
+
+                                            </select>
+                                            @Html.ValidationMessageFor(model => model.SPEND_BOX, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-12 mb-md-0">
+                                            <label for="inputPasswordConfirm">صندوق التسويق</label>
+                                            <select id="MARKETING_BOX" name="MARKETING_BOX" class="selectpicker  form-control" dir="rtl" data-live-search="true" >
+                                                <option value=""> صندوق التسويق</option>
+                                                @foreach (var item in ViewBag.Box)
+                                                {
+
+                                                    <option class="themeprimary" value="@item.BOX_NO">
+                                                        @{ try
+                                                            { @item.BOX_NO <span>&nbsp;</span> @item.BOX_NAME }
+                                                        catch { } }
+                                                    </option>
+                                                }
+
+
+                                            </select>
+                                            @Html.ValidationMessageFor(model => model.MARKETING_BOX, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-12 mb-md-0">
+                                            <label for="inputPasswordConfirm">صندوق اعمال التنفيذ</label>
+                                            <select id="WORKING_COMM_BOX" name="WORKING_COMM_BOX" class="selectpicker  form-control" dir="rtl" data-live-search="true" >
+                                                <option value=""> صندوق اعمال التنفيذ</option>
+                                                @foreach (var item in ViewBag.Box)
+                                                {
+
+                                                    <option class="themeprimary" value="@item.BOX_NO">
+                                                        @{ try
+                                                            { @item.BOX_NO <span>&nbsp;</span> @item.BOX_NAME }
+                                                        catch { } }
+                                                    </option>
+                                                }
+
+
+                                            </select>
+                                            @Html.ValidationMessageFor(model => model.WORKING_COMM_BOX, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-12 mb-md-0">
+                                            <label for="inputPasswordConfirm">صندوق الدخل</label>
+                                            <select id="INCOME_BOX" name="INCOME_BOX" class="selectpicker  form-control" dir="rtl" data-live-search="true">
+                                                <option value=""> صندوق الدخل</option>
+                                                @foreach (var item in ViewBag.Box)
+                                                {
+
+                                                    <option class="themeprimary" value="@item.BOX_NO">
+                                                        @{ try
+                                                            { @item.BOX_NO <span>&nbsp;</span> @item.BOX_NAME }
+                                                        catch { } }
+                                                    </option>
+                                                }
+
+
+                                            </select>
+                                            @Html.ValidationMessageFor(model => model.INCOME_BOX, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-12 mb-md-0">
+                                            <label for="inputPasswordConfirm">حساب العمولات الاخرى</label>
+                                            <select id="OTHER_COMM_ACC" name="OTHER_COMM_ACC" class="selectpicker  form-control" dir="rtl" data-live-search="true" >
+                                                <option value=""> حساب العمولات الاخرى</option>
+                                                @foreach (var item in ViewBag.ACC)
+                                                {
+
+                                                    <option class="themeprimary" value="@item.ACC_NO">
+                                                        @{ try
+                                                            { @item.ACC_NAME <span>&nbsp;</span> @item.ACC_NO }
+                                                        catch { } }
+                                                    </option>
+                                                }
+
+
+                                            </select>
+                                            @Html.ValidationMessageFor(model => model.OTHER_COMM_ACC, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-12 mb-md-0">
+                                            <label for="inputPasswordConfirm">صندوق العمولات الاخرى</label>
+                                            <select id="OTHER_COMM_BOX" name="OTHER_COMM_BOX" class="selectpicker  form-control" dir="rtl" data-live-search="true" >
+                                                <option value=""> صندوق العمولات الاخرى</option>
+                                                @foreach (var item in ViewBag.Box)
+                                                {
+
+                                                    <option class="themeprimary" value="@item.BOX_NO">
+                                                        @{ try
+                                                            { @item.BOX_NO <span>&nbsp;</span> @item.BOX_NAME }
+                                                        catch { } }
+                                                    </option>
+                                                }
+
+
+                                            </select>
+                                            @Html.ValidationMessageFor(model => model.OTHER_COMM_BOX, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+
+
+
+
+
+
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-12 mb-md-0">
+                                            <label for="inputPasswordConfirm">الضريبة</label>
+                                            <select id="VAT_ID" name="VAT_ID" class="selectpicker  form-control" dir="rtl" data-live-search="true" >
+                                                <option value="">الضريبة</option>
+                                                @foreach (var item in ViewBag.Vat)
+                                                {
+
+                                                    <option class="themeprimary" value="@item.ID">
+                                                        @{ try
+                                                            { @item.VAT_NAME <span>&nbsp;</span> @item.VAT_NO }
+                                                        catch { } }
+                                                    </option>
+                                                }
+
+
+                                            </select>
+                                            @Html.ValidationMessageFor(model => model.VAT_ID, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-12 mb-md-0">
+                                            <label for="inputPasswordConfirm">حساب الضرائب</label>
+                                            <select id="VAT_ACC" name="VAT_ACC" class="selectpicker  form-control" dir="rtl" data-live-search="true" >
+                                                <option value=""> حساب الضرائب</option>
+                                                @foreach (var item in ViewBag.ACC)
+                                                {
+
+                                                    <option class="themeprimary" value="@item.ACC_NO">
+                                                        @{ try
+                                                            { @item.ACC_NAME <span>&nbsp;</span> @item.ACC_NO }
+                                                        catch { } }
+                                                    </option>
+                                                }
+
+
+                                            </select>
+                                            @Html.ValidationMessageFor(model => model.VAT_ACC, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+
+
+                                <div class="row mb-3">
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-12 mb-md-0">
+                                            <label for="inputPasswordConfirm">صندوق الضريبة</label>
+                                            <select id="VAT_BOX" name="VAT_BOX" class="selectpicker  form-control" dir="rtl" data-live-search="true" >
+                                                <option value=""> صندوق الضريبة</option>
+                                                @foreach (var item in ViewBag.Box)
+                                                {
+
+                                                    <option class="themeprimary" value="@item.BOX_NO">
+                                                        @{ try
+                                                            { @item.BOX_NO <span>&nbsp;</span> @item.BOX_NAME }
+                                                        catch { } }
+                                                    </option>
+                                                }
+
+
+                                            </select>
+                                            @Html.ValidationMessageFor(model => model.VAT_BOX, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-12 mb-md-0">
+                                            <label for="inputPasswordConfirm"> حساب تكلفة الاعمال</label>
+                                            <select id="WORK_COST_ACC" name="WORK_COST_ACC" class="selectpicker  form-control" dir="rtl" data-live-search="true" >
+                                                <option value=""> حساب تكلفة الاعمال</option>
+                                                @foreach (var item in ViewBag.ACC)
+                                                {
+
+                                                    <option class="themeprimary" value="@item.ACC_NO">
+                                                        @{ try
+                                                            { @item.ACC_NAME <span>&nbsp;</span> @item.ACC_NO }
+                                                        catch { } }
+                                                    </option>
+                                                }
+
+
+                                            </select>
+                                            @Html.ValidationMessageFor(model => model.WORK_COST_ACC, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+
+
+                                </div>
+
+
+
+
+
+                                <div class="row mt-4 mb-0">
+                                    <div class="d-grid col-md-6 "><button class="btn btn-primary btn-block" type="submit">حفظ</button></div>
+
+                                    <div class="d-grid col-md-6"><a class="btn btn-danger btn-block" href="~/centerstbl/Index">رجوع</a></div>
+
+
+
+
+
+                                </div>
+                            }
+
+                        </div>
+                    </div><!-- end form-box -->
+                </div><!-- end col-lg-12 -->
+            </div><!-- end row -->
+
+            <div class="border-top mt-5"></div>
+            <div class="row align-items-center">
+                <div class="col-lg-7">
+                    <div class="copy-right padding-top-30px">
+
+                        <p class="copy__desc">
+                            &copy; Copyright Tech Light 2022. Made with
+                            <span class="la la-heart"></span> by <a href="http://Tech-Light.com/">Noury</a>
+                        </p>
+
+                    </div><!-- end copy-right -->
+                </div><!-- end col-lg-7 -->
+                <div class="col-lg-5">
+                    <div class="footer-social-box text-right padding-top-30px">
+                        <ul class="social-profile">
+                            <li><a href="#"><i class="lab la-facebook-f"></i></a></li>
+                            <li><a href="#"><i class="lab la-twitter"></i></a></li>
+                            <li><a href="#"><i class="lab la-instagram"></i></a></li>
+                            <li><a href="#"><i class="lab la-linkedin-in"></i></a></li>
+                        </ul>
+                    </div><!-- end copy-right-content -->
+                </div><!-- end col-lg-5 -->
+            </div><!-- end row -->
+        </div><!-- end container-fluid -->
+    </div><!-- end dashboard-main-content -->
+</div><!-- end dashboard-content-wrap -->
+
+
+
+<script>
+    function getAcc_NO() {
+
+
+
+        var id = $('#ACC_PARENT').val();
+        $('#parent-Acc').val(id);
+
+        var ajaxMethodUrl = "/ACC_TREETBL/getAcc_NO?parent_id=" + id;
+
+        $.ajax({
+            async: false,
+            cache: true,
+            type: "Get",
+            url: ajaxMethodUrl,
+            success: function (data) {
+                $('#Acc_NOString').val(data);
+
+
+            },
+
+
+        });
+    }
+
+
+
+
+
+
+</script>
+
+
+
+
+
+

@@ -1,0 +1,358 @@
+﻿
+@model Spend.Models.SALES_INVTBL_Model
+@{
+    Layout = "";
+    ViewBag.Title = "تفاصيل فواتير المبيعات";
+    int i = 1;
+
+}
+
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+
+
+
+
+
+    <!--Basic Styles-->
+    <link href="~/assets/bootstrap-5.1.1-dist/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/assets/bootstrap-5.1.1-dist/css/bootstrap.rtl.min.css" rel="stylesheet" />
+    <link href="~/assets/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/assets/css/weather-icons.min.css" rel="stylesheet" />
+    <link href="~/assets/css/Styledist.css" rel="stylesheet" />
+    <link href="~/assets/css/StylesAR.css" rel="stylesheet" />
+
+    @*Basic Scripts*@
+
+    <script src="~/Scripts/jquery-3.6.0.min.js"></script>
+
+    @*<script src="~/assets/bootstrap-5.1.1-dist/js/bootstrap.min.js"></script>*@
+    @*<script src="~/assets/bootstrap-5.1.1-dist/js/bootstrap.bundle.min.js"></script>*@
+
+    <script src="~/assets/js/slimscroll/jquery.slimscroll.min.js"></script>
+    <script src="https://use.fontawesome.com/161921e556.js"></script>
+    <script src="~/assets/js/allmin.js"></script>
+
+
+
+</head>
+
+
+<body class="sb-nav-fixed">
+
+    @if (Model != null)
+    {
+
+        <div class="container-fluid px-4">
+
+            <div class="card mb-1">
+                <div class="card-body">
+
+                    <div class="row mb-2">
+
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <h3>
+                                فاتورة مبيعات
+                            </h3>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <span>
+                                رقم الفاتورة :@Model.INV_NO
+                            </span>
+                        </div>
+
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <span>
+                                التاريخ:@{try
+                                    { @Model.DATE_M}
+                                catch { }
+                                }
+                            </span>
+                        </div>
+
+                    </div>
+
+
+                    <div class="row">
+
+
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <span>
+                                اسم العميل :@{try
+                                    { @Model.SALES_CUSTTBL_Model.CUST_NAME_AR}
+                                catch { }
+                                }
+                            </span>
+                        </div>
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+
+                            <span>
+                                رقم هوية العميل :@{try
+                                    { @Model.SALES_CUSTTBL_Model.CUST_ID}
+                                catch { }
+                                }
+                            </span>
+                        </div>
+
+                        <div class="col-lg-4 col-md-4 col-sm-4">
+                            <span>
+                                ملاحظة :@{try
+                                    { @Model.NOTE}
+                                catch { }
+                                }
+                            </span>
+                        </div>
+                    </div>
+
+
+
+                </div>
+            </div>
+            <div class="card mb-1" id="DivIdToPrint">
+                <div class="card-header">
+                    <i class="fas fa-table me-1"></i>
+                    الاصناف
+
+                </div>
+                <div class="card-body">
+                    <table class="table table-bordered table-sm small">
+                        <thead>
+                            <tr>
+                                <th>رقم </th>
+                                <th>اسم المشروع</th>
+                                <th>العمارة</th>
+                                <th>الشقة</th>
+                                <th>الكمية</th>
+                                <th>كلفة السكن</th>
+                                <th>الضريبة </th>
+                                <th>قيمة الضريبة الاجمالية </th>
+                                <th>الخصم </th>
+                                <th>المجموع </th>
+
+
+                                @*<th></th>*@
+                            </tr>
+                        </thead>
+
+                        <tbody>
+
+                            @foreach (var item in Model.SALES_INVDTTBL_Collection)
+                            {
+
+
+                                <tr>
+
+                                    <td>
+
+                                        @{ try
+                                            {
+                                                @i
+
+                                            }
+                                            catch
+                                            {
+
+                                            }
+                                        }
+
+                                    </td>
+
+                                    <td>
+                                        @{ try
+                                            { @item.PROJECTTBL_Model.PROJECT_NAME }
+                                        catch
+                                        {
+
+                                        }
+                                        }
+                                    </td>
+                                    <td>
+                                        @{ try
+                                            {@item.PARTTBL_Model.PART_NAME }
+                                        catch
+                                        {
+
+                                        }
+                                        }
+                                    </td>
+
+                                    <td>
+                                        @{ try
+                                            {@item.UNITTBL_Model.UNIT_NAME }
+                                        catch
+                                        {
+
+                                        }
+                                        }
+                                    </td>
+                                    <td>
+                                        @{ try
+                                            {@item.QNTY }
+                                        catch
+                                        {
+
+                                        }
+                                        }
+                                    </td>
+                                    <td>
+                                        @{ try
+                                            {@item.PRICE }
+                                        catch
+                                        {
+
+                                        }
+                                        }
+                                    </td>
+                                    <td>
+                                        @{ try
+                                            {@item.TAXED_COST }
+                                        catch
+                                        {
+
+                                        }
+                                        }
+                                    </td>
+                                    <td>
+                                        @{ try
+                                            {@item.VAT_AMOUNT }
+                                        catch
+                                        {
+
+                                        }
+                                        }
+
+                                    </td>
+                                    <td>
+                                        @{ try
+                                            {@item.DISCOUNT}
+                                        catch
+                                        {
+
+                                        }
+                                        }
+
+                                    </td>
+                                    <td>
+                                        @{ try
+                                            {
+                                                 @item.PUR_PRICE 
+                                             
+                                            }
+                                            catch
+                                            {
+
+                                            }
+                                        }
+
+                                    </td>
+
+
+
+
+                                    @*<td>
+
+
+                                            <div class="row">
+                                                <div class="col-md-5 m-1">
+                                                    <a href="~/Agreement/edit/@item.INV_NO" class="btn btn-info btn-sm "> <i class="fa  fa-edit"> </i>  </a>
+                                                </div>
+
+                                                <div class="col-md-5 m-1">
+
+
+                                                    <a href="~/Agreement/create/@ViewBag.utlist_id?project_id=@ViewBag.project_id" class="btn btn-danger btn-sm "> <i class="fa fa-trash"></i>  </a>
+                                                </div>
+
+                                            </div>
+
+                                        </td>*@
+                                </tr>
+
+
+                                i++;
+                            }
+
+
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <div class="card mb-1">
+                <div class="card-body">
+                    @*<a href="~/SALES_INVTBL/Create" class="btn btn-primary btn-sm "> <i class="fa fa-plus"> </i> انشاء فاتورة جديدة </a>*@
+
+                    <div class="row mb-2">
+
+
+                        <div class="col-lg-4 col-md-4">
+                            <span>
+                                القيمة:@Model.PRICE
+                            </span>
+                        </div>
+                        <div class="col-lg-4 col-md-4 ">
+                            <span>
+                                الخصم:@{try
+                                    { @Model.DISCOUNT}
+                                catch { }
+                                }
+                            </span>
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="row">
+
+
+                        <div class="col-lg-4 col-md-4">
+                            <span>
+                                اجمالي الضريبة :@{try
+                                    { @Model.TAXED_COST}
+                                catch { }
+                                }
+                            </span>
+                        </div>
+                        <div class="col-lg-4 col-md-4">
+
+                            <span>
+                                الاجمالي : @{ try
+                                    {
+                                        var t = Model.PRICE + Model.TAXED_COST;
+                                        @t
+                                    }
+                                    catch
+                                    {
+
+                                    }
+                                }
+                            </span>
+                        </div>
+
+                    </div>
+
+
+
+                </div>
+            </div>
+
+
+        </div>
+
+    }
+
+    <script src="~/assets/bootstrap-5.1.1-dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/assets/js/scripts.js"></script>
+    <script src="~/assets/js/Chart_min.js"></script>
+    <script src="~/assets/js/datatables.js"></script>
+    <script src="~/assets/js/datatables-simple-demo.js"></script>
+
+
+
+
+
+
+</body>
+</html>

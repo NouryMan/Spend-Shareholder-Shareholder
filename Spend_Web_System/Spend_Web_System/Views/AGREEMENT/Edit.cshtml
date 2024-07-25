@@ -1,0 +1,246 @@
+﻿@model Spend.Models.PERSON_ACC_PROJTBL_Model
+@{
+    ViewBag.Title = "تعديل";
+    string disabled = "";
+   
+}
+
+
+
+<div class="container" dir="rtl">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="card shadow-lg border-0 rounded-lg mt-5">
+                <div class="card-header"><h3 class="text-center font-weight-light my-4">تعديل اتفاقية</h3></div>
+                <div class="card-body">
+
+                    @using (Html.BeginForm())
+                    {
+                        @Html.AntiForgeryToken()
+
+                        if (Model.CREDENCE_DTTBL_Collection.Count() > 0)
+                        {
+                            disabled = "disabled";
+                            <input class="form-control" id="PERSON_ACC_ID" name="PERSON_ACC_ID" type="hidden" value="@Model.PERSON_ACC_ID" placeholder="" />
+
+                        }
+
+                        <div class="row mb-2">
+                            <div class="col-md-6">
+                                <div class="form-floating mb-3 mb-md-0">
+                                    <label for="inputFirstName">اسم المشروع</label>
+                                    <input class="form-control" id="ID" name="ID" type="hidden" value="@Model.ID" placeholder="" />
+
+                                    <input class="form-control" id="PROJECT_NO" name="PROJECT_NO" type="hidden" value="@ViewBag.project_id" placeholder="" />
+                                    <span class="form-control">@ViewBag.project_name</span>
+
+
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <label for="inputLastName">اسم الشغلة</label>
+                                    <input class="form-control" id="UTL_NO" name="UTL_NO" value="@ViewBag.utlist_id" type="hidden" placeholder="" />
+                                    <span class="form-control">@ViewBag.Utl_Name</span>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-floating mb-2 ">
+                            <label for="inputLastName">المقاول</label>
+                            <select id="PERSON_ACC_ID" name="PERSON_ACC_ID" class="selectpicker  form-control" @disabled dir="rtl" data-live-search="true" required onchange="custmerdeteilse()">
+                                <option value="">اختار المقاول</option>
+                                @foreach (var item in ViewBag.Provider)
+                                {
+                                    if (Model.PERSON_ACC_ID > 0)
+                                    {
+                                        if (item.ID == Model.PERSON_ACC_ID)
+                                        {
+                                            <option class="themeprimary" value="@item.ID" selected="selected">
+                                                @{ try
+                                                    { @item.PERSONAL_INFOTBL_Model.AR_NAME <span>&nbsp;</span> @item.NOTE }
+                                                catch { }
+                                                }
+                                            </option>
+                                        }
+                                        else
+                                        {
+                                            <option class="themeprimary" value="@item.ID">
+                                                @{ try
+                                                    { @item.PERSONAL_INFOTBL_Model.AR_NAME <span>&nbsp;</span> @item.NOTE }
+                                                catch { } }
+                                            </option>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <option class="themeprimary" value="@item.ID">
+                                            @{ try
+                                                { @item.PERSONAL_INFOTBL_Model.AR_NAME <span>&nbsp;</span> @item.NOTE }
+                                            catch { } }
+                                        </option>
+                                    }
+
+                                }
+
+
+                            </select>
+                            @Html.ValidationMessageFor(model => model.PERSON_ACC_ID, "", new { @class = "text-danger" })
+
+
+                        </div>
+                        <div class="row mb-2">
+                            <div class="col-md-3">
+                                <div class="form-floating mb-3 mb-md-0">
+                                    <label for="inputLastName">جزء المشروع</label>
+                                    <select id="SUB_PROJ_NO" name="SUB_PROJ_NO" class="selectpicker  form-control" data-live-search="true" required>
+                                        <option value="0">اختار جزء المشروع</option>
+                                        @foreach (var item in ViewBag.Subproject)
+                                        {
+                                            if (Model.SUB_PROJ_NO > 0)
+                                            {
+                                                if (item.SUB_PROJ_NO == Model.SUB_PROJ_NO)
+                                                {
+                                                    <option class="themeprimary" value="@item.SUB_PROJ_NO" selected="selected"> @item.SUB_PROJ_NAME</option>
+                                                }
+                                                else
+                                                {
+                                                    <option class="themeprimary" value="@item.SUB_PROJ_NO"> @item.SUB_PROJ_NAME</option>
+                                                }
+                                            }
+                                            else
+                                            {
+                                                <option class="themeprimary" value="@item.SUB_PROJ_NO"> @item.SUB_PROJ_NAME</option>
+                                            }
+                                        }
+
+                                    </select>
+
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-floating mb-3 mb-md-0">
+                                    <label for="inputLastName"> العمارة</label>
+                                    <select id="PART_NO" name="PART_NO" class="selectpicker  form-control" data-live-search="true" required>
+                                        <option value="0">اختار العمارة</option>
+                                        @foreach (var item in ViewBag.Part_b)
+                                        {
+                                            <option class="themeprimary" value="@item.PART_NO"> @item.PART_NAME</option>
+                                        }
+
+                                    </select>
+
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-floating mb-3 mb-md-0">
+                                    <label for="inputLastName">الشقة</label>
+                                    <select id="UNIT_NO" name="UNIT_NO" class="selectpicker  form-control" data-live-search="true" required>
+                                        <option value="0">اختار الشقة</option>
+                                        @foreach (var item in ViewBag.Unit_b)
+                                        {
+                                            <option class="themeprimary" value="@item.UNIT_NO"> @item.UNIT_NAME</option>
+                                        }
+
+                                    </select>
+
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-floating mb-3 mb-md-0">
+                                    <label for="inputLastName">وحدة القياس</label>
+                                    <select id="UTL_TYPE" name="UTL_TYPE" class="selectpicker  form-control  form-select-lg mb-4" data-live-search="true" required>
+                                        <option value="0">اختار وحدة القياس</option>
+                                        @foreach (var item in ViewBag.Utl_type_b)
+                                        {
+                                            <option class="themeprimary" value="@item.ID_NO"> @item.UTL_TYPE_NAME</option>
+                                        }
+                                    </select>
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-4">
+
+                            <div class="col-md-4">
+                                <div class="form-floating mb-3 mb-md-0">
+                                    <label for="inputPasswordConfirm">سعر الوحدة</label>
+                                    @*<input class="form-control" id="inputPasswordConfirm" type="number" placeholder="Confirm password" />*@
+                                    @Html.EditorFor(model => model.SING_PRICE, new { htmlAttributes = new { @class = "form-control", @id = "SING_PRICE", @type = "number", @placeholder = "", @onchange = "total()" } })
+                                    @Html.ValidationMessageFor(model => model.SING_PRICE, "", new { @class = "text-danger" })
+
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-floating mb-3 mb-md-0">
+                                    <label for="inputPasswordConfirm">الكمية</label>
+                                    @Html.EditorFor(model => model.QNTY, new { htmlAttributes = new { @class = "form-control", @id = "QNTY", @type = "number", @placeholder = "", @onchange = "total()" } })
+                                    @Html.ValidationMessageFor(model => model.QNTY, "", new { @class = "text-danger" })
+
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-floating mb-3 mb-md-0">
+                                    <label for="inputFirstName">الاجمالي</label>
+                                    <input class="form-control" id="totel_val" type="number" value="" disabled="disabled" placeholder="" />
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row mb-3">
+
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <label for="inputLastName">المدة باليوم</label>
+                                    @Html.EditorFor(model => model.EXECUT_PERIOD, new { htmlAttributes = new { @class = "form-control", @type = "number", @placeholder = "" } })
+                                    @Html.ValidationMessageFor(model => model.EXECUT_PERIOD, "", new { @class = "text-danger" })
+
+
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <label for="inputLastName">استحقاق الدفعة كل كم</label>
+                                    @Html.EditorFor(model => model.AMOUNT_PAY_PERIOD, new { htmlAttributes = new { @class = "form-control", @type = "number", @placeholder = "" } })
+                                    @Html.ValidationMessageFor(model => model.AMOUNT_PAY_PERIOD, "", new { @class = "text-danger" })
+
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mb-3">
+
+                            <div class="col-md-12">
+                                <div class="form-floating">
+                                    <label for="inputLastName">ملاحظة</label>
+                                    @Html.EditorFor(model => model.NOTE, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = "" } })
+                                    @Html.ValidationMessageFor(model => model.NOTE, "", new { @class = "text-danger" })
+
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row mt-4 mb-0">
+                            <div class="d-grid col-md-6 "><button class="btn btn-primary btn-block" type="submit">حفظ</button></div>
+                            <div class="d-grid col-md-6"><a class="btn btn-danger btn-block" href="~/Agreement/Index/@ViewBag.utlist_id?project_id=@ViewBag.project_id">رجوع</a></div>
+                        </div>
+                    }
+                </div>
+                <div class="card-footer text-center py-3">
+                    <div class="small">Tech Light</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function total()
+    {
+        totalp = $("#SING_PRICE").val() * $("#QNTY").val();
+        $("#totel_val").val(totalp);
+    }
+</script>

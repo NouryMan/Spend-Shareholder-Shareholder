@@ -1,0 +1,128 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{0AC03678-F206-41CC-9030-16533C21D3BB}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Spend.Models</RootNamespace>
+    <AssemblyName>Spend.Models</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.Annotations, Version=4.2.1.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a, processorArchitecture=MSIL">
+      <HintPath>..\packages\System.ComponentModel.Annotations.5.0.0\lib\net461\System.ComponentModel.Annotations.dll</HintPath>
+    </Reference>
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Data.Linq" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ACCH_BALANCEV_Model.cs" />
+    <Compile Include="ACCH_BALANCE_SUMMARYV_Model.cs" />
+    <Compile Include="ACCH_OPBOXTBL_Model.cs" />
+    <Compile Include="ACCH_OPBOX_ACTIONSTBL_Model.cs" />
+    <Compile Include="ACCH_PROJ_BOX_PERCENTTBL_Model.cs" />
+    <Compile Include="ACCH_PROJ_PERCENTTBL_Model.cs" />
+    <Compile Include="ACCH_TYPETBL_Model.cs" />
+    <Compile Include="ACCOUNTTBL_Model.cs" />
+    <Compile Include="ACC_HOLDERTBL_Model.cs" />
+    <Compile Include="ACC_NATTBL_Model.cs" />
+    <Compile Include="ACC_TREETBL1_ACCOUNTTB_Model.cs" />
+    <Compile Include="ACC_TREETBL1_Model.cs" />
+    <Compile Include="ACC_TREETBL_Model.cs" />
+    <Compile Include="ACC_TYPETBL_Model.cs" />
+    <Compile Include="ALL_ACC_NOTBL_Model.cs" />
+    <Compile Include="ARCHIVE_Model.cs" />
+    <Compile Include="BANKTBL_Model.cs" />
+    <Compile Include="BOXTBL_Model.cs" />
+    <Compile Include="BOX_OPTBL_Model.cs" />
+    <Compile Include="BOX_PROJ_ACTIONSTBL_Model.cs" />
+    <Compile Include="BOX_TRANS_OPTYPES_Model.cs" />
+    <Compile Include="CENTERSTBL_Model.cs" />
+    <Compile Include="CREDENCETBL_Model.cs" />
+    <Compile Include="CREDENCE_DTTBL_Model.cs" />
+    <Compile Include="CUSTODY_TYPETBL_Model.cs" />
+    <Compile Include="CUSTOMERTBL_Model.cs" />
+    <Compile Include="DUC_TYPETBL_Model.cs" />
+    <Compile Include="ENGINEERTBL_Model.cs" />
+    <Compile Include="FEATURETBL_Model.cs" />
+    <Compile Include="FEATURE_ROLETBL_Model.cs" />
+    <Compile Include="FISCAL_YEAR_Model.cs" />
+    <Compile Include="HOLDER_PERCENT_DT_Model.cs" />
+    <Compile Include="HOLDER_PERCENT_HD.cs" />
+    <Compile Include="HOLDER_TRANS_DT_Model.cs" />
+    <Compile Include="HOLDER_TRANS_HD_Model.cs" />
+    <Compile Include="INVOICETBL_Model.cs" />
+    <Compile Include="INV_DTTBL_Model.cs" />
+    <Compile Include="ITEMTBL_Model.cs" />
+    <Compile Include="MARKETINGTBL_Model.cs" />
+    <Compile Include="MAX_UNDER_OPV_Model.cs" />
+    <Compile Include="OPERATIONAL_PALANCE_Model.cs" />
+    <Compile Include="OWNERTBL_Model.cs" />
+    <Compile Include="PARTTBL_Model.cs" />
+    <Compile Include="PERCENT_EST_Model.cs" />
+    <Compile Include="PERSONAL_INFOTBL_Model.cs" />
+    <Compile Include="PERSON_ACCTBL_Model.cs" />
+    <Compile Include="PERSON_ACC_PROJTBL_Model.cs" />
+    <Compile Include="PERSON_DESCRIPTIONTBL_Model.cs" />
+    <Compile Include="PROJECTTBL_Model.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ROLETBL_Model.cs" />
+    <Compile Include="SALES_CUSTTBL_Model.cs" />
+    <Compile Include="SALES_INVDTTBL_Model.cs" />
+    <Compile Include="SALES_INVTBL_Model.cs" />
+    <Compile Include="SCRIPT_ACTIONSTBL_Model.cs" />
+    <Compile Include="SCRIP_DTTBL_Model.cs" />
+    <Compile Include="SCRIP_OPTYPETBL_Model.cs" />
+    <Compile Include="SCRIP_TYPETBL_Model.cs" />
+    <Compile Include="SPEND_SCRIPTBL_Model.cs" />
+    <Compile Include="STAGESTBL_Model.cs" />
+    <Compile Include="SUB_PROJTBL_Model.cs" />
+    <Compile Include="TRANS_HD_Model.cs" />
+    <Compile Include="UNITTBL_Model.cs" />
+    <Compile Include="USERSTBL_Model.cs" />
+    <Compile Include="USER_ROLETBLE_Model.cs" />
+    <Compile Include="USER_UTLIST_PROJECTTBL_Model.cs" />
+    <Compile Include="UTLISTTBL_Model.cs" />
+    <Compile Include="UTL_TYPETBL_Model.cs" />
+    <Compile Include="VATTBL_Model.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="packages.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+</Project>

@@ -1,0 +1,866 @@
+﻿@model Spend.Models.SALES_INVTBL_Model
+@{
+    ViewBag.Title = "تعديل فاتورة";
+}
+
+
+
+<div class="container" dir="rtl">
+    <div class="row justify-content-center">
+        <div class="col-lg-12">
+            <div class="card shadow-lg border-0 rounded-lg mt-5">
+                <div class="card-header"><h3 class="text-center font-weight-light my-4">  فاتورة مبيعات </h3></div>
+                <div class="card-body">
+
+                    <form id="Add" method="post">
+                        @Html.AntiForgeryToken()
+
+                        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                        <div class="row mb-3">
+
+                            <div class="col-md-3">
+                                <div class="form-floating">
+                                    <label for="inputLastName">نوع الفاتورة</label>
+                                    <select id="INV_DOC_TYPE" name="INV_DOC_TYPE" dir="ltr" class="form-control selectpicker " data-live-search="true" required data-parsley-error-message="حقل مطلوب">
+
+                                        @foreach (var p in ViewBag.Duc_Type)
+                                        {
+                                            if (Model.INV_DOC_TYPE == p.ID)
+                                            {
+                                                <option selected class="themeprimary" value="@p.ID"> @p.ACC_AR_NAME</option>
+ }
+                                            else
+                                            {
+                                                <option class="themeprimary" value="@p.ID"> @p.ACC_AR_NAME</option>
+}
+
+                                        }
+
+                                    </select>
+
+                                </div>
+                            </div>
+
+                            <div class="col-md-3">
+                                <div class="form-floating">
+                                    <label for="inputLastName">طريقة الدفع</label>
+                                    <select id="OPTYPE" name="OPTYPE" dir="ltr" class="form-control selectpicker " data-live-search="true" required data-parsley-error-message="حقل مطلوب">
+
+                                        @foreach (var p in ViewBag.SCRIP_OPTYPE)
+                                        {
+                                            if (p.ID_NO == Model.OPTYPE)
+                                            {
+                                                <option selected class="themeprimary" value="@p.ID_NO"> @p.NAME</option>
+                                            }
+                                            else
+                                            {
+                                                <option class="themeprimary" value="@p.ID_NO"> @p.NAME</option>
+                                            }
+                                        }
+
+                                    </select>
+
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-floating">
+                                    <label for="inputLastName">رقم الفاتورة</label>
+                                    <input type="text" class="form-control" id="INV_NO" name="INV_NO" disabled value="@Model.INV_NO" />
+
+                                    @Html.ValidationMessageFor(model => model.INV_NO, "", new { @class = "text-danger" })
+
+
+                                </div>
+                            </div>
+                            <div class="col-md-3">
+                                <div class="form-floating">
+                                    <label class=" col-form-label-sm" for="inputLastName">رقم القيد </label>
+                                    <input type="text" class="form-control" id="UNDER_NO" name="UNDER_NO" disabled value="@Model.UNDER_NO" />
+
+                                    @Html.ValidationMessageFor(model => model.UNDER_NO, "", new { @class = "text-danger" })
+
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <div class="row mb-3">
+
+
+                            <div class="col-md-4">
+                                <div class="form-floating">
+                                    <label class=" col-form-label-sm" for="inputLastName">التاريخ الميلادي</label>
+                                   
+
+                                   <input type="date"id="DATE_M" class = "form-control" value="@Model.DATE_M.Value.ToString("yyyy-MM-dd")"  />
+                                    @Html.ValidationMessageFor(model => model.DATE_M, "", new { @class = "text-danger" })
+
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-floating">
+                                    <label class=" col-form-label-sm" for="inputLastName">التاريخ الهجري</label>
+                                    @Html.EditorFor(model => model.DATE_H, new { htmlAttributes = new { @class = "form-control", @id = "DATE_H", @type = "text", @placeholder = "التاريخ الهجري" } })
+                                    @Html.ValidationMessageFor(model => model.DATE_H, "", new { @class = "text-danger" })
+                                </div>
+                            </div>
+
+
+                            <div class="col-md-4">
+                                <div class="form-floating">
+                                    <label for="inputLastName">السنة المالية</label>
+                                    @Html.EditorFor(model => model.FISCAL_YEAR, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = "", @disabled = "disabled" } })
+                                    @Html.ValidationMessageFor(model => model.FISCAL_YEAR, "", new { @class = "text-danger" })
+
+
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="row mb-3">
+
+                            <div class="col-md-4">
+                                <div class="form-floating">
+                                    <label for="inputLastName">العميل</label>
+                                    <select id="SALES_CUST_ID" name="SALES_CUST_ID" dir="ltr" class="form-control selectpicker " data-live-search="true" required data-parsley-error-message="حقل مطلوب">
+
+                                        @foreach (var p in ViewBag.CUST)
+                                        {
+                                            if (Model.SALES_CUST_ID == p.CUST_ID)
+                                            {
+                                                <option class="themeprimary" selected value="@p.CUST_ID"> @p.CUST_NAME_AR</option>
+                                            }
+                                            else
+                                            {
+                                                <option class="themeprimary" value="@p.CUST_ID"> @p.CUST_NAME_AR</option>
+                                            }
+                                        }
+
+                                    </select>
+
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-floating">
+                                    <label for="inputLastName">حساب المبيعات</label>
+                                    <select id="SALES_ACC" name="SALES_ACC" dir="ltr" class="form-control selectpicker " data-live-search="true" required data-parsley-error-message="حقل مطلوب">
+                                        <option value="">اختار حساب</option>
+                                        @foreach (var p in ViewBag.AllAcc)
+                                        {
+                                            if (Model.SALES_ACC == p.ACC_NO)
+                                            {
+                                                <option class="themeprimary" selected value="@p.ACC_NO"> @p.ACC_NAME (@p.ACC_NO)(@p.NOTE)</option>
+                                            }
+                                            else
+                                            {
+                                                <option class="themeprimary" value="@p.ACC_NO"> @p.ACC_NAME (@p.ACC_NO)(@p.NOTE)</option>
+                                            }
+                                        }
+
+                                    </select>
+
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="form-floating">
+                                    <label for="inputLastName">الضريبة</label>
+                                    <select id="VAT_ID" name="VAT_ID" dir="ltr" class="form-control selectpicker " data-live-search="true" onchange="VatChange()">
+                                        <option value='{"ID":"","VAT":"0"}'>اختار الضريبة</option>
+                                        @foreach (var p in ViewBag.VAT)
+                                        {
+                                            if (Model.VAT_ID == p.ID)
+                                            {
+                                             <option class="themeprimary"selected value='{"ID":"@p.ID","VAT":"@p.VAT_PERCENT"}'> @p.VAT_NAME</option>
+                                            }
+                                            else
+                                            { 
+                                             <option class="themeprimary" value='{"ID":"@p.ID","VAT":"@p.VAT_PERCENT"}'> @p.VAT_NAME</option>
+                                            }
+                                        }
+
+                                    </select>
+                                </div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="row mb-5">
+
+
+
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <label for="inputLastName">ملاحظة</label>
+                                    @Html.EditorFor(model => model.NOTE, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = "" } })
+                                    @Html.ValidationMessageFor(model => model.NOTE, "", new { @class = "text-danger" })
+
+
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-floating">
+                                    <label class=" col-form-label-sm" for="inputPasswordConfirm">ترحيل</label>
+                                    <div class="switch-h d-flex justify-content-between align-items-center border p-1 ">
+                                        <h5 class="font-size-h4 text-dark mb-0">نعم</h5>
+                                        <div class="custom-control switch custom-switch-info custom-switch custom-control-inline mr-0">
+                                            @if (Model.TRANSED == true)
+                                            {
+                                                <input type="checkbox"  checked="checked" class="custom-control-input" id="TRANSED" name="TRANSED" />
+                                            }
+                                            else
+                                            { <input type="checkbox"  class="custom-control-input" id="TRANSED" name="TRANSED" />}
+
+                                            <label class=" col-form-label-sm custom-control-label mr-1" for="TRANSED">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <span>التفاصيل</span>
+                        <div class="row mb-3">
+
+                            <div class="col-md-4 p-1">
+                                <div class="form-floating">
+                                    <label for="inputLastName">الوصف</label>
+                                    <input type="text" id="DISCRIPTION" class="form-control" />
+
+                                </div>
+                            </div>
+                            <div class="col-md-4 p-1">
+                                <div class="form-floating">
+                                    <label class=" col-form-label-sm" for="inputLastName">اسم المشروع</label>
+                                    <select id="PROJ_NO" name="PROJ_NO" dir="ltr" class="form-control selectpicker " data-live-search="true">
+                                        <option value="">اختار المشروع</option>
+                                        @foreach (var p in ViewBag.proj)
+                                        {
+                                            <option class="themeprimary" value="@p.PROJECT_NO"> @p.PROJECT_NAME</option>
+                                        }
+
+                                    </select>
+
+                                </div>
+                            </div>
+                            <div class="col-md-2 p-1">
+                                <div class="form-floating">
+                                    <label for="inputLastName">العمارة</label>
+                                    <select id="PART_PROJ" name="PART_PROJ" dir="ltr" class="form-control selectpicker " data-live-search="true">
+                                        <option>اختار</option>
+                                        @foreach (var p in ViewBag.Part_b)
+                                        {
+                                            <option class="themeprimary" value="@p.PART_NO"> @p.PART_NAME</option>
+                                        }
+
+                                    </select>
+
+
+                                </div>
+                            </div>
+                            <div class="col-md-2 p-1">
+                                <div class="form-floating">
+                                    <label for="inputLastName">الوحدة</label>
+                                    <select id="UNIT_NO" name="UNIT_NO" dir="ltr" class="form-control selectpicker " data-live-search="true">
+                                        <option>اختار</option>
+                                        @foreach (var p in ViewBag.Unitt_b)
+                                        {
+                                            <option class="themeprimary" value="@p.UNIT_NO"> @p.UNIT_NAME</option>
+                                        }
+
+                                    </select>
+
+
+                                </div>
+                            </div>
+                            </div>
+                            <div class="row mb-3">
+                                <div class="col-md-2 p-1">
+                                    <div class="form-floating">
+                                        <label for="inputLastName">القيمة </label>
+                                        <input type="text" id="IPRICE" value="0" class="form-control" onchange="numberWithCommas(this)" onkeyup="ItemCalculator()" />
+
+                                    </div>
+                                </div>
+                                <div class="col-md-2 p-1">
+                                    <div class="form-floating">
+                                        <label for="inputLastName">الخصم</label>
+                                        <input type="text" id="IDISCOUNT" value="0" class="form-control" onchange="numberWithCommas(this)" onkeyup="ItemCalculator()" />
+
+                                    </div>
+                                </div>
+                                <div class="col-md-2 p-1">
+                                    <div class="form-floating">
+                                        <label for="inputLastName">نسبة الضريبة</label>
+                                        <input type="number" id="VAT_PERCENT" value="0" class="form-control" onkeyup="ItemCalculator()" />
+
+                                    </div>
+                                </div>
+                                <div class="col-md-2 p-1">
+                                    <div class="form-floating">
+                                        <label for="inputLastName">قيمة الضريبة</label>
+                                        <input type="number" id="IVAT_AMOUNT" value="0" class="form-control" disabled />
+
+
+                                    </div>
+                                </div>
+                                <div class="col-md-2 p-1">
+                                    <div class="form-floating">
+                                        <label for="inputLastName">الاجمالي</label>
+                                        <input type="text" id="PUR_PRICE" value="0" class="form-control" disabled />
+
+
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-2 ">
+                                    <label class=" col-form-label-sm" for="inputLastName">اضافة</label>
+                                    <div class="form-floating pt-6 mt-6 ">
+                                        <button class="btn  btn-primary btn-block " id="btnAdd" type="button" onclick="AddToOrderList()"><span class="la la-plus"></span></button>
+                                    </div>
+                                </div>
+
+                            </div>
+                            </div>
+
+                            <div class="row mb-3">
+                                <div class="col-md-12">
+
+                                    <div class="form-check form-switch col-md-12 p-0 ">
+                                        <div class="card mb-4 col-md-12  ">
+                                            <div class="card-header ">
+                                                <i class="fas fa-table me-1"></i>
+                                                التفاصيل
+
+                                            </div>
+                                            <div class="card-body">
+                                                <table id="myTable" class="table table-bordered">
+                                                    <thead>
+                                                        <tr>
+                                                            <th>الرقم</th>
+                                                            <th>المشروع</th>
+                                                            <th>الوصف</th>
+                                                            <th>الكمية</th>
+                                                            <th>الكلفة</th>
+                                                            <th>الخصم</th>
+                                                            <th>نسبة الضريبة</th>
+                                                            <th>قيمة الضريبة الاجمالية</th>
+                                                            <th>المجموع</th>
+
+
+
+                                                            <th></th>
+                                                        </tr>
+                                                    </thead>
+
+                                                    <tbody>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-4">
+
+                                <div class="col-md-2">
+                                    <div class="form-floating">
+                                        <label class=" col-form-label-sm" for="inputLastName">مبلغ الفاتورة</label>
+
+                                        <input type="text" class="form-control" id="PRICE" name="PRICE" value="@Model.PRICE" disabled />
+
+
+                                    </div>
+                                </div>
+
+
+                                <div class="col-md-2">
+                                    <div class="form-floating">
+                                        <label class=" col-form-label-sm" for="inputLastName">اجمالي الخصم</label>
+                                        <input type="text" class="form-control" id="DISCOUNT" value="@Model.DISCOUNT"  onchange="numberWithCommas(this)"/>
+
+
+
+                                    </div>
+                                </div>
+                                <div class="col-md-2 ">
+                                    <div class="form-floating">
+                                        <label class=" col-form-label-sm  " for="inputLastName">اجمالي الضريبة</label>
+                                        <input type="text" class="form-control" id="VAT_AMOUNT" value="@Model.VAT_AMOUNT" disabled />
+
+
+
+                                    </div>
+
+                                </div>
+                                <div class="col-md-2">
+                                    <div class="form-floating">
+                                        <label class=" col-form-label-sm" for="inputLastName">اجمالي الفاتورة مع الضريبة</label>
+                                        @Html.EditorFor(model => model.INV_PUR, new { htmlAttributes = new { @id = "INV_PUR", @class = "form-control", @type = "text", @placeholder = "", @disabled = "disabled" } })
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+
+
+                            <div class="row mt-4 mb-0">
+
+                                <div class="d-grid col-md-6 " id="sav-btn"><button class="btn btn-primary btn-block" onclick="Save()" type="button">حفظ</button></div>
+
+                                <div class="d-grid col-md-6 " id="don-sav-btn" style="display:none"><a class="btn btn-info btn-block" href="~/SALES_INVTBL/InvoTranse/@Model.INV_NO">ترحيل</a></div>
+
+                                <div class="d-grid col-md-6"><a class="btn btn-danger btn-block" href="~/SALES_INVTBL/Index">رجوع</a></div>
+
+
+
+
+
+                            </div>
+</form>
+                </div>
+                <div class="card-footer text-center py-3">
+                    <div class="small">Tech Light</div>
+                </div>
+                <div hidden>
+                    @Html.Partial("_InvoPrintJS")
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="sccece-model" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog " role="document">
+        <div class="modal-content">
+            <div class="modal-header justify-content-center" id="mesg">
+
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+
+<script src="~/Scripts/Qrcode/jquery.qrcode.min.js"></script>
+
+<script>
+    var Itemlist = [];
+    var vat = 0;
+
+    $(document).ready(function () {
+       
+        IntalOrderList();
+        AddItemToTabel();
+
+       
+    });
+
+    function IntalOrderList() {
+        var id = $("#INV_NO").val();
+
+        jQuery.ajax({
+
+            async: false,
+            type: "Get",
+            url: '/api/API_SALES_INV/GetINV_Dt/' + id,
+            success: function (data) {
+                if (data.success == true) {
+                    data = data.data;
+                    for (var i = 0; i < data.length; i++) {
+                       
+                        //var vAT = (parseInt(data.data[i].VAT_AMOUNT) / parseInt(data.data[i].TOTAL_PRICE)) * 100
+                        //tOTAL = data.data[i].TOTAL_PRICE + data.data[i].VAT_AMOUNT - data.data[i].TOTAL_DISC;
+                        Itemlist.push({ PROJ_NO: data[i].PROJ_NO, PROJECT_NAME: data[i].PROJECTTBL_Model.PROJECT_NAME, PART_PROJ: data[i].PART_PROJ, UNIT_NO: data[i].UNIT_NO, QNTY: data[i].QNTY, PRICE: data[i].PRICE, DISCRIPTION: data[i].DISCRIPTION, DISCOUNT: data[i].DISCOUNT, PUR_PRICE: data[i].PUR_PRICE, VAT_AMOUNT: data[i].VAT_AMOUNT, VAT_ID: data[i].VAT_ID });
+
+
+                     
+                    }
+
+                } else {
+
+                }
+            }
+
+        });
+
+
+    }
+
+
+    $("#DATE_M").change(function () {
+
+
+       
+        $("#DATE_H").val(GetDate($("#DATE_M").val(),"m"))
+
+       
+    });
+
+    $("#DATE_H").change(function () {
+
+        $("#DATE_M").val(moment(GetDate($("#DATE_H").val(),"h")).format('YYYY-MM-DD'))
+
+
+    });
+
+    function GetDate(date, type) {
+        var reusert;
+        var url = "";
+        if (type == "m") {
+            url = "https://api.aladhan.com/v1/gToH?date=" + moment(date).format('DD-MM-YYYY');
+        } else {
+            url = "https://api.aladhan.com/v1/hToG?date=" + moment(date).format('DD-MM-YYYY');
+        }
+
+        jQuery.ajax({
+
+            type: "Get",
+            async: false,
+            url: url,
+            success: function (data) {
+                if (data.status == "OK") {
+                    if (type == "m") {
+                        reusert = moment(data.data.hijri.date, data.data.hijri.format).format('YYYY-MM-DD');
+                    } else {
+                        reusert = moment(data.data.gregorian.date, data.data.gregorian.format).format('YYYY-MM-DD');
+                    }
+
+                } else {
+                    reusert = null;
+                }
+
+            }
+
+        });
+
+        return reusert;
+    }
+
+
+
+    //function GetDate(date) {
+    //    var reusert;
+
+    //    jQuery.ajax({
+
+    //        type: "Get",
+    //        async: false,
+    //        url: '/api/ApiDate/GetDate?date=' + date,
+    //        success: function (data) {
+    //            if (data.success == true) {
+    //                reusert = data.data;
+
+    //            } else {
+    //                reusert = null;
+    //            }
+
+    //        }
+
+    //    });
+
+    //    return reusert;
+    //}
+
+    function numberWithCommas(x) {
+        x.value = x.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        //f= x.value.toLocaleString('en-US');
+        //  x.value = x.value.toLocaleString('en-US');
+
+    }
+
+
+    function VatChange() {
+        var Item = $("#VAT_ID").val();
+        var obj = JSON.parse(Item)
+        vat = obj.VAT;
+        $("#VAT_PERCENT").val(vat * 100);
+        ItemCalculator();
+    }
+
+    function ItemCalculator() {
+
+
+        SING_PRICE = $("#IPRICE").val().replaceAll(',', '')
+        QNTY = 1;
+        TOTAL_DISC = $("#IDISCOUNT").val().replaceAll(',', '')
+        VAT = $("#VAT_PERCENT").val() / 100;
+        TOTAL_PRICE = (SING_PRICE * QNTY) - TOTAL_DISC;
+        ITEM_VAT_AMOUNT = TOTAL_PRICE * VAT;
+        TOTAL = TOTAL_PRICE + ITEM_VAT_AMOUNT;
+
+        //  $("#TOTAL_PRICE").val(TOTAL_PRICE)
+        $("#IVAT_AMOUNT").val(ITEM_VAT_AMOUNT)
+        $("#PUR_PRICE").val(TOTAL)
+    }
+
+
+
+    function AddToOrderList() {
+
+        event.preventDefault();
+        $('#DISCRIPTION').focus();
+
+        var Item = $("#VAT_ID").val();
+        var obj = JSON.parse(Item)
+
+        PROJ_NO = $("#PROJ_NO").val()
+        PART_PROJ = $("#PART_PROJ").val()
+        UNIT_NO = $("#UNIT_NO").val()
+        QNTY = 1
+        PRICE = $("#IPRICE").val().replaceAll(',', '')
+        DISCRIPTION = $("#DISCRIPTION").val()
+        DISCOUNT = $("#IDISCOUNT").val().replaceAll(',', '')
+        PUR_PRICE = $("#PUR_PRICE").val().replaceAll(',', '')
+        VAT_AMOUNT = $("#IVAT_AMOUNT").val().replaceAll(',', '')
+        VAT_ID = obj.ID
+        PROJECT_NAME = $("#PROJ_NO option:selected").text();
+
+
+
+        if (PROJ_NO > 0 && PART_PROJ > 0 && UNIT_NO > 0 && QNTY > 0 && PRICE > 0) {
+
+            Itemlist.push({ PROJ_NO: PROJ_NO, PROJECT_NAME: PROJECT_NAME, PART_PROJ: PART_PROJ, UNIT_NO: UNIT_NO, QNTY: QNTY, PRICE: PRICE, DISCRIPTION: DISCRIPTION, DISCOUNT: DISCOUNT, PUR_PRICE: PUR_PRICE, VAT_AMOUNT: VAT_AMOUNT, VAT_ID: VAT_ID });
+            AddItemToTabel();
+        }
+    }
+
+    function AddItemToTabel() {
+        if (jQuery("#myTable tr").length > 1) {
+            DeleteTabel()
+        }
+        for (var i = 0; i < Itemlist.length; i++) {
+            var table = document.getElementById("myTable");
+            var rowindex = $("#myTable tr").length;
+            var id = 'cell' + (rowindex);
+            var row = table.insertRow();
+            var cell0 = row.insertCell(0);
+            var cell1 = row.insertCell(1);
+            var cell2 = row.insertCell(2);
+            var cell3 = row.insertCell(3);
+            var cell4 = row.insertCell(4);
+            var cell5 = row.insertCell(5);
+            var cell6 = row.insertCell(6);
+            var cell7 = row.insertCell(7);
+            var cell8 = row.insertCell(8);
+            var cell9 = row.insertCell(9);
+
+
+            cell0.innerHTML = $("#myTable tr").length - 1;
+            cell1.innerHTML = Itemlist[i].PROJECT_NAME;
+            cell2.innerHTML = Itemlist[i].DISCRIPTION;
+            cell3.innerHTML = Itemlist[i].QNTY;
+            cell4.innerHTML = Itemlist[i].PRICE.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            cell5.innerHTML = Itemlist[i].DISCOUNT.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            cell6.innerHTML = vat;
+            cell7.innerHTML = Itemlist[i].VAT_AMOUNT.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            cell8.innerHTML = Itemlist[i].PUR_PRICE.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+            cell9.id = id;
+
+            $('#' + id).append('<button class="btn btn-danger btn-sm "  type="button" onclick="DeletedItem(' + i + ')"> <i class="la la-trash"></i>  </button>');
+
+        }
+        $('#SING_PRICE').val(0);
+        ItemCalculator()
+        INVCalculator()
+
+
+    }
+
+
+
+    function DeletedItem(i) {
+        Itemlist.splice(i, 1);
+        AddItemToTabel();
+    }
+    function DeleteTabel() {
+
+        var g = $("#myTable tr").length;
+        for (var i = 1; i < $("#myTable tr").length; i) {
+            document.getElementById("myTable").deleteRow(1);
+        }
+    }
+
+
+    function INVCalculator() {
+        INV_AMOUNT = 0;
+        INV_VAT_AMOUNT = 0;
+        INV_TOTAL = 0;
+        DISCOUNT = $("#DISCOUNT").val().replaceAll(',', '');
+        if (Itemlist.length > 0) {
+            for (var i = 0; i < Itemlist.length; i++) {
+
+                INV_AMOUNT += parseFloat(Itemlist[i].PRICE);
+                INV_VAT_AMOUNT += parseFloat(Itemlist[i].VAT_AMOUNT);
+                //     PUR_COST += parseInt(Itemlist[i].INV_PUR);
+
+            }
+        }
+        //  INV_VAT_AMOUNT = parseInt((INV_AMOUNT - parseInt(DISCOUNT)) * vat);
+        PUR_COST = INV_AMOUNT - DISCOUNT + INV_VAT_AMOUNT;
+
+        $("#PRICE").val(INV_AMOUNT.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+        $("#VAT_AMOUNT").val(INV_VAT_AMOUNT.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+        $("#INV_PUR").val(PUR_COST.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+
+    }
+
+
+    function Save() {
+
+        jQuery('#Add').parsley().whenValidate({
+
+        }).done(function () {
+
+            if (Itemlist.length > 0) {
+
+                create();
+            } else {
+                alert("لايوجد اصناف في الفاتورة")
+            }
+
+        });
+
+    }
+
+
+
+    function create() {
+        trans = 0;
+        if ($("#TRANSED").is(":checked")) {
+            trans = 1;
+        }
+
+        var Item = $("#VAT_ID").val();
+        var v = JSON.parse(Item)
+        var inv = {
+
+            INV_NO: $("#INV_NO").val(),
+            DATE_H: $("#DATE_H").val(),
+            DATE_M: $("#DATE_M").val(),
+            FISCAL_YEAR: $("#FISCAL_YEAR").val(),
+            INV_DOC_TYPE: $("#INV_DOC_TYPE").val(),
+            OPTYPE: $("#OPTYPE").val(),
+
+            SALES_ACC: $("#SALES_ACC").val(),
+            SALES_CUST_ID: $("#SALES_CUST_ID").val(),
+            UNDER_NO: $("#UNDER_NO").val(),
+
+            VAT_ID: v.ID,
+
+            NOTE: $("#NOTE").val(),
+            PRICE: $("#PRICE").val().replaceAll(',', ''),
+            DISCOUNT: $("#DISCOUNT").val().replaceAll(',', ''),
+            VAT_AMOUNT: $("#VAT_AMOUNT").val().replaceAll(',', ''),
+            INV_PUR: $("#INV_PUR").val().replaceAll(',', ''),
+
+            TRANSED: trans,
+
+            SALES_INVDTTBL_Collection: Itemlist
+
+
+
+
+        }
+
+
+        jQuery.ajax({
+            async: false,
+            cache: false,
+            type: "Post",
+            data: inv,
+            url: '/api/API_SALES_INV/Edite',
+            success: function (data) {
+                if (data.success == true) {
+                    $("#mesg").empty()
+                    $("#mesg").append('<h4 class="modal-title text-success" >تم الحفظ بنجاح</h4> ')
+                    $('#sccece-model').modal('show');
+
+                    $("#sav-btn").hide();
+                    $("#don-sav-btn").show();
+                    $("#don-sav-btn").css('display', 'block');
+                 //   fullInvPrint(data.data)
+
+
+
+
+                } else {
+                    $("#mesg").empty()
+                    $("#mesg").append('<h4 class="modal-title text-danger" >لم يتم  الحفظ\n' + data.Message + '</h4> ')
+
+
+                    $('#sccece-model').modal('show');
+
+                }
+
+
+
+
+
+
+            }
+
+        });
+
+    }
+
+
+
+
+    //function fullInvPrint(inv) {
+
+
+
+    //    $("#PDUC_TYPE").append(inv.INV_DOC_TYPE + ".")
+    //    $("#PINV_NO").append(inv.INV_NO + ".")
+    //    $("#PDATE_M").append(moment(inv.DATE_M).format('YYYY-MM-DD'))
+    //    $("#PCUST_NAME_AR").append(inv.SALES_CUST_ID + ".")
+    //    $("#PPHONE").append(inv.SALES_CUST_ID + ".")
+
+    //    generateQRcode(150, 150, inv.QRCODE)
+
+
+
+
+    //    printInvoRoll("invoprintDiv")
+
+    //}
+
+
+
+    //function printInvoRoll(id) {
+
+    //    printJS({
+
+    //        printable: id,
+
+    //        type: "html",
+    //        style: "*",
+    //        maxWidth: "1500",
+    //        targetStyles: "*",
+    //        css: "*",
+
+    //        scanStyles: "false",
+    //        header: '',
+
+
+    //    });
+
+    //}
+
+
+    //function generateQRcode(width, height, text) {
+    //    $('.qrcode').qrcode({ width: width, height: height, text: text });
+    //}
+
+
+</script>

@@ -1,0 +1,162 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="15.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.props" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" />
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{73D89136-5BBF-4DE1-A1A3-1E5B00CA13BC}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Spend.Business</RootNamespace>
+    <AssemblyName>Spend.Business</AssemblyName>
+    <TargetFrameworkVersion>v4.8</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <Deterministic>true</Deterministic>
+    <NuGetPackageImportStamp>
+    </NuGetPackageImportStamp>
+    <TargetFrameworkProfile />
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="callcenter.business.call">
+      <HintPath>..\..\..\..\callCenter\callCenter.Business\callCenter.Business.call\bin\Debug\callcenter.business.call.dll</HintPath>
+    </Reference>
+    <Reference Include="callcenter.model.call, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\..\..\callCenter\callCenter.Model\callcenter.model.call\bin\Debug\callcenter.model.call.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.dll</HintPath>
+    </Reference>
+    <Reference Include="EntityFramework.SqlServer, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
+      <HintPath>..\packages\EntityFramework.6.4.4\lib\net45\EntityFramework.SqlServer.dll</HintPath>
+    </Reference>
+    <Reference Include="Microsoft.AspNet.Identity.Core, Version=2.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>..\packages\Microsoft.AspNet.Identity.Core.2.2.3\lib\net45\Microsoft.AspNet.Identity.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=13.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.13.0.1\lib\net45\Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="Spend.Api.Models">
+      <HintPath>..\..\Spend.Models\Spend.Api.Models\bin\Debug\Spend.Api.Models.dll</HintPath>
+    </Reference>
+    <Reference Include="Spend.DataAccess">
+      <HintPath>..\..\Spend.DataAccess\Spend.DataAccess\bin\Debug\Spend.DataAccess.dll</HintPath>
+    </Reference>
+    <Reference Include="Spend.Models, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <SpecificVersion>False</SpecificVersion>
+      <HintPath>..\..\Spend.Models\Spend.Models\bin\Debug\Spend.Models.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Transactions" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="ACCH_BALANCEV_Business.cs" />
+    <Compile Include="ACCH_BALANCE_SUMMARYV_Business.cs" />
+    <Compile Include="ACCH_OPBOXTBL_Business.cs" />
+    <Compile Include="ACCH_OPBOX_ACTIONSTBL_Business.cs" />
+    <Compile Include="ACCH_PROJ_BOX_PERCENTTBL_Business.cs" />
+    <Compile Include="ACCH_PROJ_PERCENTTBL_Business.cs" />
+    <Compile Include="ACCH_TYPETBL_Business.cs" />
+    <Compile Include="ACCOUNTTBL_Business.cs" />
+    <Compile Include="ACC_HOLDERTBL_Business.cs" />
+    <Compile Include="ACC_NATTBL_Business.cs" />
+    <Compile Include="ACC_TREETBL1_ACCOUNTTB_Business.cs" />
+    <Compile Include="ACC_TREETBL1_Business.cs" />
+    <Compile Include="ACC_TREETBL_Business.cs" />
+    <Compile Include="ACC_TYPETBL_Business.cs" />
+    <Compile Include="ALL_ACC_NOTBL_Business.cs" />
+    <Compile Include="ARCHIVETBL_Business.cs" />
+    <Compile Include="auth_business.cs" />
+    <Compile Include="BANKTBL_Business.cs" />
+    <Compile Include="BOXTBL_Business.cs" />
+    <Compile Include="BOX_OPTBL_Business.cs" />
+    <Compile Include="BOX_PROJ_ACTIONSTBL_Bussiness.cs" />
+    <Compile Include="CENTERSTBL_Business.cs" />
+    <Compile Include="ConvertNumbersToArabicAlphabet.cs" />
+    <Compile Include="CREDENCETBL_Business.cs" />
+    <Compile Include="CREDENCE_DTTBL_Business.cs" />
+    <Compile Include="DUC_TYPETBL_Business.cs" />
+    <Compile Include="ENGINEERTBL_Business.cs" />
+    <Compile Include="FEATURETBL_Business.cs" />
+    <Compile Include="FEATURE_ROLETBL_Business.cs" />
+    <Compile Include="HOLDER_TRANS_HD_Business.cs" />
+    <Compile Include="HOLDER_TRANS_DT_Business.cs" />
+    <Compile Include="HOLDER_PERCENT_HD_Business.cs" />
+    <Compile Include="HOLDER_PERCENT_DT_Business.cs" />
+    <Compile Include="FISCAL_YEAR_Business.cs" />
+    <Compile Include="INVOICETBL_Business.cs" />
+    <Compile Include="ITEMTBL_Business.cs" />
+    <Compile Include="MARKETINGTBL_Business.cs" />
+    <Compile Include="MAX_UNDER_OPV_Business.cs" />
+    <Compile Include="OPERATIONAL_PALANCE_Business.cs" />
+    <Compile Include="OWNERTBL_Business.cs" />
+    <Compile Include="PARTTBL_Business.cs" />
+    <Compile Include="PERCENT_EST_Business.cs" />
+    <Compile Include="PERSONAL_INFOTBL_Business.cs" />
+    <Compile Include="PERSON_ACCTBL_Business.cs" />
+    <Compile Include="PERSON_ACC_PROJTBL_Business.cs" />
+    <Compile Include="PERSON_DESCRIPTIONTBL_Business.cs" />
+    <Compile Include="PROJECTTBL_Business.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="ROLETBL_Business.cs" />
+    <Compile Include="SALES_CUSTTBL_Business.cs" />
+    <Compile Include="SALES_INVDTTBL_Business.cs" />
+    <Compile Include="SALES_INVTBL_Business.cs" />
+    <Compile Include="SCRIPT_ACTIONSTBL_Business.cs" />
+    <Compile Include="SCRIPT_TYPE_Business.cs" />
+    <Compile Include="SCRIP_OPTYPETBL_Business.cs" />
+    <Compile Include="SPEND_SCRIPTBL_Business.cs" />
+    <Compile Include="STAGESTBL_Business.cs" />
+    <Compile Include="SUB_PROJTBL_Business.cs" />
+    <Compile Include="TRANS_HD_Business.cs" />
+    <Compile Include="UNITTBL_Business.cs" />
+    <Compile Include="USERSTBL_Business.cs" />
+    <Compile Include="USER_ROLETBLE_Business.cs" />
+    <Compile Include="USER_UTLIST_PROJECTTBL_Business.cs" />
+    <Compile Include="UTLISTTBL_Business.cs" />
+    <Compile Include="UTL_TYPETBL_Business.cs" />
+    <Compile Include="VATTBL_Business.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+    <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
+    <PropertyGroup>
+      <ErrorText>This project references NuGet package(s) that are missing on this computer. Use NuGet Package Restore to download them.  For more information, see http://go.microsoft.com/fwlink/?LinkID=322105. The missing file is {0}.</ErrorText>
+    </PropertyGroup>
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.props')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.props'))" />
+    <Error Condition="!Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" Text="$([System.String]::Format('$(ErrorText)', '..\packages\EntityFramework.6.4.4\build\EntityFramework.targets'))" />
+  </Target>
+  <Import Project="..\packages\EntityFramework.6.4.4\build\EntityFramework.targets" Condition="Exists('..\packages\EntityFramework.6.4.4\build\EntityFramework.targets')" />
+</Project>

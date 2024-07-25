@@ -1,0 +1,212 @@
+﻿@model Spend.Models.USER_UTLIST_PROJECTTBL_Model
+@{
+    ViewBag.Title = "انشاء اشراف";
+}
+
+
+
+
+<div class="dashboard-content-wrap">
+    <div class="dashboard-bread dashboard--bread dashboard-bread-2">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="breadcrumb-content">
+                        <div class="section-heading">
+                            <h2 class="sec__title font-size-30 text-white">انشاء اشراف</h2>
+                        </div>
+                    </div><!-- end breadcrumb-content -->
+                </div><!-- end col-lg-6 -->
+                <div class="col-lg-6">
+                    <div class="breadcrumb-list text-right">
+                        <ul class="list-items">
+                            <li><a href="index.html" class="text-white">الصفحة الرئيسية</a></li>
+                            <li>المشاريع</li>
+                            <li>مشرفين المشاريع</li>
+
+                        </ul>
+                    </div><!-- end breadcrumb-list -->
+                </div><!-- end col-lg-6 -->
+            </div><!-- end row -->
+        </div>
+    </div><!-- end dashboard-bread -->
+    <div class="dashboard-main-content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-box">
+                        <div class="form-title-wrap">
+                            <div>
+                                <h3 class="title"> بطاقة مشرف</h3>
+                                @*<p class="font-size-14">إظهار 1 إلى 10 من أصل 20 مُدخل</p>*@
+                            </div>
+
+
+
+                        </div>
+                        <div class="form-content">
+
+
+                            @using (Html.BeginForm())
+                            {
+                                @Html.AntiForgeryToken()
+
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                <div class="row mb-3">
+                                    <div class="col-md-12">
+                                        <div class="form-floating mb-12 mb-md-0">
+                                            <label for="inputLastName">المشرف</label>
+                                            <select id="USER_ID" name="USER_ID" class="selectpicker  form-control" dir="rtl" data-live-search="true" required>
+                                                <option value="">اختار المشرف</option>
+                                                @foreach (var item in ViewBag.user)
+                                                {
+
+                                                    <option class="themeprimary" value="@item.USER_ID">
+                                                        @{ try
+                                                            { @item.PERSONAL_INFOTBL_Model.AR_NAME }
+                                                        catch { } }
+                                                    </option>
+                                                }
+
+
+                                            </select>
+                                            @Html.ValidationMessageFor(model => model.USER_ID, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="row mb-3">
+
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-6 mb-md-0">
+                                            <label for="inputLastName">المشروع</label>
+                                            <select id="PROJECT_ID" name="PROJECT_ID" class="selectpicker  form-control" dir="rtl" data-live-search="true" required>
+                                                <option value="">اختار المشروع</option>
+                                                @foreach (var item in ViewBag.project)
+                                                {
+
+                                                    <option class="themeprimary" value="@item.PROJECT_NO">
+                                                        @{ try
+                                                            { @item.PROJECT_NAME }
+                                                        catch { } }
+                                                    </option>
+                                                }
+
+
+                                            </select>
+                                            @Html.ValidationMessageFor(model => model.PROJECT_ID, "", new { @class = "text-danger" })
+
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="form-floating mb-6 mb-md-0">
+                                            <input type="hidden" id="UTLIST_LIST" name="UTLIST_LIST" />
+                                            <label for="inputLastName">الشغلة</label>
+                                            <select id="UTLIST" name="UTLIST" class="selectpicker  form-control" dir="rtl" multiple data-live-search="true" onchange=" UtlistFun()" required>
+                                               
+                                                    @foreach (var item in ViewBag.utlist)
+                                                    {
+
+                                                    <option class="themeprimary" value="@item.UTL_NO">
+                                                        @{ try
+                                                            { @item.UTL_NAME }
+                                                        catch { } }
+                                                    </option>
+                                                }
+
+
+                                                </select>
+                                            @Html.ValidationMessageFor(model => model.UTLIST_ID, "", new { @class = "text-danger" })
+
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="row mb-3">
+
+                                    <div class="col-md-12">
+                                        <div class="form-floating">
+                                            <label for="inputLastName">ملاحظة</label>
+                                            @Html.EditorFor(model => model.NOTE, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = "ملاحظة" } })
+                                            @Html.ValidationMessageFor(model => model.NOTE, "", new { @class = "text-danger" })
+
+                                           
+                                        </div>
+                                    </div>
+
+                                </div>
+
+
+
+                                <div class="row mt-4 mb-0">
+                                    <div class="d-grid col-md-6 "><button class="btn btn-primary btn-block" type="submit">حفظ</button></div>
+
+                                    <div class="d-grid col-md-6"><a class="btn btn-danger btn-block" href="~/USER_UTLIST_PROJECT/Index">رجوع</a></div>
+
+
+
+
+
+                                </div>
+                            }
+
+
+                        </div>
+                    </div><!-- end form-box -->
+                </div><!-- end col-lg-12 -->
+            </div><!-- end row -->
+
+            <div class="border-top mt-5"></div>
+            <div class="row align-items-center">
+                <div class="col-lg-7">
+                    <div class="copy-right padding-top-30px">
+
+                        <p class="copy__desc">
+                            &copy; Copyright Tech Light 2022. Made with
+                            <span class="la la-heart"></span> by <a href="http://Tech-Light.com/">Noury</a>
+                        </p>
+
+                    </div><!-- end copy-right -->
+                </div><!-- end col-lg-7 -->
+                <div class="col-lg-5">
+                    <div class="footer-social-box text-right padding-top-30px">
+                        <ul class="social-profile">
+                            <li><a href="#"><i class="lab la-facebook-f"></i></a></li>
+                            <li><a href="#"><i class="lab la-twitter"></i></a></li>
+                            <li><a href="#"><i class="lab la-instagram"></i></a></li>
+                            <li><a href="#"><i class="lab la-linkedin-in"></i></a></li>
+                        </ul>
+                    </div><!-- end copy-right-content -->
+                </div><!-- end col-lg-5 -->
+            </div><!-- end row -->
+        </div><!-- end container-fluid -->
+    </div><!-- end dashboard-main-content -->
+</div><!-- end dashboard-content-wrap -->
+
+
+
+
+
+
+
+
+
+
+
+
+<script>
+    function UtlistFun() {
+        var l = [];
+        for (var option of document.getElementById('UTLIST').options) {
+            if (option.selected) {
+                l.push(option.value);
+            }
+        }
+        $('#UTLIST_LIST').val(l)
+    }
+</script>

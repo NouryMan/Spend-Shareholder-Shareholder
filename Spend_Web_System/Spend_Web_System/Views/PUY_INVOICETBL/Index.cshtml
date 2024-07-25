@@ -1,0 +1,446 @@
+﻿@model PagedList.IPagedList<Spend.Models.INVOICETBL_Model>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "فواتير المشتريات";
+}
+
+
+
+
+@if (Model != null)
+{
+
+    <div class="dashboard-content-wrap">
+        <div class="dashboard-bread dashboard--bread dashboard-bread-2">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="col-lg-6">
+                        <div class="breadcrumb-content">
+                            <div class="section-heading">
+                                <h2 class="sec__title font-size-30 text-white">فواتير المشتريات</h2>
+                            </div>
+                        </div><!-- end breadcrumb-content -->
+                    </div><!-- end col-lg-6 -->
+                    <div class="col-lg-6">
+                        <div class="breadcrumb-list text-right">
+                            <ul class="list-items">
+                                <li><a href="index.html" class="text-white">الصفحة الرئيسية</a></li>
+                                <li>المشتريات</li>
+                                @*<li>الصلاحيات</li>*@
+                            </ul>
+                        </div><!-- end breadcrumb-list -->
+                    </div><!-- end col-lg-6 -->
+                </div><!-- end row -->
+            </div>
+        </div><!-- end dashboard-bread -->
+        <div class="dashboard-main-content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-box">
+                            <div class="form-title-wrap">
+
+
+                                <a href="~/PUY_INVOICETBL/create" class="btn btn-primary btn-sm "> <i class="fa fa-plus"> </i>فاتورة مشتريات جديدة </a>
+
+
+
+                            </div>
+                            <div class="form-content">
+
+
+
+                                @using (Html.BeginForm())
+                                {
+
+
+
+                                    <div class=" row input-group ">
+                                        <div class="col-md-3 col-sm-6  ">
+
+                                            <input class="form-control" name="search" id="search" type="text" value="@ViewBag.search" placeholder="بحث..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+
+                                        </div>
+
+                                        <div class="col-md-2 col-sm-6  ">
+
+                                            <select id="INV_DUC_TYPE" name="INV_DUC_TYPE" dir="ltr" class="form-control selectpicker " data-live-search="true" onchange="GetAccCenterForProj()">
+                                                <option class="themeprimary" value="">نوع الفاتورة</option>
+                                                @foreach (var p in ViewBag.Duc_Type)
+                                                {
+                                                    if (ViewBag.INV_DUC_TYPE == p.ID)
+                                                    {
+                                                        <option selected class="themeprimary" value="@p.ID"> @p.ACC_AR_NAME</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option class="themeprimary" value="@p.ID"> @p.ACC_AR_NAME</option>
+                                                    }
+
+                                                }
+
+                                            </select>
+                                        </div>
+                                        <div class="col-md-2 col-sm-6  ">
+
+                                            <select id="trans" name="trans" dir="ltr" class="form-control selectpicker " data-live-search="true" onchange="GetAccCenterForProj()">
+
+                                                @if (ViewBag.trans == 0)
+                                                {
+                                                    <option class="themeprimary" value="">حالة الفاتورة</option>
+                                                    <option selected class="themeprimary" value="0">غير مرحل</option>
+                                                    <option class="themeprimary" value="1">مرحل</option>
+                                                }
+                                                else if (ViewBag.trans == 1)
+                                                {
+                                                    <option class="themeprimary" value="">حالة الفاتورة</option>
+                                                    <option class="themeprimary" value="0">غير مرحل</option>
+                                                    <option selected class="themeprimary" value="1">مرحل</option>
+                                                }
+                                                else
+                                                {
+                                                    <option class="themeprimary" value="">حالة الفاتورة</option>
+                                                    <option class="themeprimary" value="0">غير مرحل</option>
+                                                    <option class="themeprimary" value="1">مرحل</option>
+                                                }
+
+
+
+                                            </select>
+                                        </div>
+
+                                        <div class="col-md-1 nopadding">
+                                            <button class="btn btn-primary" type="submit"><i class="la la-search"></i></button>
+                                        </div>
+
+
+                                    </div>
+                                }
+
+
+
+                                @if (Model != null)
+                                {
+
+                                    <div class="mt-4 table-responsive " style=" overflow-x: scroll; width: 100%;  ">
+                                        <table class="table  table-sm small">
+                                            <thead>
+                                                <tr>
+                                                    <th>رقم الفاتورة</th>
+                                                    <th>نوع الفاتورة</th>
+                                                    <th>التاريخ </th>
+                                                    <th>البيان</th>
+                                                    <th>اسم المورد </th>
+                                                    <th>رقم حساب المورد </th>
+                                                    <th>رقم الفاتورة من المورد</th>
+                                                    <th>مبلغ الفاتورة</th>
+                                                    <th>الخصم</th>
+                                                    <th>اجمالي الضريبة </th>
+                                                    <th>اجمالي الفاتورة </th>
+                                                    <th>اسم المشروع</th>
+                                                    <th>الحالة</th>
+                                                    <th> </th>
+
+                                                </tr>
+                                            </thead>
+
+                                            <tbody>
+
+
+                                                @foreach (var item in Model.OrderByDescending(x => x.INV_SERIAL))
+                                                {
+                                                    <tr>
+
+                                                        <td>
+
+                                                            @{ try
+                                                                {
+                                                                    @item.INV_SERIAL
+                                                                }
+                                                                catch
+                                                                {
+
+                                                                }
+                                                            }
+
+
+                                                        </td>
+                                                        <td>
+
+                                                            @{ try
+                                                                {
+                                                                    <span class="badge badge-info text-white py-1 px-2">  @item.DUC_TYPETBL_Model.ACC_AR_NAME</span>
+                                                                }
+                                                                catch
+                                                                {
+
+                                                                }
+                                                            }
+
+
+                                                        </td>
+
+                                                        <td>
+                                                            @{ try
+                                                                { @item.DATE_M.Value.ToString("dd-MM-yyyy") }
+                                                            catch
+                                                            {
+
+                                                            }
+
+
+                                                            }
+                                                        </td>
+
+                                                        <td>
+                                                            @{ try
+                                                                {
+                                                                    @item.NOTE
+                                                                }
+                                                                catch
+                                                                {
+
+                                                                }
+                                                            }
+                                                        </td>
+                                                        <td>
+
+                                                            @{ try
+                                                                { @item.ALL_ACC_CREDITOR_Model.ACC_NAME <span> - </span> @item.ALL_ACC_CREDITOR_Model.NOTE }
+                                                            catch
+                                                            {
+
+                                                            }
+                                                            }
+                                                        </td>
+                                                        <td>
+
+                                                            @{ try
+                                                                { @item.ACC_NO }
+                                                            catch
+                                                            {
+
+                                                            }
+                                                            }
+                                                        </td>
+                                                        <td>
+
+                                                            @{ try
+                                                                { @item.SUPP_INV_NO }
+                                                            catch
+                                                            {
+
+                                                            }
+                                                            }
+                                                        </td>
+
+
+                                                        <td>
+
+                                                            @{ try
+                                                                { @item.INV_COST}
+                                                            catch
+                                                            {
+
+                                                            }
+                                                            }
+                                                        </td>
+                                                        <td>
+
+                                                            @{ try
+                                                                {@item.DISCOUNT }
+                                                            catch
+                                                            {
+
+                                                            }
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            @{ try
+                                                                {@item.VAT_AMOUNT }
+                                                            catch
+                                                            {
+
+                                                            }
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            @{ try
+                                                                {@item.PUR_COST }
+                                                            catch
+                                                            {
+
+                                                            }
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            @{ try
+                                                                {@item.PROJECTTBL_Model.PROJECT_NAME }
+                                                            catch
+                                                            {
+
+                                                            }
+
+
+                                                            }
+                                                        </td>
+                                                        <td>
+                                                            @if (item.INV_TRANSED == 1)
+                                                            {
+                                                                <span class="badge badge-success py-1 px-2">مرحل</span>
+                                                            }
+                                                            else
+                                                            {
+                                                                <span class="badge badge-warning text-white py-1 px-2">غير مرحل</span>
+                                                            }
+                                                        </td>
+
+                                                        <td>
+
+
+                                                            <div class="row">
+                                                                <div class="col-md-4 m-1">
+
+                                                                    <a href="~/PUY_INVOICETBL/Details/@item.INV_SERIAL" class="btn btn-info btn-sm" data-toggle="tooltip" data-placement="top" title="عرض التفاصيل"><i class="la la-eye"></i></a>
+                                                                </div>
+                                                                @if (item.INV_TRANSED != 1)
+                                                                {
+                                                                    <div class="col-md-4 m-1">
+                                                                        <a href="~/PUY_INVOICETBL/Update/@item.INV_SERIAL" class="btn btn-success btn-sm" data-toggle="tooltip" data-placement="top" title="تعديل"> <i class="la  la-edit"> </i>  </a>
+                                                                    </div>
+                                                                }
+                                                                else
+                                                                {
+                                                                    <div class="col-md-4 m-1">
+                                                                        <button type="button" onclick="OpenTransed(@item.INV_SERIAL)" class="btn btn-danger btn-sm" data-toggle="tooltip" data-placement="top" title="فك الترحيل"> <i class="la  la-arrow-down"> </i>  </button>
+                                                                    </div>
+                                                                }
+
+
+
+                                                            </div>
+
+                                                        </td>
+
+
+                                                    </tr>
+                                                }
+
+
+                                            </tbody>
+                                        </table>
+
+
+                                    </div>
+                                }
+
+                            </div>
+                        </div><!-- end form-box -->
+                    </div><!-- end col-lg-12 -->
+                </div><!-- end row -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <nav aria-label="Page navigation example">
+
+                            صفحة @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) من @Model.PageCount
+
+                            <div>
+
+
+                                @Html.PagedListPager(Model, page => Url.Action("index",
+                                                             new { page })
+                                                             ,
+                                                             new PagedListRenderOptions
+                                                             {
+                                                                 LiElementClasses = new string[] { "page-link page-link-nav" },
+
+
+                                                             }
+
+                                                    )
+                            </div>
+
+
+
+                        </nav>
+                    </div>
+                </div>
+                <div class="border-top mt-5"></div>
+                <div class="row align-items-center">
+                    <div class="col-lg-7">
+                        <div class="copy-right padding-top-30px">
+                            <p class="copy__desc">
+                                &copy; Copyright Tech Light 2022. Made with
+                                <span class="la la-heart"></span> by <a href="http://Tech-Light.com/">Noury</a>
+                            </p>
+                        </div><!-- end copy-right -->
+                    </div><!-- end col-lg-7 -->
+                    <div class="col-lg-5">
+                        <div class="footer-social-box text-right padding-top-30px">
+                            <ul class="social-profile">
+                                <li><a href="#"><i class="lab la-facebook-f"></i></a></li>
+                                <li><a href="#"><i class="lab la-twitter"></i></a></li>
+                                <li><a href="#"><i class="lab la-instagram"></i></a></li>
+                                <li><a href="#"><i class="lab la-linkedin-in"></i></a></li>
+                            </ul>
+                        </div><!-- end copy-right-content -->
+                    </div><!-- end col-lg-5 -->
+                </div><!-- end row -->
+            </div><!-- end container-fluid -->
+        </div><!-- end dashboard-main-content -->
+    </div><!-- end dashboard-content-wrap -->
+
+
+
+
+    <script>
+
+        function OpenTransed(id) {
+
+            var result = confirm('هل انت متاكد من عملية فك الترحيل?');
+            if (result) {
+                $.ajax({
+                    type: 'POST',
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    url: '@Url.Action("OpenTransed")', // this for calling the web method function in cs code.
+                    data: {id:id},// empid value
+
+                    success: function (response) {
+
+                        if (response == "True") {
+
+                            window.location.reload(true);
+                            //window.location.replace("~/reserv/project/index/");
+                        }
+                        else {
+                            alert("error" + "خطاء في البيانات .. لم يتم الفك");
+                        }
+                    }
+
+
+                });
+
+                return false;
+            }
+        }
+
+        // function OnSuccess
+        function OnSuccess(response) {
+            return false;
+            if (response.d == 'true')
+            {
+
+
+            }
+
+        }
+    </script>
+
+
+
+
+
+
+
+}
+

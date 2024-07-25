@@ -1,0 +1,249 @@
+﻿@model PagedList.IPagedList<Spend.Models.ITEMTBL_Model>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "الاصناف";
+}
+
+
+
+
+@if (Model != null)
+{
+
+
+
+
+    <div class="dashboard-content-wrap">
+        <div class="dashboard-bread dashboard--bread dashboard-bread-2">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="col-lg-6">
+                        <div class="breadcrumb-content">
+                            <div class="section-heading">
+                                <h2 class="sec__title font-size-30 text-white">الاصناف</h2>
+                            </div>
+                        </div><!-- end breadcrumb-content -->
+                    </div><!-- end col-lg-6 -->
+                    <div class="col-lg-6">
+                        <div class="breadcrumb-list text-right">
+                            <ul class="list-items">
+                                <li><a href="index.html" class="text-white">الصفحة الرئيسية</a></li>
+                                <li>ادارة الاصناف</li>
+                                @*<li>الصلاحيات</li>*@
+                            </ul>
+                        </div><!-- end breadcrumb-list -->
+                    </div><!-- end col-lg-6 -->
+                </div><!-- end row -->
+            </div>
+        </div><!-- end dashboard-bread -->
+        <div class="dashboard-main-content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-box">
+                            <div class="form-title-wrap">
+
+
+                                <a href="~/ITEM/create" class="btn btn-primary btn-sm "> <i class="fa fa-plus"> </i>صنف جديد</a>
+
+
+
+                            </div>
+                            <div class="form-content">
+                                @using (Html.BeginForm())
+                                {
+
+
+
+                                    <div class=" row input-group mb-4 ">
+                                        <div class="col-md-3 col-sm-8  ">
+
+                                            <input class="form-control" name="search" id="search" type="text" placeholder="بحث..." aria-label="Search for..." aria-describedby="btnNavbarSearch" />
+
+                                        </div>
+                                        <div class="col-md-3 pr-0">
+                                            <button class="btn btn-primary" type="submit"><i class="la la-search"></i></button>
+                                        </div>
+
+
+                                    </div>
+                                }
+                                <div>
+
+                                    <table class="table  table-bordered table-striped ">
+                                        <thead>
+                                            <tr>
+
+                                                <th class="text-align-center">
+                                                    <span class="font-110"> كود </span>
+
+                                                </th>
+                                                <th class="text-align-center">
+                                                    <span class="font-110">الاسم</span>
+
+                                                </th>
+                                                <th class="text-align-center">
+                                                    <span class="font-110">المجموعة</span>
+
+                                                </th>
+
+                                                <th class="text-align-center">
+                                                    <span class="font-110">التكلفة</span>
+
+                                                </th>
+                                                <th class="text-align-center">
+                                                    <span class="font-110">متوسط التكلفة</span>
+
+                                                </th>
+                                                <th class="text-align-center">
+                                                    <span class="font-110">الباركود</span>
+
+                                                </th>
+                                                <th class="text-align-center">
+                                                    <span class="font-110">الحالة</span>
+
+                                                </th>
+                                                <th class="text-align-center">
+                                                    <span class="font-110">الملاحظة</span>
+
+                                                </th>
+
+
+
+
+                                                <th class="text-align-center">
+
+
+                                                </th>
+
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            @foreach (Spend.Models.ITEMTBL_Model item in Model)
+                                            {
+
+
+                                                <tr>
+                                                    <td>@item.ITEM_NO</td>
+                                                    <td>@item.ITEM_NAME</td>
+                                                    <td>@item.ITEMTBL_Models.ITEM_NAME</td>
+
+                                                    <td> @item.PUR_COST</td>
+                                                    <td>
+                                                        @try
+                                                        {@item.AVG_COST}
+                                                    catch { }
+                                                </td>
+                                                <td>@item.BAR_CODE</td>
+                                                <td>
+                                                    @if (item.IS_ENABLED)
+                                                    {
+                                                        <span class="badge badge-primary py-1 px-2"> مفعل</span>
+                                                    }
+                                                    else
+                                                    {
+                                                        <span class="badge badge-warning text-white py-1 px-2">غير مفعل</span>
+                                                    }
+                                                </td>
+                                                <td>@item.NOTE</td>
+                                               
+
+
+                                                <td>
+                                                    <div class="row  p-1">
+                                                        <div class="col-md-3 ">
+                                                            <a href="~/item/details?ItemNo=@item.ITEM_NO&&ParentItemNo=@item.PARENT_ITEM" class="btn btn-success btn-sm "> <i class="la  la-eye"> </i></a>
+                                                        </div>
+
+
+
+
+
+                                                        <div class="col-md-3 ">
+                                                            <a href="~/item/update?ItemNo=@item.ITEM_NO&&ParentItemNo=@item.PARENT_ITEM" class="btn btn-info btn-sm "> <i class="la  la-edit"></i></a>
+                                                        </div>
+
+
+
+                                                        <div class="col-md-3">
+
+
+                                                            <a href="" class="btn btn-danger btn-sm "> <i class="la  la-trash"></i></a>
+                                                        </div>
+
+                                                    </div>
+
+                                                </td>
+                                            </tr>
+
+                                        }
+                                        </tbody>
+
+                                    </table>
+                                </div>
+
+
+                            </div>
+                        </div><!-- end form-box -->
+                    </div><!-- end col-lg-12 -->
+                </div><!-- end row -->
+                <div class="row">
+                    <div class="col-lg-12">
+                        <nav aria-label="Page navigation example">
+
+                            صفحة @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) من @Model.PageCount
+
+                            <div>
+
+
+                                @Html.PagedListPager(Model, page => Url.Action("index",
+                                                             new { page })
+                                                             ,
+                                                             new PagedListRenderOptions
+                                                             {
+                                                                 LiElementClasses = new string[] { "page-link page-link-nav" },
+
+
+                                                             }
+
+                                                    )
+                            </div>
+
+
+
+                        </nav>
+                    </div>
+                </div>
+                <div class="border-top mt-5"></div>
+                <div class="row align-items-center">
+                    <div class="col-lg-7">
+                        <div class="copy-right padding-top-30px">
+                            <p class="copy__desc">
+                                &copy; Copyright Tech Light 2022. Made with
+                                <span class="la la-heart"></span> by <a href="http://Tech-Light.com/">Noury</a>
+                            </p>
+                        </div><!-- end copy-right -->
+                    </div><!-- end col-lg-7 -->
+                    <div class="col-lg-5">
+                        <div class="footer-social-box text-right padding-top-30px">
+                            <ul class="social-profile">
+                                <li><a href="#"><i class="lab la-facebook-f"></i></a></li>
+                                <li><a href="#"><i class="lab la-twitter"></i></a></li>
+                                <li><a href="#"><i class="lab la-instagram"></i></a></li>
+                                <li><a href="#"><i class="lab la-linkedin-in"></i></a></li>
+                            </ul>
+                        </div><!-- end copy-right-content -->
+                    </div><!-- end col-lg-5 -->
+                </div><!-- end row -->
+            </div><!-- end container-fluid -->
+        </div><!-- end dashboard-main-content -->
+    </div><!-- end dashboard-content-wrap -->
+
+
+
+
+
+
+
+}
+

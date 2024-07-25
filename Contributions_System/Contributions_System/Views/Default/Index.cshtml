@@ -1,0 +1,321 @@
+﻿@*@model IEnumerable<Spend.Models.ACC_HOLDERTBL_Model>
+@{
+    ViewBag.Title = "المساهمين";
+}
+
+
+@if (Model != null)
+{*@
+    <div class="dashboard-content-wrap">
+        <div class="dashboard-bread dashboard--bread dashboard-bread-2">
+            <div class="container-fluid">
+                <div class="row align-items-center">
+                    <div class="col-lg-6">
+                        <div class="breadcrumb-content">
+                            <div class="section-heading">
+                                <h2 class="sec__title font-size-30 text-white">المساهمين</h2>
+                            </div>
+                        </div><!-- end breadcrumb-content -->
+                    </div><!-- end col-lg-6 -->
+                    <div class="col-lg-6">
+                        <div class="breadcrumb-list text-right">
+                            <ul class="list-items">
+                                <li><a href="~" class="text-white">الصفحة الرئيسية</a></li>
+
+                                <li>المساهمين</li>
+                            </ul>
+                        </div><!-- end breadcrumb-list -->
+                    </div><!-- end col-lg-6 -->
+                </div><!-- end row -->
+            </div>
+        </div><!-- end dashboard-bread -->
+        <div class="dashboard-main-content">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-lg-12">
+                        <div class="form-box">
+                            <div class="form-title-wrap">
+                                @*<div>
+                                        <h3 class="title">قوائم المسافر</h3>
+                                        <p class="font-size-14">إظهار 1 إلى 10 من أصل 20 مُدخل</p>
+                                    </div>*@
+
+                                <a href="~/ACC_HOLDER/create" class="btn btn-primary btn-sm "> <i class="fa fa-plus"> </i> انشاء مساهم </a>
+
+                            </div>
+                            <div class="form-content">
+                                <div class="table-form table-responsive">
+                                    <table class="display " id="data-table">
+                                        <thead>
+                                            <tr>
+                                                <th>الرقم</th>
+                                                <th>الاسم </th>
+                                                <th>الجوال</th>
+                                                @*<th>العنوان</th>*@
+                                                @*<th>الحساب</th>
+        <th>الحساب الرئيسي</th>
+        <th>الحساب الاب</th>*@
+                                                <th>اجمالي الايرادات</th>
+                                                <th>اجمالي الصرفيات</th>
+
+                                                <th>الرصيد</th>
+                                                <th>الحالة</th>
+                                                <th>الملاحظة</th>
+
+
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+
+                                        <tbody>
+                                            <tr>
+                                                <td>1</td>
+                                                <td>مساهم أ</td>
+                                                <td>0533831557</td>
+                                                <td>2,750,000.00</td>
+                                                <td>500,000.00</td>
+                                                @*<td>0</td>*@
+                                                <td>2,250,000.00</td>
+
+                                                <td>   <span class="badge badge-primary py-1 px-2"> مفعل</span></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td>2</td>
+                                                <td>مساهم ب</td>
+                                                <td>0543336155</td>
+                                                <td>3,750,000.00</td>
+                                                <td>500,000.00</td>
+                                                <td>3,250,000.00</td>
+
+                                                <td>   <span class="badge badge-primary py-1 px-2"> مفعل</span></td>
+                                                <td></td>
+                                            </tr>
+                                            <tr>
+                                                <td>3</td>
+                                                <td>مساهم ج</td>
+                                                <td>0535331545</td>
+                                                <td>6,000,000.00</td>
+                                                <td>1,000,000.00</td>
+                                                <td>5,000,000.00</td>
+
+                                                <td>   <span class="badge badge-primary py-1 px-2"> مفعل</span></td>
+                                                <td></td>
+                                            </tr>
+
+
+                                            @*@foreach (var item in Model)
+        {
+
+
+            <tr>
+
+                <td>
+                    @{ try
+                        { @item.ACC_HOLDER_NO }
+                    catch
+                    {
+
+                    }
+                    }
+                </td>
+                <td>
+                    @{ try
+                        {@item.ACC_HOLDER_NAME }
+                    catch
+                    {
+
+                    }
+                    }
+                </td>
+                <td>
+                    @{ try
+                        {@item.ACC_HOLDER_MOBILE }
+                    catch
+                    {
+
+                    }
+                    }
+                </td>
+                <td>
+                    @{ try
+                        {@item.ACC_HOLDER_ADDRESS }
+                    catch
+                    {
+
+                    }
+                    }
+                </td>
+                <td>
+                    @{ try
+                        {@item.ACC_NO }
+                    catch
+                    {
+
+                    }
+                    }
+                </td>
+
+                <td>
+                    @{ try
+                        {@item.ACC_TREETBL_Model.ACC_NAME }
+                    catch
+                    {
+
+                    }
+                    }
+                </td>
+                <td>
+                    @{ try
+                        {@item.ACC_HOLDERTBL_Models.ACC_HOLDER_NAME }
+                    catch
+                    {
+
+                    }
+                    }
+                </td>
+                <td>
+                    @{ try
+                        {@item.BALANCE}
+                    catch
+                    {
+
+                    }
+                    }
+                </td>
+
+
+                <td>
+                    @if (item.IS_ENABLE)
+                    {
+                        <span class="badge badge-primary py-1 px-2"> مفعل</span>
+                    }
+                    else
+                    {
+                        <span class="badge badge-warning text-white py-1 px-2">غير مفعل</span>
+                    }
+                </td>
+
+
+                <td>
+                    @{ try
+                        {@item.NOTE }
+                    catch
+                    {
+
+                    }
+                    }
+                </td>
+
+
+
+
+                <td>
+                    <div class=" col-12">
+                        <div class="row">
+                            <div class="col-md-3 m-1">
+                                <a href="~/ACC_HOLDER/details/@item.ACC_HOLDER_NO" class="btn btn-success btn-sm "> <i class="la  la-eye"> </i></a>
+                            </div>
+                            <div class="col-md-3 m-1">
+                                <a href="~/ACC_HOLDER/Update/@item.ACC_HOLDER_NO" class="btn btn-info btn-sm "> <i class="la  la-edit"></i></a>
+                            </div>
+
+                            <div class="col-md-3 m-1">
+                                <a href="" class="btn btn-danger btn-sm "> <i class="la  la-trash"></i></a>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </td>
+            </tr>
+        }*@
+
+
+                                        </tbody>
+                                    </table>
+
+
+                                </div>
+                            </div>
+                        </div><!-- end form-box -->
+                    </div><!-- end col-lg-12 -->
+                </div><!-- end row -->
+
+                <div class="border-top mt-5"></div>
+                <div class="row align-items-center">
+                    <div class="col-lg-7">
+                        <div class="copy-right padding-top-30px">
+                            <p class="copy__desc">
+                                &copy; Copyright Tech Light 2022. Made with
+                                <span class="la la-heart"></span> by <a href="http://TechLightsa.com/">Noury</a>
+                            </p>
+                        </div><!-- end copy-right -->
+                    </div><!-- end col-lg-7 -->
+                    <div class="col-lg-5">
+                        <div class="footer-social-box text-right padding-top-30px">
+                            <ul class="social-profile">
+                                <li><a href="#"><i class="lab la-facebook-f"></i></a></li>
+                                <li><a href="#"><i class="lab la-twitter"></i></a></li>
+                                <li><a href="#"><i class="lab la-instagram"></i></a></li>
+                                <li><a href="#"><i class="lab la-linkedin-in"></i></a></li>
+                            </ul>
+                        </div><!-- end copy-right-content -->
+                    </div><!-- end col-lg-5 -->
+                </div><!-- end row -->
+            </div><!-- end container-fluid -->
+        </div><!-- end dashboard-main-content -->
+    </div><!-- end dashboard-content-wrap -->
+
+@*}*@
+
+
+<script>
+
+    jQuery(document).ready(function () {
+
+
+        ReportTabl = jQuery('#data-table').DataTable({
+
+
+
+        });
+
+
+
+    });
+
+
+    function DeleteConfirmbox(id) {
+
+
+
+        var result = confirm('هل انت متاكد من عملية الحذف?');
+        if (result) {
+            $.ajax({
+                type: 'POST',
+                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                url: 'delete', // this for calling the web method function in cs code.
+                data: { id: id },// empid value
+
+                success: function (response) {
+
+                    if (response == "True") {
+
+                        window.location.reload(true);
+                        //window.location.replace("~/reserv/project/index/");
+                    }
+                    else {
+                        alert("error" + "خطاء في البيانات .. لم يتم الحذف");
+                    }
+                }
+
+
+            });
+
+            return false;
+        }
+    }
+
+</script>
+

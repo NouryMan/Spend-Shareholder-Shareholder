@@ -1,0 +1,772 @@
+﻿@model Spend.Models.SALES_INVTBL_Model
+@using System.Globalization;
+@{
+    ViewBag.Title = "ترحيل فواتير المبيعات";
+    decimal total = 0;
+    int i = 1;
+    try
+    {
+        total = Model.PRICE.Value + Model.VAT_AMOUNT.Value;
+
+    }
+    catch
+    {
+
+    }
+
+
+    NumberFormatInfo nfi = new CultureInfo("en-US", false).NumberFormat;
+    nfi.CurrencyDecimalDigits = 2;
+    nfi.NumberDecimalDigits = 2;
+    nfi.CurrencyDecimalSeparator = ".";
+    nfi.CurrencyGroupSeparator = ",";
+    nfi.CurrencySymbol = "";
+    nfi.CurrencyNegativePattern = 1;
+
+
+}
+
+
+
+
+@if (Model != null)
+{
+
+    <div class="container" dir="rtl">
+        <div class="row justify-content-center">
+            <div class="col-lg-12">
+                <div class="card shadow-lg border-0 rounded-lg mt-5">
+                    <div class="card-header"><h3 class="text-center font-weight-light my-4">  ترحيل فاتورة مبيعات </h3></div>
+                    <div class="card-body">
+
+                        <div class="row justify-content-center">
+                            <div class="col-lg-11">
+                                <div class="card shadow-lg border-0 rounded-lg mt-5">
+
+
+                                    <div>
+
+
+
+
+                                        <div class="m-4 p-4 mb-0 pb-0" id="invoprintDiv">
+
+
+                                            <div class=" row ">
+
+
+                                                <div class="row ">
+
+                                                    <div class="col-md-3 pl-4">
+
+
+                                                        <div class="text-center  h4">
+
+                                                            شركة اتحاد الماسة للمقاولات
+
+                                                        </div>
+                                                        <div class="text-center h5">
+
+                                                            قسم التسويق
+
+                                                        </div>
+                                                        <div class="text-center text-150 h5">
+
+                                                            www.union-diamond.net
+
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col-md-6 mt-2">
+
+
+                                                        <center>
+
+
+                                                            <img src="~/assets/images/login.jpeg" style="width:280px;height:150px" />
+
+                                                        </center>
+
+                                                    </div>
+                                                    <div class="col-md-3  justify-content-end">
+
+
+                                                        <div class="text-center h4">
+
+                                                            Union Diamond Contracting Company
+
+                                                        </div>
+                                                        <div class="text-center h5 ">
+
+                                                            Marketing Department
+
+                                                        </div>
+                                                        <div class="text-center text-150 h5">
+
+                                                            www.union-diamond.net
+
+                                                        </div>
+
+                                                    </div>
+
+                                                </div>
+
+
+
+                                            </div>
+
+                                            <div class="row">
+                                                <div class="col-md-12 mt-4">
+
+                                                    <hr />
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row ">
+
+                                                <div class="col-md-12 mt-2">
+                                                    <center>
+
+                                                        <h2 for="inputLastName" id="type"> @Model.DUC_TYPETBL_Model.ACC_AR_NAME </h2>
+
+                                                    </center>
+                                                </div>
+                                            </div>
+
+                                            <div class="" dir="rtl">
+
+                                                <div class="row  ml-4 ">
+
+                                                    <div class="col-md-8 ">
+                                                        <div class="form-floating  ">
+                                                            رقم الفاتورة :@Model.INV_NO
+
+                                                        </div>
+                                                        <input hidden="hidden" id="INV_NO" value="@Model.INV_NO" />
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-floating">
+                                                            تاريخ الفاتورة :@Model.DATE_M.Value.ToString("dd-MM-yyyy")
+
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+                                                <div class="row ml-4 ">
+
+                                                    <div class="col-md-8">
+                                                        <div class="form-floating">
+                                                            اسم العميل :@try
+                                                            {@Model.SALES_CUSTTBL_Model.CUST_NAME_AR}
+                                                        catch { }
+
+                                                        </div>
+
+                                                    </div>
+                                                    <div class="col-md-4">
+                                                        <div class="form-floating">
+
+                                                            رقم جوال العميل :@try
+                                                            {@Model.SALES_CUSTTBL_Model.PHONE}
+                                                        catch { }
+
+
+                                                        </div>
+                                                    </div>
+
+
+                                                </div>
+
+
+                                                <div class="row   ml-4">
+
+                                                    <div class="col-md-8">
+                                                        <div class="form-floating">
+                                                            ملاحظة :@Model.NOTE
+
+                                                        </div>
+
+                                                    </div>
+
+
+
+                                                </div>
+
+                                            </div>
+
+                                            <div class="row ">
+
+                                                <div class="col-md-12">
+                                                    <div class="form-floating">
+                                                        <hr />
+                                                    </div>
+
+                                                </div>
+
+                                            </div>
+
+
+                                            <div class="row  ">
+
+
+
+                                                <table class="table table-bordered table-responsive-sm ">
+                                                    <thead class="thead-dark">
+                                                        <tr>
+
+
+                                                            <th scope="col"><h6>رقم</h6> </th>
+                                                            <th scope="col"><h6>اسم المشروع</h6></th>
+                                                            <th scope="col"><h6>العمارة</h6></th>
+                                                            <th scope="col"><h6>الشقة</h6></th>
+                                                            <th scope="col"><h6>الكمية</h6></th>
+                                                            <th scope="col"><h6>كلفة السكن</h6></th>
+                                                            <th scope="col"><h6>الضريبة</h6> </th>
+                                                            <th scope="col"><h6>قيمة الضريبة الاجمالية</h6> </th>
+                                                            <th scope="col"><h6>الخصم</h6> </th>
+                                                            <th scope="col"><h6>المجموع</h6> </th>
+
+
+                                                            @*<th></th>*@
+                                                        </tr>
+                                                    </thead>
+
+                                                    <tbody>
+
+                                                        @foreach (var item in Model.SALES_INVDTTBL_Collection)
+                                                        {
+
+
+                                                            <tr>
+
+                                                                <td>
+
+                                                                    @{ try
+                                                                        {
+                                                                            @i
+
+                                                                        }
+                                                                        catch
+                                                                        {
+
+                                                                        }
+                                                                    }
+
+                                                                </td>
+
+                                                                <td>
+                                                                    @{ try
+                                                                        { @item.PROJECTTBL_Model.PROJECT_NAME }
+                                                                    catch
+                                                                    {
+
+                                                                    }
+                                                                    }
+                                                                </td>
+                                                                <td>
+                                                                    @{ try
+                                                                        {@item.PARTTBL_Model.PART_NAME }
+                                                                    catch
+                                                                    {
+
+                                                                    }
+                                                                    }
+                                                                </td>
+
+                                                                <td>
+                                                                    @{ try
+                                                                        {@item.UNITTBL_Model.UNIT_NAME }
+                                                                    catch
+                                                                    {
+
+                                                                    }
+                                                                    }
+                                                                </td>
+                                                                <td>
+                                                                    @{ try
+                                                                        {@item.QNTY }
+                                                                    catch
+                                                                    {
+
+                                                                    }
+                                                                    }
+                                                                </td>
+                                                                <td>
+                                                                    @{ try
+                                                                        {@item.PRICE.Value.ToString("C", nfi) }
+                                                                    catch
+                                                                    {
+
+                                                                    }
+                                                                    }
+                                                                </td>
+                                                                <td>
+                                                                    @{ try
+                                                                        {
+                                                                            decimal p = item.VAT_AMOUNT.Value / item.PRICE.Value;
+                                                                            p = p * 100;
+                                                                            <span>@p % </span>
+
+                                                                        }
+                                                                        catch
+                                                                        {
+
+                                                                        }
+                                                                    }
+                                                                </td>
+                                                                <td>
+                                                                    @{ try
+                                                                        {@item.VAT_AMOUNT.Value.ToString("C", nfi) }
+                                                                    catch
+                                                                    {
+
+                                                                    }
+                                                                    }
+
+                                                                </td>
+                                                                <td>
+                                                                    @{ try
+                                                                        {@item.DISCOUNT.Value.ToString("C", nfi)}
+                                                                    catch
+                                                                    {
+
+                                                                    }
+                                                                    }
+
+                                                                </td>
+                                                                <td>
+                                                                    @{ try
+                                                                        {
+                                                                            @item.PUR_PRICE.Value.ToString("C", nfi)
+                                                                        }
+                                                                        catch
+                                                                        {
+
+                                                                        }
+                                                                    }
+
+                                                                </td>
+
+
+
+
+                                                            </tr>
+
+
+                                                            i++;
+                                                        }
+
+
+                                                    </tbody>
+                                                </table>
+
+                                            </div>
+
+                                            <hr />
+
+
+                                            <div class="row  ">
+                                                <div class="col-md-3">
+                                                    <div class="">
+
+                                                        <table class="table table-sm table-bordered " dir="rtl">
+
+                                                            <tbody>
+                                                                <tr>
+                                                                    <td><h6>الصافي :@Model.PRICE.Value.ToString("C", nfi) </h6></td>
+
+
+
+                                                                </tr>
+                                                                <tr>
+
+                                                                    <td><h6>الخصم :@Model.DISCOUNT.Value.ToString("C", nfi)</h6></td>
+
+                                                                </tr>
+                                                                <tr>
+
+                                                                    <td><h6>الضريبة :@Model.VAT_AMOUNT.Value.ToString("C", nfi)</h6></td>
+
+                                                                </tr>
+                                                                <tr>
+
+                                                                    <td><h6>الاجمالي :@Model.INV_PUR.Value.ToString("C", nfi)</h6></td>
+
+                                                                </tr>
+
+
+                                                            </tbody>
+                                                        </table>
+
+
+                                                    </div>
+                                                </div>
+
+
+
+
+                                            </div>
+
+
+
+
+                                        </div>
+
+
+
+
+                                        <div class="card-header ">
+                                            <i class="fas fa-table me-1"></i>
+                                            القيود
+
+                                        </div>
+                                        <div class="row m-4 p-4 mt-0 pt-0 pb-0 mb-3">
+
+                                            <div class="col-md-6 p-1">
+                                                <div class="form-floating">
+                                                    <label class=" col-form-label-sm" for="inputLastName">حساب القيد </label>
+                                                    <select id="two-Acc" name="two-Acc" dir="ltr" class="form-control selectpicker " data-live-search="true" onchange="GetAccCenterForProj()">
+
+                                                        @foreach (var p in ViewBag.AllAcc)
+                                                        {
+                                                            <option class="themeprimary" value="@p.ACC_NO"> @p.ACC_NAME (@p.ACC_NO)(@p.NOTE)</option>
+                                                        }
+
+
+                                                    </select>
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 p-1">
+                                                <div class="form-floating">
+                                                    <label class=" col-form-label-sm" for="inputLastName">مدين</label>
+                                                    <input type="text" class="form-control" value="0" id="fromhim" onchange="numberWithCommas(this)" />
+
+
+                                                </div>
+                                            </div>
+                                            <div class="col-md-2 p-1">
+                                                <div class="form-floating">
+                                                    <label class=" col-form-label-sm" for="inputLastName">دئن</label>
+                                                    <input type="text" class="form-control" id="forhim" value="0" onchange="numberWithCommas(this)" />
+
+
+                                                </div>
+                                            </div>
+
+
+
+
+
+
+                                            <div class="col-md-1 col-sm-6  ">
+                                                <div class="form-floating">
+                                                    <label class=" col-form-label-sm" for="inputLastName">توزيعي</label>
+
+
+
+                                                </div>
+                                                <div class="switch-h d-flex justify-content-between align-items-center border p-1 mt-1  ">
+
+                                                    <div class="custom-control switch custom-switch-info custom-switch custom-control-inline mr-0">
+
+                                                        <input type="checkbox" id="IS_BOX_HOLDER" class="custom-control-input" />
+
+                                                        <label class="custom-control-label mr-1" for="IS_BOX_HOLDER"> </label>
+                                                    </div>
+                                                </div>
+                                            </div>
+
+                                            <div class="col-md-1 ">
+                                                <label class=" col-form-label-sm" for="inputLastName">اضافة</label>
+                                                <div class="form-floating pt-6 mt-6 ">
+                                                    <button class="btn btn-lg btn-primary btn-block " id="btnAdd" type="button" onclick="AddToOrderList()"><span class="la la-plus"></span></button>
+                                                </div>
+                                            </div>
+
+                                        </div>
+
+                                        <div class="row mb-0">
+                                            <div class="col-md-12">
+
+                                                <div class="form-check form-switch col-md-12 p-0 ">
+                                                    <div class="card mb-4 col-md-12  ">
+                                                        <div class="card-header ">
+                                                            <i class="fas fa-table me-1"></i>
+                                                            القيود
+
+                                                        </div>
+                                                        <div class="card-body">
+                                                            <table id="myTable" class="table table-bordered">
+                                                                <thead>
+                                                                    <tr>
+                                                                        <th>#</th>
+                                                                        <th>رقم الحساب</th>
+                                                                        <th>الاسم</th>
+                                                                        <th>مدين</th>
+                                                                        <th>دئن</th>
+
+                                                                        <th>توزيعي</th>
+
+
+
+
+                                                                        <th></th>
+                                                                    </tr>
+                                                                </thead>
+
+                                                                <tbody>
+                                                                </tbody>
+                                                            </table>
+                                                        </div>
+
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+
+
+                                    </div>
+                                    <div class="row m-3">
+                                        <div class="col-md-2">
+                                            <div class="form-floating">
+                                                <label class=" col-form-label-sm" for="inputLastName">اجمالي الفاتورة</label>
+                                                <input type="text" class="form-control" id="Totall-INV_PUR" value="@Model.INV_PUR.Value.ToString("C", nfi)" disabled />
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-floating">
+                                                <label class=" col-form-label-sm" for="inputLastName">المدين</label>
+                                                <input type="text" class="form-control" id="Totall-fromhim" value="0" disabled />
+
+
+
+                                            </div>
+                                        </div>
+                                        <div class="col-md-2">
+                                            <div class="form-floating">
+                                                <label class=" col-form-label-sm" for="inputLastName">الدئن</label>
+                                                <input type="text" class="form-control" id="Totall-forhim" value="0" disabled />
+                                            </div>
+                                        </div>
+
+
+
+                                        <div class="col-md-2 ">
+                                            <div class="form-floating">
+                                                <label class=" col-form-label-sm  " for="inputLastName">الاجمالي </label>
+                                                <input type="text" class="form-control" id="Totall" disabled />
+
+
+
+                                            </div>
+
+                                        </div>
+
+
+                                    </div>
+
+
+                                    <div class="row mt-4 mb-0">
+
+                                        <div class="d-grid col-md-6 "><button onclick="Save()" class="btn btn-primary btn-block">ترحيل</button></div>
+                                        <div class="d-grid col-md-6"><a class="btn btn-danger btn-block" href="~/SALES_INVTBL/Index">رجوع</a></div>
+
+
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="card-footer text-center py-3">
+                    <div class="small">Tech Light</div>
+                </div>
+            </div>
+        </div>
+
+
+    </div>
+
+
+}
+
+<script>
+    var Itemlist = [];
+
+
+    $("#forhim").change(function () {
+
+        $("#fromhim").val(0);
+    });
+
+    $("#fromhim").change(function () {
+
+        $("#forhim").val(0);
+    });
+
+    function AddToOrderList() {
+
+        event.preventDefault();
+
+        $('button[data-id=two-Acc]').focus();
+        aCC_NO = $("#two-Acc").val()
+        aCC_NAME = $("#two-Acc option:selected").text()
+        fROM_HIM = $("#fromhim").val().replaceAll(',', '')
+        fOR_HIM = $("#forhim").val().replaceAll(',', '')
+        iS_BOX_HOLDER = $("#IS_BOX_HOLDER").is(":checked")
+        sCRIPT_NO = $("#INV_NO").val()
+
+        if (aCC_NO > 0 && aCC_NAME != "" && $("#fromhim").val() != "" && $("#forhim").val() != "" && ($("#fromhim").val() != 0 || $("#forhim").val() != 0)) {
+
+
+            Itemlist.push({ ACC_NO: aCC_NO, ACC_NAME: aCC_NAME, FOR_HIM: fOR_HIM, FROM_HIM: fROM_HIM, IS_BOX_HOLDER: iS_BOX_HOLDER, SCRIPT_NO: sCRIPT_NO });
+            AddItemToTabel();
+        }
+    }
+
+
+
+    function AddItemToTabel() {
+        if (jQuery("#myTable tr").length > 1) {
+            DeleteTabel()
+        }
+        for (var i = 0; i < Itemlist.length; i++) {
+            var table = document.getElementById("myTable");
+            var rowindex = $("#myTable tr").length;
+            var id = 'cell' + (rowindex);
+            var row = table.insertRow();
+            var cell0 = row.insertCell(0);
+            var cell1 = row.insertCell(1);
+            var cell2 = row.insertCell(2);
+            var cell3 = row.insertCell(3);
+            var cell4 = row.insertCell(4);
+            var cell5 = row.insertCell(5);
+            var cell6 = row.insertCell(6);
+
+            cell0.innerHTML = $("#myTable tr").length - 1;
+            cell1.innerHTML = Itemlist[i].ACC_NO;
+            cell2.innerHTML = Itemlist[i].ACC_NAME;
+            cell3.innerHTML = Itemlist[i].FROM_HIM;
+            cell4.innerHTML = Itemlist[i].FOR_HIM;
+            cell5.innerHTML = Itemlist[i].IS_BOX_HOLDER;
+
+            cell6.id = id;
+
+            $('#' + id).append('<button class="btn btn-danger btn-sm "  type="button" onclick="DeletedItem(' + i + ')"> <i class="la la-trash"></i>  </button>');
+
+        }
+        $('#fromhim').val(0);
+        $('#forhim').val(0);
+
+
+
+        Calculator()
+
+
+    }
+
+
+
+    function DeletedItem(i) {
+        Itemlist.splice(i, 1);
+        AddItemToTabel();
+    }
+    function DeleteTabel() {
+
+        var g = $("#myTable tr").length;
+        for (var i = 1; i < $("#myTable tr").length; i) {
+            document.getElementById("myTable").deleteRow(1);
+        }
+    }
+
+
+
+    function Calculator() {
+        Totall = 0;
+        Totall_forhim = 0;
+        Totall_fromhim = 0;
+
+        for (let item of Itemlist) {
+            Totall_forhim += parseFloat(item.FOR_HIM)
+            Totall_fromhim += parseFloat(item.FROM_HIM)
+        }
+        Totall = Totall_forhim - Totall_fromhim;
+
+        $("#Totall-forhim").val(Totall_forhim.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+        $("#Totall-fromhim").val(Totall_fromhim.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+        $("#Totall").val(Totall.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ","));
+
+    }
+
+
+
+
+    function Save() {
+
+
+
+        if (Itemlist.length > 0) {
+            if ($("#Totall-forhim").val().replaceAll(',', '') == $("#Totall-fromhim").val().replaceAll(',', '') && $("#Totall-fromhim").val().replaceAll(',', '') == $("#Totall-fromhim").val().replaceAll(',', '')) {
+                create();
+            } else {
+                alert("يجب ان يتساوى القيود و اجمالي الفاتورة")
+            }
+
+        } else {
+            alert("لايوجد اضافة قيود")
+        }
+
+
+    }
+
+
+
+    function create() {
+
+
+
+
+        var transe = {
+
+            ACCOUNTTBL_Collection: Itemlist,
+            DOC_NO: $("#INV_NO").val()
+        }
+
+
+        jQuery.ajax({
+            async: false,
+            cache: false,
+            type: "Post",
+            data: transe,
+            url: '/api/ApiACCOUNT/SallInvoTranse',
+            success: function (data) {
+                if (data.success == true) {
+                    alert("تم الترحيل بنجاح ")
+                    window.location.href = "../index";
+
+                } else {
+                    alert(" لم يتم الترحيل هناك خطاء " + data.Message)
+
+                }
+
+            }
+
+        });
+
+    }
+
+    function setTwoNumberDecimal(event) {
+        this.value = parseFloat(this.value).toFixed(2);
+    }
+    function numberWithCommas(x) {
+        x.value = x.value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+        //f= x.value.toLocaleString('en-US');
+        //  x.value = x.value.toLocaleString('en-US');
+
+    }
+
+</script>
