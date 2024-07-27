@@ -80,6 +80,7 @@
     <Compile Include="ACCH_BALANCE_SUMMARYV_Business.cs" />
     <Compile Include="ACCH_OPBOXTBL_Business.cs" />
     <Compile Include="ACCH_OPBOX_ACTIONSTBL_Business.cs" />
+    <Compile Include="ACCH_PROJECT_Business.cs" />
     <Compile Include="ACCH_PROJ_BOX_PERCENTTBL_Business.cs" />
     <Compile Include="ACCH_PROJ_PERCENTTBL_Business.cs" />
     <Compile Include="ACCH_TYPETBL_Business.cs" />
