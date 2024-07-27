@@ -55,6 +55,7 @@
     <Compile Include="ACCH_BALANCE_SUMMARYV_Model.cs" />
     <Compile Include="ACCH_OPBOXTBL_Model.cs" />
     <Compile Include="ACCH_OPBOX_ACTIONSTBL_Model.cs" />
+    <Compile Include="ACCH_PROJECT_Model.cs" />
     <Compile Include="ACCH_PROJ_BOX_PERCENTTBL_Model.cs" />
     <Compile Include="ACCH_PROJ_PERCENTTBL_Model.cs" />
     <Compile Include="ACCH_TYPETBL_Model.cs" />
@@ -82,6 +83,8 @@
     <Compile Include="FEATURETBL_Model.cs" />
     <Compile Include="FEATURE_ROLETBL_Model.cs" />
     <Compile Include="FISCAL_YEAR_Model.cs" />
+    <Compile Include="Helper\Pagination.cs" />
+    <Compile Include="Helper\Filter.cs" />
     <Compile Include="HOLDER_PERCENT_DT_Model.cs" />
     <Compile Include="HOLDER_PERCENT_HD.cs" />
     <Compile Include="HOLDER_TRANS_DT_Model.cs" />
@@ -124,5 +127,6 @@
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

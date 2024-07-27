@@ -1,0 +1,274 @@
+﻿@model callcenter.model.call.callProjectModel
+@using callcenter.business.call;
+@{
+    string driv="لا";
+    string park="لا";
+    string work="لا";
+    string Gase = "لا";
+    callcenter.model.call.callRentalContractModel contract=new callcenter.model.call.callRentalContractModel();
+}
+<div class="" >
+   
+        @foreach (callcenter.model.call.callProjectModel item in Model.callProject_Collection.OrderBy(x => x.PROJECT_CODE))
+        {
+            if (item.IS_PARKING == true)
+            {
+                park = "نعم";
+            }
+            if (item.IS_DRIVER_ROOM == true)
+            {
+                driv = "نعم";
+            }
+            if (item.IS_WORKING_ROOM == true)
+            {
+                work = "نعم";
+            }
+            if (item.IS_CENTRAL_GAS == true)
+            {
+                Gase = "نعم";
+            }
+
+
+            if (item.STATUS_ID == callcenter.business.call.call_constants.projectStatus.booked_up)
+            {
+                item.border_color = item.STATUS_DATA.STATUS_COLOR;
+            }
+            else if (item.STATUS_ID == callcenter.business.call.call_constants.projectStatus.closed)
+            {
+                item.border_color = item.STATUS_DATA.STATUS_COLOR;
+            }
+            else
+            {
+                item.border_color = item.STATUS_DATA.STATUS_COLOR;
+            }
+
+
+
+            <table class="table-bordered table-condensed table-responsive no-padding" style="border:solid;border-color:@item.STATUS_DATA.STATUS_COLOR;border-width:4px; width:100%;margin-bottom:6px; background-color:#f3f1ed;text-shadow: 2px 1px 3px #c9c9c9;">
+                <tr>
+                  <td>
+                      <div class="col-lg-12 col-md-12 col-xs-12 no-padding">
+                          <div class="no-padding  col-lg-4 col-md-4 col-xs-4">
+                              <span class="control-label col-lg-6 col-md-6 col-xs-12">@try
+                              {@item.UNIT_TYPE_Models.NAME_AR}
+                          catch { }</span>
+                              <div class="col-lg-6 col-md-6 col-xs-12 " style="background-color:@item.STATUS_DATA.STATUS_COLOR">
+                                  @item.PROJECT_AR_NAME (@item.SUITE_NO)<span>@item.STATUS_DATA.NAME_AR  </span>
+                              </div>
+                              <div><span> رقم الصك: </span><span style="color:#000bbb">@item.DEED_NO</span>    &nbsp &nbsp &nbsp &nbsp     <span> رقم حساب الكهرباء: </span><span style="color:#000bbb">@item.ELECTRICITY_ACC</span>      </div>
+
+
+
+
+                          </div>
+                          <div class="no-padding col-lg-4 col-md-4 col-xs-4">
+                              <span class="control-label col-lg-6 col-md-6 col-xs-12">سعر العرض</span>
+                              <div class="col-lg-6 col-md-6 col-xs-12">
+                                  <span style="color:#000bbb">  @item.MIN_COST</span>
+                              </div>
+
+
+                          </div>
+
+                        
+
+           
+                          @{
+
+                              try
+                              {
+                                  if (item.STATUS_ID != call_constants.projectStatus.open )
+                                  {
+                                      <div class="no-padding  col-lg-4 col-md-4 col-xs-4">
+                                          <span class="control-label col-lg-6 col-md-6 col-xs-12"> فترة العقد المتبقية </span>
+                                          <div class="col-lg-6 col-md-6 col-xs-12">
+                                              @{
+                                                  DateTime dend = DateTime.Parse(item.RentalContractDt_Collection.Where(x =>x.callRentalContractModel.ID==item.MAIN_RENTAL_CONTRACT && x.callRentalContractModel.IS_FINISHED==false && x.IS_DELETED==false && x.callRentalContractModel.IS_STOPED ==false).FirstOrDefault().callRentalContractModel.CONTRACT_END_DATE.ToString());
+
+                                                  TimeSpan p = dend.Subtract(DateTime.Now);
+                                                  int m = Convert.ToInt16(p.TotalDays/30);
+
+                                              }
+                                              <span style="color:#000bbb">  @m</span> شهر
+
+                                          </div>
+
+                                      </div>
+                                  }
+                              }
+                              catch (Exception ex) { }
+                          }
+                      </div>
+                  
+                  
+                  </td>
+                  <td width="5%" dir="ltr" style=" border-right: hidden; ">
+                      <div class="btn-group" role="group">
+                          <a  class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                              <span class="svg-icon">
+                                  <svg width="20px" height="20px" viewBox="0 0 16 16" class="bi bi-three-dots text-body" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                      <path fill-rule="evenodd" d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"></path>
+                                  </svg>
+                              </span>
+                          </a>
+                          <ul class="pull-right dropdown-menu dropdown-arrow dropdown-login-area">
+                              <li><a href="~/rental/Project/edit/@item.ID">تعديل الوحدة</a></li>
+                              <li><a href="~/rental/archive/index/@item.ID">مرفقات الوحدة</a></li>
+                              @if (item.STATUS_ID == call_constants.projectStatus.open)
+                              {
+                                  <li><a onclick="DeleteConfirmbox(@item.ID)"><span class="text-danger">حذف الوحدة</span></a></li>
+
+                              }
+                              <li class="divider"></li>
+                              @if (item.STATUS_ID == call_constants.projectStatus.open)
+                              {
+                                  @*<li><a href="~/rental/RentalContracts/Create/@item.ID?type=@call_constants.rentalContractType.blook">انشاء حجز</a></li>
+                                  <li><a href="~/rental/RentalContracts/Create/@item.ID?type=@call_constants.rentalContractType.contract">انشاء عقد</a></li>*@
+
+                              }
+                              @if (item.STATUS_ID == call_constants.projectStatus.booked_up)
+                              {
+                                  contract = item.RentalContractDt_Collection.Where(x => x.callRentalContractModel.ID == item.MAIN_RENTAL_CONTRACT ).FirstOrDefault().callRentalContractModel;
+
+                                  @*<li><a href="~/rental/RentalContracts/edit/@contract.ID">تعديل الحجز</a></li>*@
+                                  <li><a href="~/rental/RentalContracts/Attachment/@contract.ID">مرفقات الحجز</a></li>
+                                  @*<li><a href="~/rental/RentalContracts/ConvertBlookToContract/@contract.ID">تكوين عقد</a></li>
+                                  <li><a onclick="DeleteContractConfirmbox(@contract.ID)"><span class="text-danger">الغاء الحجز</span></a></li>*@
+
+                              }
+                              @if (item.STATUS_ID == call_constants.projectStatus.closed)
+                              {
+                                  contract = item.RentalContractDt_Collection.Where(x => x.callRentalContractModel.ID == item.MAIN_RENTAL_CONTRACT).FirstOrDefault().callRentalContractModel;
+
+                                  <li><a href="~/rental/RentalContracts/DETALIS/@contract.ID">عرض العقد</a></li>
+                                  @*<li><a href="~/rental/RentalContracts/edit/@contract.ID">تعديل العقد</a></li>
+                                  <li><a href="~/rental/RentalContracts/extension/@contract.ID">تمديد العقد</a></li>*@
+                                  <li><a href="~/rental/RentalContracts/Attachment/@contract.ID">مرفقات العقد</a></li>
+
+                                  @*<li><a onclick="DeleteContractConfirmbox(@contract.ID)"><span class="text-danger">الغاء العقد</span></a></li>*@
+                              }
+
+                          </ul>
+                      </div>
+
+                  </td>
+                </tr>
+                <tr>
+                    <td colspan="2" >
+                        <div class="col-lg-12 col-md-12 col-xs-12 no-padding">
+                            <span>المساحة = (<span style="color:#000bbb">@item.SUITE_SPACE</span>)</span>
+
+                            @if(item.UNIT_TYPE==call_constants.unit_type.shop || item.UNIT_TYPE == call_constants.unit_type.workshop) {
+                                <span>
+                                   الطول = (<span style = "color:#000bbb" > @item.LENGHT </span >)
+                                    العرض = (<span style = "color:#000bbb" > @item.WIDTH </span >)
+                                </span>
+                               
+                            }
+                            else
+                            {
+                              <span>
+                                  عدد الغرف = (<span style="color:#000bbb">@item.ROOM_COUNT</span>)
+                                  عدد الصالات = (<span style="color:#000bbb">@item.HALL_COUNT</span>)
+                                  عدد الحمامات = (<span style="color:#000bbb">@item.BATHROOM_COUNT</span>)
+                                  موقف سيارة = (@park) رقم الموقف = (<span style="color:#000bbb">@item.PARKING_CODE</span>)
+                                  غرفة سائق = (<span style="color:#000bbb">@driv</span>)
+                                  غرقة شغالة = (<span style="color:#000bbb">@work</span>)
+                                  غاز مركزي = (<span style="color:#000bbb">@Gase</span>)
+                              
+                              </span>
+                             }
+
+                               </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td colspan="2">
+                        <div class="col-lg-12 col-md-12 col-xs-12 no-padding">
+                            @{ try
+                                {
+                                    if (item.STATUS_ID == call_constants.projectStatus.booked_up )
+                                    {
+
+
+                                        try
+                                        {
+                                            //callcenter.model.call.callRentalContractModel contract = item.RentalContrac_Collection.Where(x => x.STATUS_ID == call_constants.rentalContractType.blook).FirstOrDefault();
+
+                                                        <span>
+                                                            العميل: @contract.callCustomerModel.CUST_AR_NAME
+                                                            رقم الجوال: <a href="tel: @contract.callCustomerModel.CUST_MOBILE_1"> @contract.callCustomerModel.CUST_MOBILE_1 </a>
+                                                        </span>
+                                        }
+                                        catch { }
+                                    }
+                                    else if (item.STATUS_ID == call_constants.projectStatus.closed)
+                                    {
+                                        //callcenter.model.call.callRentalContractModel contract = item.RentalContrac_Collection.Where(x => x.STATUS_ID == call_constants.rentalContractType.contract).FirstOrDefault();
+
+                                        <span>
+                                            العميل: @contract.callCustomerModel.CUST_AR_NAME
+                                            رقم الجوال: <a href="tel: @contract.callCustomerModel.CUST_MOBILE_1"> @contract.callCustomerModel.CUST_MOBILE_1 </a>
+                                        </span>
+
+                                    }
+                                }
+                                catch { }
+                            }
+
+                            @*<a href="~/folder/Index/@item.ID" id="btnSuiteReserv3"> <button type="button" class="btn btn-success btn-sm "><i class="fa fa-reply"></i>المرفقات </button></a>*@
+
+                        </div>
+                    </td>
+                </tr>
+              
+            </table>
+        }
+
+           
+</div>
+
+
+<script>
+
+
+        function DeleteConfirmbox(id) {
+
+            var result = confirm('هل انت متاكد من عملية الالغاء?');
+            if (result) {
+                $.ajax({
+                    type: 'POST',
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    url: '/rental/Project/delete/', // this for calling the web method function in cs code.
+                    data: {id:id},// empid value
+
+                    success: function (response) {
+
+                        if (response == "True") {
+
+                            window.location.reload(true);
+                            //window.location.replace("~/reserv/project/index/");
+                        }
+                        else {
+                            alert("error" + "خطاء في البيانات .. لم يتم الحذف");
+                        }
+                    }
+
+
+                });
+
+                return false;
+            }
+        }
+
+        // function OnSuccess
+        function OnSuccess(response) {
+            return false;
+            if (response.d == 'true')
+            {
+
+
+            }
+
+        }
+</script>  

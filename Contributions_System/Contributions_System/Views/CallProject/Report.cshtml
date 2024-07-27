@@ -1,0 +1,400 @@
+﻿
+
+@model callcenter.model.call.RentalReport
+@using System.Globalization;
+
+@{
+    ViewBag.Title = "تقرير كشف العملاء";
+    Layout = "~/Views/Shared/_ArabicLayout.cshtml";
+
+    NumberFormatInfo nfi = new CultureInfo("en-US", false).NumberFormat;
+    nfi.CurrencyDecimalDigits = 2;
+    nfi.NumberDecimalDigits = 2;
+    nfi.CurrencyDecimalSeparator = ".";
+    nfi.CurrencyGroupSeparator = ",";
+    nfi.CurrencySymbol = "";
+    nfi.CurrencyNegativePattern = 1;
+
+    double balance = 0;
+    try { balance = Model.OpenBalnce; } catch { }
+}
+
+<link href="~/assets/Hijradate/css/bootstrap-datetimepicker.css" rel="stylesheet" />
+<script src="~/assets/Hijradate/js/momentjs.js"></script>
+<script src="~/assets/Hijradate/js/moment-with-locales.js"></script>
+<script src="~/assets/Hijradate/js/moment-hijri.js"></script>
+<script src="~/assets/Hijradate/js/bootstrap-hijri-datetimepicker.js"></script>
+
+
+
+<div class="margin-10">
+
+
+</div>
+
+
+<div class="widget flat radius-bordered no-margin no-padding" style="margin-top:20px ">
+
+    @using (Html.BeginForm())
+    {
+
+
+
+        <div class=" row  margin-bottom-10">
+
+
+
+            <div class="col-md-2 col-sm-6   ">
+
+                <select id="ProjectID" name="ProjectID" dir="ltr" class="form-control selectpicker " data-live-search="true">
+                    <option value="">المشروع</option>
+                    @foreach (var p in ViewBag.projectList)
+                    {
+                        if (p.ID == ViewBag.projectId)
+                        {
+                            <option selected class="themeprimary" value='@p.ID'>
+                                @p.PROJECT_AR_NAME
+                            </option>
+                        }
+                        else
+                        {
+                            <option class="themeprimary" value='@p.ID'>
+                                @p.PROJECT_AR_NAME
+                            </option>
+                        }
+
+
+
+                    }
+
+                </select>
+            </div>
+            <div class="col-md-2 col-sm-6   ">
+
+                <select id="TypeId" name="TypeId" dir="ltr" class="form-control selectpicker " data-live-search="true">
+                    @if (ViewBag.TypeId == 1)
+                    {
+                        <option  value="0"> النوع</option>
+                        <option selected value="1">دفعات</option>
+                        <option value="2">سدادت</option>
+                    }
+                    else if (ViewBag.TypeId == 2)
+                    {
+                        <option value="0"> النوع</option>
+                        <option value="1">دفعات</option>
+                        <option selected value="2">سدادت</option>
+                    }
+                    else
+                    {
+                        <option selected value="0"> النوع</option>
+                        <option value="1">دفعات</option>
+                        <option value="2">سدادت</option>
+
+                    }
+
+
+
+                </select>
+            </div>
+
+            <div class="col-md-1 col-sm-6  ">
+                <span>
+                    من تاريخ :
+                </span>
+
+            </div>
+            <div class="col-md-2 col-sm-6  ">
+
+                <input type="date" id="fromDate" name="fromDate" class="form-control" onchange="DateChang()" />
+                <input type="hidden" id="FromDateTimeStamp" name="FromDateTimeStamp" class="form-control" />
+            </div>
+
+
+            <div class="col-md-1 col-sm-6  ">
+                <span>
+                    الى تاريخ :
+                </span>
+
+
+            </div>
+
+            <div class="col-md-2 col-sm-6  ">
+
+                <input type="date" id="toDate" name="toDate" class="form-control" onchange="DateChang()" />
+                <input type="hidden" id="ToDateTimeStamp" name="ToDateTimeStamp" class="form-control" />
+
+            </div>
+
+
+
+
+
+            <div class="col-md-1 col-sm-6 col-md-6">
+                <button class="btn btn-primary" type="submit"><i class="fa fa-search"></i></button>
+            </div>
+
+
+        </div>
+    }
+
+
+
+
+
+    <div class="widget-header bg-themeprimary">
+        <span class="widget-caption typcn typcn-location"> <span class="font-130">تقرير كشف المشاريع</span> </span>
+    </div>
+
+    <div class="widget-body">
+        <div class="widget-main ">
+
+            @if (Model != null)
+            {
+                <div class="table-responsive" style="text-shadow: 2px 1px 3px #c9c9c9; ">
+                    <table class="table  table-bordered table-striped table-hover table-condensed flip-content " id="ReportTable">
+                        <thead class="flip-content bordered-gold">
+
+                            @*<table class="table table-bordered table-striped table-condensed  flip-content ">
+                                <thead class="flip-content bordered-gold">*@
+                            <tr>
+                                <th class="text-align-center">
+                                    <span class="font-100">التاريخ</span>
+
+                                </th>
+                                <th class="text-align-center">
+                                    <span class="font-100">رقم المستند</span>
+
+                                </th>
+                                <th class="text-align-center">
+                                    <span class="font-100">النوع </span>
+
+                                </th>
+                                <th class="text-align-center">
+                                    <span class="font-100">البيان  </span>
+                                    @*@Html.DisplayNameFor(model => model.NAME)*@
+                                </th>
+
+                                <th class="text-align-center">
+                                    <span class="font-100">مدين</span>
+
+                                </th>
+                                <th class="text-align-center">
+                                    <span class="font-100">دائن</span>
+
+                                </th>
+                                <th class="text-align-center">
+                                    <span class="font-100">الرصيد</span>
+
+                                </th>
+
+
+                            </tr>
+                        </thead>
+                        <tbody>
+
+                            <tr>
+                                <td></td>
+
+                                <td><h5>الرصيد الافتتاحي</h5></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+
+                                <td>@balance.ToString("C", nfi)</td>
+                            </tr>
+                            @foreach (var item in Model.RentalReportDt)
+                            {
+                                balance += item.Debtor - item.Creditor;
+                                <tr>
+                                    <td>@item.Date.ToString("dd-MM-yyyy")</td>
+                                    <td>@item.ReportNo</td>
+                                    <td>@item.Type</td>
+                                    <td>@item.Note</td>
+                                    <td>@item.Debtor.ToString("C", nfi)</td>
+                                    <td>@item.Creditor.ToString("C", nfi)</td>
+                                    <td>@balance.ToString("C", nfi)</td>
+                                </tr>
+                            }
+
+
+                        </tbody>
+
+                        <tfoot>
+                            <tr>
+                                <td></td>
+
+                                <td><h5>الاجمالي</h5></td>
+                                <td></td>
+                                <td></td>
+                                <td>
+                                    @{double totalFROM_HIM = Model.RentalReportDt.Sum(x => x.Debtor);
+                                        <h5>@totalFROM_HIM.ToString("C", nfi)</h5>
+                                    }
+                                </td>
+                                <td>
+                                    @{double totalFOR_HIM = Model.RentalReportDt.Sum(x => x.Creditor);
+                                        <h5> @totalFOR_HIM.ToString("C", nfi)</h5>
+                                    }
+                                </td>
+
+                                <td>
+                                    @{double total = balance + totalFROM_HIM - totalFOR_HIM;
+                                        <h5> @balance.ToString("C", nfi) </h5>
+                                    }
+                                </td>
+
+                            </tr>
+                        </tfoot>
+
+
+                    </table>
+                </div>
+            }
+
+        </div>
+    </div>
+
+
+</div>
+
+<style>
+    hr {
+        border: 1px solid;
+        border-color: #17a2b8
+        /*  border-radius: 1px;*/
+    }
+</style>
+
+
+
+
+
+<script>
+
+
+
+    jQuery(document).ready(function () {
+
+        var today = moment().format('YYYY-MM-DD');
+        if (@Model.FromDateTimeStamp == 0)
+        {
+            $('#fromDate').val(today);
+        }
+        else
+        {
+            $('#fromDate').val(moment.unix(@Model.FromDateTimeStamp).format('YYYY-MM-DD'));
+        }
+
+
+        if (@Model.ToDateTimeStamp == 0)
+        {
+            $('#toDate').val(today);
+        }
+        else {
+
+
+            $('#toDate').val( moment.unix(@Model.ToDateTimeStamp).format('YYYY-MM-DD'));
+        }
+        DateChang()
+
+        ReportTabl = jQuery('#ReportTable').DataTable({
+            "pagingType": "simple_numbers",
+
+            order: [[0, 'desc']],
+            "ordering": false,
+            dom: 'Bfrtip',
+            responsive: true,
+            buttons: [
+                {
+                    extend: 'copy', text: 'نسخ', footer: true
+                , exportOptions: {
+                                columns: ':visible'
+                    }
+                },
+
+                {
+                    extend: 'excel',
+                    footer: true,
+                    text: 'اكسل',
+                     title: 'كشف حساب مشروع  :  ' + @Html.Raw(Json.Encode(Model.ProjectName)) + ' من تاريخ : ' + @Html.Raw(Json.Encode(Model.FromDate.ToString("dd-MM-yyyy"))) +' الى تاريخ : ' + @Html.Raw(Json.Encode(Model.ToDate.ToString("dd-MM-yyyy"))),
+                     exportOptions: {
+                    columns: ':visible'
+                }
+                },
+
+                {
+
+                    extend: 'print', text: 'طباعة',
+                     title: 'كشف حساب مشروع  :  ' + @Html.Raw(Json.Encode(Model.ProjectName)) + ' من تاريخ : ' + @Html.Raw(Json.Encode(Model.FromDate.ToString("dd-MM-yyyy"))) +' الى تاريخ : ' + @Html.Raw(Json.Encode(Model.ToDate.ToString("dd-MM-yyyy"))),
+                    footer: true,
+
+                    customize: function (win) {
+
+
+
+                        $(win.document.body)
+                            .css('font-size', '10pt')
+                            .prepend(
+                                `  <div class=" row  " dir="rtl">
+
+
+                                            <img src="http://uniondiamond-co.com:8091/assets/img/reportLogo.png" />
+
+
+                                    </div>
+
+                               <div class="row">
+                                 <div class="col-md-12 margin-top-10 mb-2"><hr/> </div>
+                               </div>`  );
+
+                        $(win.document.body).find('table')
+                            .addClass('compact')
+                            .css('font-size', 'inherit');
+
+                        $(win.document.body).find('h1').css('font-size', '14pt');
+                        $(win.document.body).find('h1').css('text-align', 'center');
+
+                        $(win.document.body).find('table tbody td:nth-child(1)').css('text-align', 'right');
+                        $(win.document.body).find('table').attr("dir", "rtl");
+                        $(win.document.body).find('table').css("margin-top", "30px");
+                        /*               $(win.document.body).find('table').css("margin-right","50px");*/
+                        /*  $(win.document.body).find('table').css("margin-left","50px"); */
+                        $(win.document.body).find('table').css("margin-bottom", "30px");
+                        $(win.document.body).find('table').css("padding", "50px");
+
+                       /* $(win.document.body).find('tr').parent().css('background-color', 'red');*/
+                        /* $(win.document.body).find('table').ddClass("m-4"); */
+
+
+                    }
+
+                    , exportOptions: {
+                        columns: ':visible'
+                    }
+                },
+                {
+                    extend: 'colvis',
+                    text: 'عرض'
+                },
+            ],
+        });
+
+    });
+
+
+
+
+
+   function DateChang () {
+       $("#ToDateTimeStamp").val(moment($("#toDate").val(), "YYYY/MM/DD").unix())
+       $("#FromDateTimeStamp").val(moment($("#fromDate").val(), "YYYY/MM/DD").unix())
+
+
+    };
+
+
+</script>
+
+
+

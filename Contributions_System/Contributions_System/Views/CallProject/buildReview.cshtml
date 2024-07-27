@@ -1,0 +1,283 @@
+﻿@model IEnumerable<callcenter.model.call.callProjectModel>
+@using callcenter.business.call
+@using callcenter.model.call;
+@{
+    ViewBag.Title = "عرض العقارات";
+    Layout = "~/Views/Shared/_ArabicLayout.cshtml";
+   
+}
+
+
+<script src="~/assets/select2/js/select2.min.js"></script>
+<script src="~/assets/select2/js/select2.full.min.js"></script>
+<link href="~/assets/select2/css/select2.min.css" rel="stylesheet" />
+
+
+
+
+<div class="margin-10">
+
+    @*<a href="~/admin/lov/Create/@PARENT_ID"> <button type="submit" class="btn btn-primary btn-sm "><i class="fa fa-plus"></i>إضافة جديد</button></a>*@
+    <a href="~/rental/Project/Create/@ViewBag.id"> <button type="submit" class="btn btn-primary btn-sm "><i class="fa fa-plus"></i>عقار جديد</button></a>
+  
+    <a href="~/rental/Project/index"> <button type="submit" class="btn btn-warning btn-sm "><i class="fa fa-reply"></i>رجوع</button></a>
+</div>
+
+
+
+<div class="widget flat radius-bordered no-margin no-padding" style="margin-top:20px ">
+    <div class="widget-header bg-themeprimary">
+        <span class="widget-caption"> استعراض العقارات </span>
+    </div>
+
+    <div class="widget-body">
+        <div class="widget-main ">
+
+            <div class="row no-margin">
+                <div class="col-lg-8 col-md-8 col-sm-8 col-xs-12">
+                
+                </div>
+               
+
+                <hr />
+                @using (Html.BeginForm())
+                {
+                    @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
+                    if (Model != null && Model.Count() > 0)
+                    {
+                        <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 no-margin no-padding" style="text-shadow: 2px 1px 3px #c9c9c9;">
+
+                            <div class="panel-group accordion " id="accordions">
+
+
+
+                                @if (Model != null && Model.Count() > 0)
+                                {
+
+                                    <div class="panel panel-success  " style="margin-bottom:3px; ">
+                                        <div class="panel-heading ">
+                                            <div class="panel-title   ">
+                                                <a class="bg-themeprimary accordion-toggle " data-toggle="collapse" data-parent="#accordions" href="#@Model.FirstOrDefault().callProjectModels.ID" style="height:50px;border:inset;border-width:1px;border-color:silver ;background-color:#f8f8f8">
+                                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                                        <i class="fa-fw fa fa-user"></i>
+                                                        <spant style="text-shadow: 2px 1px 3px #c9c9c9;color:white">@Model.FirstOrDefault().callProjectModels.PROJECT_AR_NAME  </spant>
+                                                    </div>
+                                                    <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                                        <span class="danger">"مخطط المشروع"</span><span>   </span>
+
+                                                    </div>
+
+                                                    <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+
+
+                                                      
+
+
+                                                        @*case erp.business.common.constants.transction_type.aAccepted:
+                                                            {
+                                                            } break;*@
+
+                                                    </div>
+
+                                                </a>
+                                            </div>
+                                        </div>
+                                        <div id="@Model.FirstOrDefault().callProjectModels.ID" class="panel-collapse collapse ">
+                                            <div class="panel-body border-red">
+                                                @try
+                                                {
+                                                    foreach (var image in Model.FirstOrDefault().callProjectModels.callImage_Collection.Where(x => x.IMAGE_TYPE_ID == call_constants.callImageType.roleDesignsImages))
+                                                    {
+
+
+                                                        <img src="~/image/@image.IMAGE_PATH" class="img-thumbnail" />
+                                                    }
+
+                                                }
+                                                catch { }
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    foreach (callProjectModel r in Model)
+                                    {
+
+                                        <div class="panel panel-success " style="margin-bottom:3px;  ">
+                                            <div class="panel-heading">
+                                                <div class="panel-title ">
+                                                    <a class="accordion-toggle " data-toggle="collapse" data-parent="#accordions" href="#@r.ID" style="height:50px;border:inset;border-width:1px;border-color:silver ;background-color:#f8f8f8">
+                                                        <div class="col-lg-4 col-md-4 col-sm-4 col-xs-4">
+                                                            <i class="fa-fw fa fa-user"></i>
+                                                            <span style="text-shadow: 2px 1px 3px #c9c9c9;">@r.callProjectModels.PROJECT_AR_NAME  </span>
+                                                        </div>
+                                                        @*<div class="col-lg-2 col-md-2 col-sm-3 col-xs-2">
+                                                            <span class="danger">القطعة :</span><span>@r.PIECE_NO</span>
+
+
+                                                        </div>*@
+                                                        <div class="col-lg-2 col-md-2 col-sm-3 col-xs-2">
+                                                            <span class="danger">  @r.PROJECT_AR_NAME </span>
+                                                        </div>
+                                                        <div class="col-lg-2 col-md-2 col-sm-3 col-xs-2">
+                                                            <div>
+                                                                <span class="black">سعر العرض </span>
+                                                                <span class="pink">@r.FIRST_COST </span>
+
+                                                            </div>
+
+
+                                                        </div>
+                                                        <div class="col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                                                            @{
+                                                                if (r.STATUS_ID.Value == call_constants.projectStatus.open)
+                                                                {
+                                                                    <i class="fa  fa-check-circle-o success"></i>
+                                                                }
+                                                                else if (r.STATUS_ID.Value == call_constants.projectStatus.closed)
+                                                                {
+                                                                    <i class="fa fa-times-circle-o danger"></i>
+                                                                }
+
+                                                            }
+
+
+
+                                                        </div>
+                                                       
+
+                                                    </a>
+                                                </div>
+                                            </div>
+                                            <div id="@r.ID" class="panel-collapse collapse ">
+                                                <div class="panel-body border-red">
+                                                    <div class="row margin-10">
+
+                                                        <a href="~/rental/Project/Edit/@r.ID" class="btn btn-success btn-sm "> <i class="fa fa-edit"></i>تعديل العقار </a>
+                                                        <button type="submit" class="btn btn-danger btn-sm" onclick="DeleteConfirmbox(@r.ID)"><i class="fa fa-remove"></i>حذف</button>
+
+                                                        <a href="~/rental/Project/Create/@r.ID" class="btn btn-primary btn-sm"> <i class="fa fa-plus"></i>اضافة وحدة</a>
+
+
+
+
+                                                    </div>
+                                                    @{
+                                                        @Html.Partial("_buildDetail", r);
+
+                                                    }
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+
+
+                            </div>
+
+
+
+                        </div>
+                    }
+                }
+
+
+            </div>
+
+        </div>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+
+<script>
+
+    function reviewActionscrpt(bn_id) {
+        //var s = document.getElementById("btn_id");
+        //s.value = bn_id;
+
+        //var s1 = document.getElementById("action_id");
+        s1.value = bn_id;
+        $("#btn_id").val(btn_id);
+        //alert($("#btn_id").val())
+
+
+
+    }
+</script>
+
+<script src="~/assets/js/datatable/jquery.dataTables.min.js"></script>
+<script src="~/assets/js/datatable/ZeroClipboard.js"></script>
+<script src="~/assets/js/datatable/dataTables.tableTools.min.js"></script>
+<script src="~/assets/js/datatable/dataTables.bootstrap.min.js"></script>
+<script src="~/assets/js/datatable/datatables-init.js"></script>
+<script>
+
+    function DeleteConfirmbox(id) {
+
+        var result = confirm('هل انت متاكد من عملية الحذف?');
+        if (result) {
+            $.ajax({
+                type: 'POST',
+                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                url: '/rental/Project/delete/', // this for calling the web method function in cs code.
+                data: { id: id },// empid value
+
+                success: function (response) {
+
+                    if (response == "True") {
+
+                        window.location.reload(true);
+                        //window.location.replace("~/reserv/project/index/");
+                    }
+                    else {
+                        alert("error" + "خطاء في البيانات .. لم يتم الحذف");
+                    }
+                }
+
+
+            });
+
+            return false;
+        }
+    }
+
+    function DeleteContractConfirmbox(id) {
+
+        var result = confirm('هل انت متاكد من عملية الغاء الحجز?');
+        if (result) {
+            $.ajax({
+                type: 'POST',
+                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                url: '/rental/RentalContracts/Delete/', // this for calling the web method function in cs code.
+                data: { id: id },// empid value
+
+                success: function (response) {
+
+                    if (response == "True") {
+
+                        window.location.reload(true);
+                        //window.location.replace("~/reserv/project/index/");
+                    }
+                    else {
+                        alert("error" + "خطاء في البيانات .. لم يتم الغاء الحجز");
+                    }
+                }
+
+
+            });
+
+            return false;
+        }
+    }
+
+
+
+</script>

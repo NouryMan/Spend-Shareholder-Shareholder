@@ -1,0 +1,454 @@
+﻿@model IEnumerable<callcenter.model.call.callProjectModel>
+@using callcenter.business.call;
+@{
+    ViewBag.Title = "Index";
+    Layout = "~/Views/Shared/_ArabicLayout.cshtml";
+}
+
+<div class="page-body padding-5 margin-5">
+    <!-- Your Content Goes Here -->
+
+    <link href="/assets/datetimepicker-master/jquery.datetimepicker.css" rel="stylesheet">
+    <script src="/assets/datetimepicker-master/jquery.datetimepicker.full.js"></script>
+
+
+    <div class="margin-10">
+
+        @*<a href="~/admin/lov/Create/@PARENT_ID"> <button type="submit" class="btn btn-primary btn-sm "><i class="fa fa-plus"></i>إضافة جديد</button></a>*@
+        <a href="~/rental/Project/Create"> <button type="submit" class="btn btn-primary btn-sm "><i class="fa fa-plus"></i>مشروع جديد</button></a>
+
+        <a href="~/"> <button type="submit" class="btn btn-warning btn-sm "><i class="fa fa-reply"></i>رجوع</button></a>
+    </div>
+
+
+    <div id="div_main_data">
+
+
+
+
+
+
+
+
+
+        <div class="row margin-10" style="text-shadow: 1px 2px 3px #808080; ">
+
+            <div class="col-lg-3 col-md-3 col-sm-5 col-xs-12">
+                <div class="databox radius-bordered databox-shadowed databox-graded databox-vertical">
+                    <div class="databox-top no-padding ">
+                        <div class="databox-row">
+                            <div class="databox-cell cell-12 text-align-center padding-10 bg-primary">
+                                <span class="databox-number">@Model.Count()</span>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="databox-bottom ">
+                        <div class="databox-bottom text-align-center ">
+
+                            <span class="databox-text font-130"><h6>عدد المشاريع  </h6> </span>
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-3 col-md-3 col-sm-5 col-xs-12">
+                <div class="databox radius-bordered databox-shadowed databox-graded databox-vertical">
+                    <div class="databox-top no-padding ">
+                        <div class="databox-row">
+                            <div class="databox-cell cell-12 text-align-center padding-10 bg-azure">
+                                <span class="databox-number">@ViewBag.buldingNo</span>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="databox-bottom ">
+                        <div class="databox-bottom text-align-center ">
+
+                            <span class="databox-text font-130"><h6>عدد العقارات  </h6> </span>
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-3 col-sm-5 col-xs-12">
+                <div class="databox radius-bordered databox-shadowed databox-graded databox-vertical">
+                    <div class="databox-top no-padding ">
+                        <div class="databox-row">
+                            <div class="databox-cell cell-12 text-align-center padding-10 bg-yellow">
+                                <span class="databox-number">@ViewBag.suiteNo</span>
+
+                            </div>
+
+                        </div>
+                    </div>
+                    <div class="databox-bottom ">
+
+                        <div class="databox-bottom text-align-center ">
+
+                            <span class="databox-text font-130"><h6>عدد الوحدات  </h6> </span>
+
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-lg-3 col-md-3 col-sm-5 col-xs-12">
+                <div class="databox radius-bordered databox-shadowed databox-graded databox-vertical">
+                    <div class="databox-top no-padding ">
+                        <div class="databox-row">
+                            <div class="databox-cell cell-12 padding-10 text-align-center bg-green">
+                                <span class="databox-number">@ViewBag.suiteNoclosed</span>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="databox-bottom text-align-center ">
+
+                        <span class="databox-text font-130"><h6>عدد ألوحدات الموجرة  </h6> </span>
+
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+        <div class="row">
+
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+
+
+                @foreach (callcenter.model.call.callProjectModel item in Model)
+                {
+
+
+
+                    double suitno = 0;
+                    double blookedNo = 0;
+                    double rentalNo = 0;
+                    double unrentalNo = 0;
+
+                    try
+                    {
+                        foreach (var building in item.callProject_Collection)
+                        {
+
+                            foreach (var suite in building.callProject_Collection.Where(x => x.PROJECT_PARENT_ID == building.ID))
+                            {
+                                suitno++;
+                                if (suite.STATUS_ID == call_constants.projectStatus.booked_up)
+                                {
+                                    blookedNo++;
+                                }
+                                else if (suite.STATUS_ID == call_constants.projectStatus.closed)
+                                {
+                                    rentalNo++;
+                                }
+                                else
+                                {
+                                    unrentalNo++;
+                                }
+                            }
+                        }
+
+                    }
+                    catch { }
+
+
+
+
+
+
+
+
+
+
+                    <div class="col-lg-3 col-md-3 col-sm-4 col-xs-12 " style="text-shadow: 0px 1px 0px #808080; ">
+                        <div class="widget ">
+                            <div class="widget-header bordered-bottom bordered-themeprimary">
+                                <i class="widget-icon fa fa-tags themeprimary"></i>
+                                <span class="widget-caption themeprimary text-align-center ">@item.PROJECT_AR_NAME</span>
+                                <div class="align-items-end align-content-end padding-10 ">
+
+                                    <div class="btn-group" role="group">
+                                        <a class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                                            <span class="svg-icon">
+                                                <svg width="20px" height="20px" viewBox="0 0 16 16" class="bi bi-three-dots text-body" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+                                                    <path fill-rule="evenodd" d="M3 9.5a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3zm5 0a1.5 1.5 0 1 1 0-3 1.5 1.5 0 0 1 0 3z"></path>
+                                                </svg>
+                                            </span>
+                                        </a>
+                                        <ul class="pull-right dropdown-menu dropdown-arrow dropdown-login-area">
+                                            <li><a  href="~/rental/Project/edit/@item.ID"><span>تعديل</span></a></li>
+                                            <li><a  onclick="DeleteConfirmbox(@item.ID)"><span class="text-danger">حذف</span></a></li>
+                                        </ul>
+                                    </div>
+
+                                    @*<a href="~/rental/Project/edit/@item.ID">
+                                        <i class="fa fa-edit themeprimary"></i>
+                                        <span class="widget-caption themeprimary text-align-center ">تعديل</span>
+                                    </a>*@
+                                </div>
+
+                                @*<label class="margin-10  "><a href="~/rental/Project/edit/@item.ID"><i class="widget-icon fa fa-edit themeprimary"></i></a> </label>*@
+                            </div>
+    
+                     <!--Widget Header-->
+                            <div class="widget-body no-padding">
+                                <div class="row well no-margin no-padding">
+                                    <div class="text-align-center col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+
+                                        <div class="with-header padding-10">
+
+                                            <span data-sparkline="bar" data-height="75px" data-width="100%" data-barcolor="themeprimary" data-negbarcolor="#4cb233" data-zerocolor="themethirdcolor"
+                                                  data-barwidth="10px" data-barspacing="5px">
+                                                @rentalNo,@blookedNo,@suitno
+                                            </span>
+                                        </div>
+
+                                    </div>
+
+
+                                    <div class="bg-white ticket-item text-align-center col-lg-12 col-md-12 col-sm-12 col-xs-12 bordered-1 bordered-whitesmoke padding-top-10 ">
+
+                                        <div class="row">
+                                            <div class="ticket-user col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                <span class="font-90">@item.PROJECT_LOCATION </span>
+                                            </div>
+
+
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                                <div class="tickets-container no-margin no-padding">
+                                    <ul class="tickets-list no-margin no-padding">
+
+                                        <li class="ticket-item" style="color:blueviolet">
+                                            <div class="row">
+                                                <a href="~/rental/Project/Suite?projectId=@item.ID">
+                                                    <div class="ticket-user col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                        <span class="font-90"> عددالوحدات </span>
+                                                    </div>
+                                                    <div class="text-align-center ticket-time  col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                                                        <div class="divider  hidden-sm hidden-xs"></div>
+                                                        <span class="">@suitno</span>
+
+
+                                                    </div>
+
+                                                </a>
+                                            </div>
+
+                                        </li>
+                                        <li class="ticket-item" style="color:#185dc8">
+                                            <div class="row">
+                                                <a href="~/rental/Project/Suite?projectId=@item.ID&&status=@call_constants.projectStatus.closed">
+                                                    <div class="ticket-user col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                        <span class="font-90"> عددالوحدات المؤجرة</span>
+                                                    </div>
+                                                    <div class="text-align-center ticket-time  col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                                                        <div class="divider  hidden-sm hidden-xs"></div>
+                                                        <span class="">@rentalNo</span>
+
+
+                                                    </div>
+                                                </a>
+
+                                            </div>
+
+                                        </li>
+                                        <li style="color:lightseagreen" class="ticket-item">
+                                            <div class="row">
+                                                <a href="~/rental/Project/Suite?projectId=@item.ID&&status=@call_constants.projectStatus.booked_up">
+                                                    <div class="ticket-user col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                        <span class="font-90"> عدد الوحدات المحجوزة </span>
+                                                    </div>
+                                                    <div class="text-align-center ticket-time  col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                                                        <div class="divider  hidden-sm hidden-xs"></div>
+
+                                                        <span class="">@blookedNo</span>
+
+                                              
+                                            </div>
+
+                                               
+                                                </a>
+
+
+                                            </div>
+
+                                        </li>
+
+
+                                        <li style="color:#f3a44f" class="ticket-item">
+                                            <div class="row">
+                                                <a href="~/rental/Project/Suite?projectId=@item.ID&&status=@call_constants.projectStatus.open">
+                                                    <div class="ticket-user col-lg-6 col-md-6 col-sm-6 col-xs-12">
+                                                        <span class="font-90"> عدد الوحدات الشاغرة </span>
+                                                    </div>
+                                                    <div class="text-align-center ticket-time  col-lg-3 col-md-3 col-sm-3 col-xs-6">
+                                                        <div class="divider  hidden-sm hidden-xs"></div>
+
+                                                        <span class="">@unrentalNo</span>
+
+
+                                                    </div>
+                                                </a>
+                                              
+
+                                            </div>
+
+                                        </li>
+                                        <li style="color:#4cb233" class="ticket-item">
+                                            <div class="row">
+
+
+                                                <div class="ticket-user col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                                                    <a href="~/rental/Project/buildReview/@item.ID"> <button type="button" class="btn btn-primary btn-sm" style="width:100%"><i class="fa fa-default"></i>تفاصيل أكثر </button></a>
+                                                </div>
+
+
+                                            </div>
+                                        </li>
+
+                                    </ul>
+
+                                </div>
+                                <div class="row">
+                                    <div id="dv_show">
+
+                                    </div>
+
+                                </div>
+
+                            </div>
+
+
+                        </div>
+                    </div>
+
+                }
+
+
+
+
+
+
+
+            </div>
+
+        </div>
+        <div class="row">
+            <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
+
+
+            </div>
+        </div>
+        <div class="row"></div>
+        <div class="row"></div>
+
+
+
+
+    </div>
+
+
+    <script src="/assets/js/charts/sparkline/jquery.sparkline.js"></script>
+    <script src="/assets/js/charts/sparkline/sparkline-init.js"></script>
+    <script type="text/javascript">
+        $(window).bind("load", function () {
+
+            /*Sets Themed Colors Based on Themes*/
+            themeprimary = getThemeColorFromCss('themeprimary');
+            themesecondary = getThemeColorFromCss('themesecondary');
+            themethirdcolor = getThemeColorFromCss('themethirdcolor');
+            themefourthcolor = getThemeColorFromCss('themefourthcolor');
+            themefifthcolor = getThemeColorFromCss('themefifthcolor');
+
+            InitiateSparklineCharts.init();
+        });
+    </script>
+    <script>
+
+        function getData() {
+            $("#div_main_data").html(null);
+
+            var FROM_DATE = $("#FROM_DATE").val();
+
+
+            $.ajax({
+                url: '/hr/attendance/getMainDashBord/',
+                type: 'POST',
+                data: jQuery.param({ day: FROM_DATE.toString() }),
+                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                success: function (response) {
+                    $("#div_main_data").html(null);
+                    $("#div_main_data").html(response);
+
+                    themeprimary = getThemeColorFromCss('themeprimary');
+                    themesecondary = getThemeColorFromCss('themesecondary');
+                    themethirdcolor = getThemeColorFromCss('themethirdcolor');
+                    themefourthcolor = getThemeColorFromCss('themefourthcolor');
+                    themefifthcolor = getThemeColorFromCss('themefifthcolor');
+
+                    InitiateSparklineCharts.init();
+
+                },
+                error: function (response) {
+                    alert("error" + response.error);
+                }
+            });
+
+            //$.get("/admin/reportTo/getReportToList/" + select_val, function (data) {
+
+            //    $("#salaryTreeDiv").html(data); // the div to load content in
+
+            //});
+        }
+
+        function DeleteConfirmbox(id) {
+
+            var result = confirm('هل انت متاكد من عملية الحذف?');
+            if (result) {
+                $.ajax({
+                    type: 'POST',
+                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                    url: '/rental/Project/delete/', // this for calling the web method function in cs code.
+                    data: { id: id },// empid value
+
+                    success: function (response) {
+
+                        if (response == "True") {
+
+                            window.location.reload(true);
+                            //window.location.replace("~/reserv/project/index/");
+                        }
+                        else {
+                            alert("error" + "خطاء في البيانات .. لم يتم الحذف");
+                        }
+                    }
+
+
+                });
+
+                return false;
+            }
+        }
+
+
+
+    </script>
+
+
+</div>

@@ -1,0 +1,149 @@
+﻿@model IEnumerable<callcenter.model.call.callProjectModel>
+@{
+    ViewBag.Title = "قائمة الوحدات";
+    Layout = "~/Views/Shared/_ArabicLayout.cshtml";
+
+}
+
+
+<div class="row well ">
+
+    @if (Model != null)
+    {
+
+        <h4>قائمة الوحدات</h4>
+        <hr />
+        <div class="table-responsive" style="text-shadow: 2px 1px 3px #c9c9c9; ">
+            <table class="table  table-bordered table-striped table-hover table-condensed flip-content " id="ReportTable">
+                <thead class="flip-content bordered-gold">
+
+                    <tr>
+                        <th class="text-align-center">
+                            <span class="font-110">كود الوحدة </span>
+
+                        </th>
+                        <th class="text-align-center">
+                            <span class="font-110">إسم الوحدة</span>
+
+                        </th>
+                        <th class="text-align-center">
+                            <span class="font-110">اسم العمارة</span>
+
+                        </th>
+                        <th class="text-align-center">
+                            <span class="font-110">اسم المشروح </span>
+
+                        </th>
+                        <th class="text-align-center">
+                            <span class="font-110">الحالة </span>
+
+                        </th>
+
+
+
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (callcenter.model.call.callProjectModel item in Model)
+                    {
+
+
+                        <tr>
+                            <td>
+                                <span>@item.PROJECT_CODE</span>
+                            </td>
+                            <td>
+                                <span>@item.PROJECT_AR_NAME</span>
+                            </td>
+                            <td>
+                                <span>@item.callProjectModels.PROJECT_AR_NAME</span>
+                            </td>
+                            <td>
+                                <span>@item.callProjectModels.callProjectModels.PROJECT_AR_NAME</span>
+                            </td>
+                            <td>
+                                <span>@item.STATUS_DATA.NAME_AR</span>
+                            </td>
+
+
+                        </tr>
+
+
+                    }
+                </tbody>
+
+            </table>
+        </div>
+    }
+
+
+</div>
+
+<script>
+
+    jQuery(document).ready(function () {
+
+        ReportTabl = jQuery('#ReportTable').DataTable({
+            "pagingType": "simple_numbers",
+            "pageLength": 100,
+            "ordering": true,
+            "searching": true,
+            "columnDefs": [{
+                "targets": 'no-sort',
+                "orderable": false,
+            }], dom: 'Bfrtip',
+            responsive: true,
+            buttons: [
+                { extend: 'copy', text: 'نسخ' },
+                { extend: 'csv', text: 'csv' },
+                {
+                    extend: 'excelHtml5',
+
+                    text: ' اكسل',
+                    titleAttr: 'تصدير اكسل',
+                    customizeData: function (data) { // for long number
+                        for (var i = 0; i < data.body.length; i++) {
+                            for (var j = 0; j < data.body[i].length; j++) {
+                                data.body[i][j] = '\u200C' + data.body[i][j];
+                            }
+                        }
+                    },
+
+                },
+
+                {
+                    extend: 'print', text: 'طباعة', customize: function (win) {
+
+                        jQuery(win.document.body)
+                            .css('font-size', '10pt')
+                            .prepend(
+                                '<h4 class="text-center"> كشف الوحدات </h4>'
+                            );
+
+                        jQuery(win.document.body).find('table')
+                            .addClass('compact')
+                            .css('font-size', 'inherit');
+                    }
+                },
+
+
+
+
+            ],
+
+
+        });
+
+
+
+    });
+
+
+
+
+
+
+
+
+
+</script>
