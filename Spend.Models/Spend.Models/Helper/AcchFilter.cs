@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Spend.Models.Helper
 {
-    public class Filter
+    public class AcchFilter
     {
         public int? Id { get; set; }
         public int? Type { get; set; }

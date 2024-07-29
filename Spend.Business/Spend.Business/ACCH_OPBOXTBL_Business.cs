@@ -238,7 +238,7 @@ namespace Spend.Business
 
 
 
-        public int TranseSaleInv(List<API_TRANSESALE_INVO_Model> items)
+        public  int TranseSaleInv(List<API_TRANSESALE_INVO_Model> items)
         {
             using (TransactionScope tran = new TransactionScope())
             {
@@ -285,9 +285,12 @@ namespace Spend.Business
                     var Box = center_b.GeCenterAccForProj(items.FirstOrDefault().ProjNo).INCOME_BOX.Value;
 
                     var ProjNo = items.FirstOrDefault().ProjNo;
-                    PROJECTTBL_Business b = new PROJECTTBL_Business();
+                    ACCH_PROJECT_Business b = new ACCH_PROJECT_Business();
 
-                    var Note = "فواتير مشروع " + b.GetByID(items.FirstOrDefault().ProjNo).PROJECT_NAME + " من رقم " + items.OrderBy(x => x.InovNo).FirstOrDefault().InovNo + " رقم " + items.OrderBy(x => x.InovNo).LastOrDefault().InovNo;
+                    var projectAsync = b.GetByIdAsync(items.FirstOrDefault().ProjNo);
+                    var project = projectAsync.Result;
+
+                    var Note = "فواتير مشروع " + project.PROJECT_AR_NAME + " من رقم " + items.OrderBy(x => x.InovNo).FirstOrDefault().InovNo + " رقم " + items.OrderBy(x => x.InovNo).LastOrDefault().InovNo;
 
                     //ترحيل مبالغ الصيانة والتسويق والحسابات الاخرى///////////////////////////
 
@@ -388,7 +391,7 @@ namespace Spend.Business
 
 
                     List<ACCH_OPBOXTBL_Model> list = new List<ACCH_OPBOXTBL_Model>();
-                    PROJECTTBL_Business b = new PROJECTTBL_Business();
+                    ACC_HOLDERTBL_Business b = new ACC_HOLDERTBL_Business();
                     decimal UnderNo = 0;
                     try { UnderNo = db.MAX_UNDER_OPV_Model.Where(x => x.NAM == "under_no").FirstOrDefault().MAX_NO; } catch { UnderNo = 1; }
 

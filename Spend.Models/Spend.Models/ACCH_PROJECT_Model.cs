@@ -184,7 +184,6 @@ namespace Spend.Models
         [RegularExpression("^[0-9.]*$", ErrorMessage = "هذا الحقل رقم ")]
         public Nullable<int> AGENT_ID { get; set; }
 
-        [ForeignKey("AGENT_ID")]
         
         public int BRANCH_ID { get; set; }
 

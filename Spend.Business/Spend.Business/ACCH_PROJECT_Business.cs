@@ -1,5 +1,4 @@
-﻿using callcenter.model.call;
-using Microsoft.AspNet.Identity;
+﻿using Microsoft.AspNet.Identity;
 using Spend.DataAccess;
 using Spend.Models;
 using Spend.Models.Helper;
@@ -28,10 +27,25 @@ namespace Spend.Business
             return await db.ACCH_PROJECT_Model.FirstOrDefaultAsync(x => x.ID == id && x.IS_DELETED==false );
         }
 
-        public async Task<Pagination<ACCH_PROJECT_Model>> GetAll(Filter filter)
+        public async Task<Pagination<ACCH_PROJECT_Model>> GetAllAsync(AcchFilter filter)
         {
+            var query = db.ACCH_PROJECT_Model.Where(x => x.IS_DELETED == false);
 
-            var query = db.ACCH_PROJECT_Model.Where(x => x.IS_DELETED == false );
+            if (filter.Type.HasValue)
+            {
+                query = query.Where(x => x.PROJECT_TYPE_ID == filter.Type);
+            }
+            if (filter.Id.HasValue)
+            {
+                query = query.Where(x => x.ID == filter.Id);
+            }
+            if (filter.Status.HasValue)
+            {
+                query = query.Where(x => x.STATUS_ID == filter.Status);
+            }
+
+            // Add an OrderBy clause here. For example, you can sort by ID or any other relevant property
+            query = query.OrderBy(x => x.ID);
 
             var totalCount = await query.CountAsync();
             var totalPages = (int)Math.Ceiling(totalCount / (double)filter.PageSize);
@@ -49,8 +63,13 @@ namespace Spend.Business
             };
         }
 
+        public async Task<int> GetCountByTypeAsync(int id)
+        {
+            return await db.ACCH_PROJECT_Model.Where(x => x.PROJECT_TYPE_ID == id && x.IS_DELETED == false).CountAsync();
+        }
+        
 
-        public async Task<int> GetMaxID()
+        public async Task<int> GetMaxIDAsync()
         {
             int max = 0;
             try
@@ -65,8 +84,61 @@ namespace Spend.Business
             }
             return max + 1;
         }
+        public async Task<long> GetMaxByProjectParent(long? id, int project_type)
+        {
+            int prefix = 1;
+            long max = 0;
+            long length = 0;
 
-        public async Task Create(ACCH_PROJECT_Model item)
+
+            try
+            {
+                if (id == 0)
+                {
+                    max =await db.ACCH_PROJECT_Model.Where(x => x.PROJECT_PARENT_ID == id || x.PROJECT_PARENT_ID == null ).MaxAsync(r => r.PROJECT_NO);
+                }
+                else
+                {
+                    max =await db.ACCH_PROJECT_Model.Where(x => x.PROJECT_PARENT_ID == id ).MaxAsync(r => r.PROJECT_NO);
+
+                }
+
+                max++;
+            }
+            catch (Exception ex)
+            {
+                ACCH_PROJECT_Model mod =await db.ACCH_PROJECT_Model.Where(x => x.ID == id ).FirstOrDefaultAsync();
+                if (project_type == 1)
+                {
+                    length = 3;
+                    max = 1001;
+                }
+                else if (project_type == 2)
+                {
+                    length = 2;
+                    string x1 = "01";
+                    string x2 = mod.PROJECT_NO.ToString();
+                    string ss = x2 + x1;
+                    max = long.Parse(ss);
+                }
+                else if (project_type == 3)
+                {
+                    length = 2;
+                    string ss = mod.PROJECT_NO.ToString() + "01";
+                    max = long.Parse(ss);
+                }
+                else
+                {
+                    length = 4;
+                }
+
+            }
+
+            return max++;
+
+        }
+
+        public async Task CreateAsync(ACCH_PROJECT_Model item)
         {
 
             try
@@ -75,13 +147,11 @@ namespace Spend.Business
                 {
                   
 
-                        item.ID = await GetMaxID();
+                        item.ID = await GetMaxIDAsync();
                         item.GUID_ID = Guid.NewGuid();
                         item.IS_FOR_RENTAL = false;
-
-
                         db.ACCH_PROJECT_Model.Add(item);
-                       await  db.SaveChangesAsync();
+                        await  db.SaveChangesAsync();
 
 
                  
@@ -104,7 +174,7 @@ namespace Spend.Business
         }
 
 
-        public async Task Update(ACCH_PROJECT_Model item)
+        public async Task UpdateAsync(ACCH_PROJECT_Model item)
         {
 
 
@@ -153,6 +223,28 @@ namespace Spend.Business
 
 
         }
+        public async Task<List<ACCH_PROJECT_Model>> SuiteByStuteAndProjectAsync(int? ProjectId, int? status)
+        {
+            return await db.ACCH_PROJECT_Model.Where(x => x.IS_DELETED == false && (status == null || x.STATUS_ID == status)
+                                   && x.PROJECT_TYPE_ID == 3 && (ProjectId == null || x.ProjectModels.PROJECT_PARENT_ID == ProjectId)).ToListAsync();
 
+        }
+
+        public async Task<List<ACCH_PROJECT_Model>> GetProjectListByParentIdAsync(int? id)
+        {
+            List<ACCH_PROJECT_Model> aCCH_PROJECT_s = null;
+            if (id != null && id > 0)
+            {
+                aCCH_PROJECT_s = await db.ACCH_PROJECT_Model.Where(x =>  x.PROJECT_PARENT_ID == id && x.IS_DELETED == false ).OrderBy(d => d.ID).ToListAsync();
+            }
+            else
+            {
+
+                aCCH_PROJECT_s = await db.ACCH_PROJECT_Model.Where(x =>  x.PROJECT_PARENT_ID == null && x.IS_DELETED == false ).OrderBy(d => d.ID).ToListAsync();
+            }
+
+            return aCCH_PROJECT_s;
+
+        }
     }
 }

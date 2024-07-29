@@ -6,7 +6,7 @@ using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using callcenter.business.call;
+
 
 namespace Spend.Business
 {
@@ -49,11 +49,11 @@ namespace Spend.Business
         public long Create(PROJECTTBL_Model Proj)
         {
 
-            callProjectBusiness b = new callProjectBusiness(false);
+           // callProjectBusiness b = new callProjectBusiness(false);
 
             Proj.PROJECT_NO = GetMaxID()+1;
             Proj.ADD_FROM ="S";
-            Proj.CALL_PROJ_ID =b.GetMaxID();
+           // Proj.CALL_PROJ_ID =b.GetMaxID();
             Proj.PROJ_TYPE = 1;
             db.PROJECTTBL_Model.Add(Proj);
 

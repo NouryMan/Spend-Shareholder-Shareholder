@@ -1,6 +1,5 @@
 ﻿
-using callcenter.business.call;
-using callcenter.model.call;
+
 using Spend.DataAccess;
 using Spend.Models;
 using System;
@@ -250,8 +249,8 @@ namespace Spend.Business
         {
             SPEND_SCRIPTBL_Model obj = db.SPEND_SCRIPTBL_Model.Find(id);
 
-            callContractBusiness contract = new callContractBusiness();
-            callContractModel contr = contract.getbyid(obj.CONTRACT_ID);
+            //callContractBusiness contract = new callContractBusiness();
+            //callContractModel contr = contract.getbyid(obj.CONTRACT_ID);
             ConvertNumbersToArabicAlphabet convertNumbersToArabic = new ConvertNumbersToArabicAlphabet();
             try
             {
@@ -265,10 +264,10 @@ namespace Spend.Business
             {
 
 
-                obj.customer_name = contr.callCustomerModel.CUST_AR_NAME;
+            //    obj.customer_name = contr.callCustomerModel.CUST_AR_NAME;
 
-                obj.project_name = contr.callProjectModel.PROJECT_AR_NAME + " - " + contr.callProjectModel.callProjectModels.PROJECT_AR_NAME + " - من  مشروع  " + contr.callProjectModel.callProjectModels.callProjectModels.PROJECT_AR_NAME;
-                obj.contract_cost = contr.FIRST_COST.ToString();
+            //    obj.project_name = contr.callProjectModel.PROJECT_AR_NAME + " - " + contr.callProjectModel.callProjectModels.PROJECT_AR_NAME + " - من  مشروع  " + contr.callProjectModel.callProjectModels.callProjectModels.PROJECT_AR_NAME;
+            //    obj.contract_cost = contr.FIRST_COST.ToString();
             }
             catch { }
             return obj;
