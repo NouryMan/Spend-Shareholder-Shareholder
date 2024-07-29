@@ -1,0 +1,295 @@
+﻿@model PagedList.IPagedList<Spend.Models.ACCH_PROJECT_Model>
+@using PagedList.Mvc;
+@{
+    ViewBag.Title = "Index";
+
+}
+<link href="~/assets/css/projectIndexStyle.css" rel="stylesheet" />
+<div class="page-body padding-5 margin-5">
+    <!-- Your Content Goes Here -->
+
+
+
+
+    <br />
+
+    <div class="container">
+
+        @*<a href="~/admin/lov/Create/@PARENT_ID"> <button type="submit" class="btn btn-primary btn-sm "><i class="fa fa-plus"></i>إضافة جديد</button></a>*@
+        <a href="~/AcchProject/Create" type="submit" class="btn btn-primary btn-sm "><i class="fa fa-plus"></i>مشروع جديد</></a>
+
+        <a href="~/" type="submit" class="btn btn-warning btn-sm "><i class="fa fa-reply"></i>رجوع</></a>
+    </div>
+
+
+
+
+    <br />
+
+
+
+    <div class="container">
+        <div class="row ">
+            <div class="col-xl-3 col-lg-3">
+                <div class="card l-bg-blue-dark">
+                    <div class="card-statistic-3 p-4">
+                        <div class="card-icon card-icon-large"><i class="fas fa-shopping-cart"></i></div>
+                        <div class="mb-4">
+                            <h5 class="card-title mb-0">عدد المشاريع</h5>
+                        </div>
+                        <div class="row align-items-center mb-2 d-flex">
+                            <div class="col-8">
+                                <h2 class="d-flex align-items-center mb-0">
+                                    @Model.TotalItemCount
+                                </h2>
+                            </div>
+                            <div class="col-4 text-right">
+                                <span>12.5% <i class="fa fa-arrow-up"></i></span>
+                            </div>
+                        </div>
+                        <div class="progress mt-1 " data-height="8" style="height: 8px;">
+                            <div class="progress-bar l-bg-cyan" role="progressbar" data-width="25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-3">
+                <div class="card  l-bg-cherry ">
+                    <div class="card-statistic-3 p-4">
+                        <div class="card-icon card-icon-large"><i class="fas fa-users"></i></div>
+                        <div class="mb-4">
+                            <h5 class="card-title mb-0">عدد العمارات</h5>
+                        </div>
+                        <div class="row align-items-center mb-2 d-flex">
+                            <div class="col-8">
+                                <h2 class="d-flex align-items-center mb-0">
+                                    @ViewBag.buldingNo
+                                </h2>
+                            </div>
+                            <div class="col-4 text-right">
+                                <span>9.23% <i class="fa fa-arrow-up"></i></span>
+                            </div>
+                        </div>
+                        <div class="progress mt-1 " data-height="8" style="height: 8px;">
+                            <div class="progress-bar l-bg-green" role="progressbar" data-width="25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-3">
+                <div class="card l-bg-green-dark">
+                    <div class="card-statistic-3 p-4">
+                        <div class="card-icon card-icon-large"><i class="fas fa-ticket-alt"></i></div>
+                        <div class="mb-4">
+                            <h5 class="card-title mb-0">عدد الوحدات</h5>
+                        </div>
+                        <div class="row align-items-center mb-2 d-flex">
+                            <div class="col-8">
+                                <h2 class="d-flex align-items-center mb-0">
+                                    @ViewBag.suiteNo
+                                </h2>
+                            </div>
+                            <div class="col-4 text-right">
+                                <span>10% <i class="fa fa-arrow-up"></i></span>
+                            </div>
+                        </div>
+                        <div class="progress mt-1 " data-height="8" style="height: 8px;">
+                            <div class="progress-bar l-bg-orange" role="progressbar" data-width="25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-xl-3 col-lg-3">
+                <div class="card l-bg-orange-dark">
+                    <div class="card-statistic-3 p-4">
+                        <div class="card-icon card-icon-large"><i class="fas fa-dollar-sign"></i></div>
+                        <div class="mb-4">
+                            <h5 class="card-title mb-0">عدد الوحدات المغلقة</h5>
+                        </div>
+                        <div class="row align-items-center mb-2 d-flex">
+                            <div class="col-8">
+                                <h2 class="d-flex align-items-center mb-0">
+                                    @ViewBag.suiteNo
+                                </h2>
+                            </div>
+                            <div class="col-4 text-right">
+                                <span>2.5% <i class="fa fa-arrow-up"></i></span>
+                            </div>
+                        </div>
+                        <div class="progress mt-1 " data-height="8" style="height: 8px;">
+                            <div class="progress-bar l-bg-cyan" role="progressbar" data-width="25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100" style="width: 25%;"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+
+
+
+
+
+    <div id="div_main_data">
+
+
+
+
+
+
+        <div class="container">
+            <div class="row">
+
+                @foreach (var item in Model)
+                {
+
+
+
+                    double suitno = 0;
+                    double blookedNo = 0;
+                    double rentalNo = 0;
+                    double unrentalNo = 0;
+
+                    try
+                    {
+                        foreach (var building in item.Project_Collection)
+                        {
+
+                            foreach (var suite in building.Project_Collection.Where(x => x.PROJECT_PARENT_ID == building.ID))
+                            {
+                                suitno++;
+                                if (suite.STATUS_ID == 1)
+                                {
+                                    blookedNo++;
+                                }
+                                else if (suite.STATUS_ID == 0)
+                                {
+                                    rentalNo++;
+                                }
+                                else
+                                {
+                                    unrentalNo++;
+                                }
+                            }
+                        }
+
+                    }
+                    catch { }
+
+
+                    <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+                        <div class="tile">
+                            <div class="wrapper">
+                                <div class="header">@item.PROJECT_AR_NAME</div>
+                                <div class="banner-img">
+                                    <img src="http://via.placeholder.com/640x360" alt="Image 1">
+                                </div>
+                                <div class="dates">
+                                    <div class="start">
+                                        <strong>الموقع:</strong>
+                                        @item.PROJECT_LOCATION
+                                    </div>
+                                </div>
+                                <div class="stats">
+                                    <div>
+                                        <strong> العمارات</strong>
+                                        @item.Project_Collection.Count()
+                                    </div>
+                                    <div>
+                                        <strong> الشقق</strong>
+                                        @suitno
+                                    </div>
+                                    <div>
+                                        <strong> الشقق المتاحة</strong>
+                                        @suitno
+                                    </div>
+                                    <div>
+                                        <strong> الشقق المغلقة</strong>
+                                        @suitno
+                                    </div>
+                                </div>
+                                <div class="footer">
+                                    <a href="~/AcchProject/buildReview/@item.ID" class="Cbtn Cbtn-primary">عرض</a>
+                                    <a href="~/AcchProject/edit/@item.ID" class="Cbtn Cbtn-secondary">تعديل</a>
+
+                                </div>
+                                <div class="footer">
+
+                                    <a onclick="DeleteConfirmbox(@item.ID)" class="Cbtn Cbtn-danger">حذف</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+
+
+
+                }
+
+
+
+
+
+
+            </div>
+            <div class="row">
+                <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="pagination-container">
+                        <span class="pagination-info">صفحة @(Model.PageCount < Model.PageNumber ? 0 : Model.PageNumber) من @Model.PageCount</span>
+                        <div class="pagination-buttons">
+                            @Html.PagedListPager(Model, page => Url.Action("index", new { page }), new PagedListRenderOptions
+                            {
+                                UlElementClasses = new string[] { "pagination" },
+                                LiElementClasses = new string[] { "page-item" },
+                             //   PageClasses = new string[] { "page-link" }
+                            })
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+
+    </div>
+
+
+
+
+</div>
+
+<script>
+    function DeleteConfirmbox(id) {
+
+
+
+        var result = confirm('هل انت متاكد من عملية الحذف?');
+        if (result) {
+            $.ajax({
+                    url: '@Url.Action("Delete", "AcchProject")',
+                    type: 'POST',
+                    data: { id: id },
+                    success: function(response) {
+                        if (response.success) {
+                            alert("تم الحذف بنجاح");
+                            // يمكنك إضافة إجراء آخر مثل إعادة تحميل الصفحة أو إزالة العنصر من الـDOM
+                        } else {
+                            alert("فشل في الحذف");
+                        }
+                    },
+                    error: function(xhr, status, error) {
+                        console.log(xhr.responseText);
+                        alert("حدث خطأ أثناء الحذف");
+                    }
+                });
+
+            return false;
+        }
+    }
+
+
+</script>

@@ -45,22 +45,6 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="callcenter.business.call, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\RealEstateRental\Real_estate_rentals_Official\callCenter.Business\callCenter.Business.call\bin\Debug\callcenter.business.call.dll</HintPath>
-    </Reference>
-    <Reference Include="callcenter.business.global, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\RealEstateRental\Real_estate_rentals_Official\callCenter.Business\callCenter.business.global\bin\Debug\callcenter.business.global.dll</HintPath>
-    </Reference>
-    <Reference Include="callcenter.model.call, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\RealEstateRental\Real_estate_rentals_Official\callCenter.Model\callcenter.model.call\bin\Debug\callcenter.model.call.dll</HintPath>
-    </Reference>
-    <Reference Include="callcenter.model.global, Version=1.0.0.0, Culture=neutral, processorArchitecture=MSIL">
-      <SpecificVersion>False</SpecificVersion>
-      <HintPath>..\..\..\RealEstateRental\Real_estate_rentals_Official\callCenter.Model\callCenter.model.global\bin\Debug\callcenter.model.global.dll</HintPath>
-    </Reference>
     <Reference Include="EntityFramework, Version=6.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089, processorArchitecture=MSIL">
       <HintPath>..\packages\EntityFramework.6.2.0\lib\net45\EntityFramework.dll</HintPath>
     </Reference>
@@ -231,6 +215,7 @@
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="App_Start\SwaggerConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
+    <Content Include="assets\css\projectIndexStyle.css" />
     <Compile Include="Controllers\ACCH_OPBOXTController.cs" />
     <Compile Include="Controllers\ACCH_PROJ_BOX_PERCENTController.cs" />
     <Compile Include="Controllers\ACC_HOLDERController.cs" />
@@ -238,7 +223,7 @@
     <Compile Include="Controllers\DefaultController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OPERATIONAL_PALANCEController.cs" />
-    <Compile Include="Controllers\CallProjectController.cs" />
+    <Compile Include="Controllers\AcchProjectController.cs" />
     <Compile Include="Controllers\PROJECTTController.cs" />
     <Compile Include="Controllers\REPORTController.cs" />
     <Compile Include="Controllers\ROLEController.cs" />
@@ -944,13 +929,13 @@
     <Content Include="Views\PROJECTT\Edit.cshtml" />
     <Content Include="Views\PROJECTT\Index.cshtml" />
     <Content Include="Views\ACCH_OPBOXT\Distribution.cshtml" />
-    <Content Include="Views\CallProject\buildReview.cshtml" />
-    <Content Include="Views\CallProject\Create.cshtml" />
-    <Content Include="Views\CallProject\Edit.cshtml" />
-    <Content Include="Views\CallProject\Index.cshtml" />
-    <Content Include="Views\CallProject\Report.cshtml" />
-    <Content Include="Views\CallProject\Suite.cshtml" />
-    <Content Include="Views\CallProject\_buildDetail.cshtml" />
+    <Content Include="Views\AcchProject\buildReview.cshtml" />
+    <Content Include="Views\AcchProject\Create.cshtml" />
+    <Content Include="Views\AcchProject\Edit.cshtml" />
+    <Content Include="Views\AcchProject\Index.cshtml" />
+    <Content Include="Views\AcchProject\Report.cshtml" />
+    <Content Include="Views\AcchProject\Suite.cshtml" />
+    <Content Include="Views\AcchProject\_buildDetail.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

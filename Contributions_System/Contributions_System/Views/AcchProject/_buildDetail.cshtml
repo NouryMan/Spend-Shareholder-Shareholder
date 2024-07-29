@@ -1,0 +1,112 @@
+﻿@model  Spend.Models.ACCH_PROJECT_Model
+@{
+    string driv="لا";
+    string park="لا";
+    string work="لا";
+    string Gase = "لا";
+ 
+}
+<div class="">
+
+    @foreach (var item in Model.Project_Collection.OrderBy(x => x.PROJECT_CODE))
+    {
+       
+        var border_color = "";
+
+        if (item.STATUS_ID == 0)
+        {
+            border_color = "#287dfa";
+        }
+        else if (item.STATUS_ID == 1)
+        {
+            border_color = "";
+        }
+        else
+        {
+            border_color = "";
+        }
+
+
+        <div class="menus d-md-flex" style="border:solid;border-color:@border_color;border-width:4px; width:100%;margin-bottom:6px; background-color:#f3f1ed;text-shadow: 2px 1px 3px #c9c9c9;">
+
+
+                <div class=""><span class="la la-home la-lg text-primary" ></span></div>
+                <div class="col-9">
+                    <div class="d-flex">
+                        <div class="one-half">
+                            <h3> @item.PROJECT_AR_NAME</h3>
+                        </div>
+                        <div class="one-forth">
+                            @*<span class="price">المساحة</span>*@
+                        </div>
+
+
+
+
+
+                    </div>
+                    <div class="d-flex">
+
+                        <p>
+                            <span>رقم الصك : </span> <span>@item.PROJECT_AR_NAME</span>
+                            , <span>المساحة : </span>, <span>@item.PROJECT_AR_NAME</span>
+                            , <span>المساحة : </span>, <span>@item.PROJECT_AR_NAME</span>
+                            , <span>المساحة : </span>, <span>@item.PROJECT_AR_NAME</span>
+                        </p>
+                    </div>
+                    </div>
+
+
+                <div class="col-3 pr-5" >
+                    <a href="~/Acchproject/edit/@item.ID"> <span class="la la-edit la-lg text-success"></span></a>
+
+                  
+
+
+                    @if (item.STATUS_ID == 0)
+                    {
+                        <a onclick="DeleteConfirmbox(@item.ID)"> <span class="la la-trash la-lg text-danger"></span></a>
+
+                    }
+
+                </div>
+
+                </div>
+    }
+
+
+</div>
+
+
+<script>
+
+
+      function DeleteConfirmbox(id) {
+
+
+
+     var result = confirm('هل انت متاكد من عملية الحذف?');
+     if (result) {
+         $.ajax({
+                 url: '@Url.Action("Delete", "AcchProject")',
+                 type: 'POST',
+                 data: { id: id },
+                 success: function(response) {
+                     if (response.success) {
+                         alert("تم الحذف بنجاح");
+                         // يمكنك إضافة إجراء آخر مثل إعادة تحميل الصفحة أو إزالة العنصر من الـDOM
+                     } else {
+                         alert("فشل في الحذف");
+                     }
+                 },
+                 error: function(xhr, status, error) {
+                     console.log(xhr.responseText);
+                     alert("حدث خطأ أثناء الحذف");
+                 }
+             });
+
+         return false;
+     }
+ }
+
+</script>  

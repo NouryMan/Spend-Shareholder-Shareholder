@@ -1,0 +1,116 @@
+﻿@model IEnumerable<Spend.Models.ACCH_PROJECT_Model>
+
+@{
+    ViewBag.Title = "عرض العقارات";
+   
+   
+}
+
+
+<link href="~/assets/css/projectIndexStyle.css" rel="stylesheet" />
+
+<br />
+<div class="col-md-12 col-lg-12 ">
+
+    <a href="~/AcchProject/Create/@ViewBag.id" type="submit" class="btn btn-primary btn-sm "><i class="fa fa-plus"></i>عقار جديد</a>
+  
+    <a href="~/AcchProject/index" type="submit" class="btn btn-warning btn-sm "><i class="fa fa-reply"></i>رجوع</a>
+</div>
+<br />
+
+<div class="row justify-content-center">
+    <div class="col-md-10 col-lg-10">
+        <div id="accordion" class="myaccordion w-100">
+            <div class="p-4 wrap pt-5 text-center">
+                <h3>@Model.FirstOrDefault().ProjectModels.PROJECT_AR_NAME </h3>
+            </div>
+            @foreach (var r in Model)
+            {
+
+
+            <div class="card">
+                <div class="card-header p-0" id="heading_@r.ID">
+                    <h2 class="mb-0">
+                        <button class="d-flex py-4 px-4 align-items-center justify-content-between btn btn-link collapsed" data-toggle="collapse" data-target="#collapse_@r.ID" aria-expanded="false" aria-controls="collapse_@r.ID">
+                            <h4 class="mb-0"><span class="la la-building la-lg text-primary"></span> @r.PROJECT_AR_NAME</h4>
+                            <i class="la la-angle-down" aria-hidden="true"></i>
+                        </button>
+                    </h2>
+                </div>
+
+                <div id="collapse_@r.ID" class="collapse" aria-labelledby="heading_@r.ID" data-parent="#accordion" style="">
+
+                    <div class="row m-4 no-paddingj justify-content-end">
+                        <div class="p-2">
+                            <a href="~/AcchProject/Create/@r.ID" class="btn btn-primary btn-sm"> <i class="la la-plus"></i> اضافة وحدة</a>
+
+
+                        </div>
+                        <div class="p-2">
+
+                            <a href="~/AcchProject/Edit/@r.ID" class="btn btn-success btn-sm "> <i class="la la-edit"></i>تعديل العقار </a>
+                        </div>
+                        <div class="p-2">
+                            <button type="submit" class="btn btn-danger btn-sm" onclick="DeleteConfirmbox(@r.ID)"><i class="la la-trash"></i>حذف</button>
+                            </div>
+
+
+
+
+
+
+
+
+                        </div>
+                        <div class="card-body py-5 px-4">
+
+                            @{
+                                @Html.Partial("_buildDetail", r);
+
+                            }
+
+
+
+                        </div>
+                    </div>
+            </div>
+          
+            
+            }
+        </div>
+    </div>
+</div>
+
+
+<script>
+
+    function DeleteConfirmbox(id) {
+
+
+
+     var result = confirm('هل انت متاكد من عملية الحذف?');
+     if (result) {
+         $.ajax({
+                 url: '@Url.Action("Delete", "AcchProject")',
+                 type: 'POST',
+                 data: { id: id },
+                 success: function(response) {
+                     if (response.success) {
+                         alert("تم الحذف بنجاح");
+                         // يمكنك إضافة إجراء آخر مثل إعادة تحميل الصفحة أو إزالة العنصر من الـDOM
+                     } else {
+                         alert("فشل في الحذف");
+                     }
+                 },
+                 error: function(xhr, status, error) {
+                     console.log(xhr.responseText);
+                     alert("حدث خطأ أثناء الحذف");
+                 }
+             });
+
+         return false;
+     }
+ }
+
+
+</script>
