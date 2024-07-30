@@ -60,6 +60,7 @@ namespace Spend.Business
             {
 
                 box.BOX_NO = GetMaxNo();
+                box.CR_DATEM = DateTime.Now;
                 ALL_ACC_NOTBL_Business alL_ACC_NOTBL_Business = new ALL_ACC_NOTBL_Business();
                 
 
@@ -77,8 +78,8 @@ namespace Spend.Business
 
 
 
+           
 
-          
             db.Entry(box).State = EntityState.Modified;
             db.Entry(box).Property(x => x.CR_DATEM).IsModified = false;
 
