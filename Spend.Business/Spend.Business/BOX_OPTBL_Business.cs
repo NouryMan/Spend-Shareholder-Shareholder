@@ -20,7 +20,7 @@ namespace Spend.Business
 
         public List<BOX_OPTBL_Model> GetAll()
         {
-            List<BOX_OPTBL_Model> obj = db.BOX_OPTBL_Model.ToList();
+            List<BOX_OPTBL_Model> obj = db.BOX_OPTBL_Model.Where(x => x.IS_DELETED == false).ToList();
 
 
 

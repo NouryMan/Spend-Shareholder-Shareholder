@@ -17,8 +17,31 @@ namespace Contributions_System.Controllers
         // GET: Spend/Default
 
 
-      
-      
+
+    
+        public ActionResult Index(int? Page, string search)
+        {
+
+            SPEND_SCRIPTBL_Business b = new SPEND_SCRIPTBL_Business();
+
+            List<SPEND_SCRIPTBL_Model> model = new List<SPEND_SCRIPTBL_Model>();
+
+            if (!String.IsNullOrEmpty(search))
+            {
+                model = b.getall().Where(x => x.NOTE.Contains(search)).OrderByDescending(x => x.DATE_M).ToList();
+            }
+            else
+            {
+                model = b.getall().OrderByDescending(x => x.DATE_M).ToList();
+            }
+
+
+
+            int pageSize = 30;
+            int pageNumber = (Page ?? 1);
+            return View(model.ToPagedList(pageNumber, pageSize));
+
+        }
 
 
 
@@ -33,8 +56,8 @@ namespace Contributions_System.Controllers
             SCRIP_OPTYPETBL_Business SRIP_OPTYPE = new SCRIP_OPTYPETBL_Business();
             ViewBag.SRIP_OPTYPE = SRIP_OPTYPE.getall();
 
-            PROJECTTBL_Business proj_b = new PROJECTTBL_Business();
-            ViewBag.proj = proj_b.getall();
+            ACCH_PROJECT_Business proj_b = new ACCH_PROJECT_Business();
+            ViewBag.proj = proj_b.GetAllAsync(1).Result;
 
             SCRIPT_ACTIONSTBL_Business ScACTION_b = new SCRIPT_ACTIONSTBL_Business();
             ViewBag.ScACTION= ScACTION_b.getall();
@@ -90,8 +113,8 @@ namespace Contributions_System.Controllers
             SCRIP_OPTYPETBL_Business SRIP_OPTYPE = new SCRIP_OPTYPETBL_Business();
             ViewBag.SRIP_OPTYPE = SRIP_OPTYPE.getall();
 
-            PROJECTTBL_Business proj_b = new PROJECTTBL_Business();
-            ViewBag.proj = proj_b.getall();
+            ACCH_PROJECT_Business proj_b = new ACCH_PROJECT_Business();
+            ViewBag.proj = proj_b.GetAllAsync(1).Result; 
 
             SCRIPT_ACTIONSTBL_Business ScACTION_b = new SCRIPT_ACTIONSTBL_Business();
             ViewBag.ScACTION = ScACTION_b.getall();

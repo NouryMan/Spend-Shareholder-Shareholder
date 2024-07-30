@@ -20,7 +20,7 @@ namespace Spend.Business
 
         public List<ACCH_OPBOX_ACTIONSTBL_Model> GetAll()
         {
-            List<ACCH_OPBOX_ACTIONSTBL_Model> obj = db.ACCH_OPBOX_ACTIONSTBL_Model.ToList();
+            List<ACCH_OPBOX_ACTIONSTBL_Model> obj = db.ACCH_OPBOX_ACTIONSTBL_Model.Where(x=>x.IS_DELETED==false).ToList();
 
 
 

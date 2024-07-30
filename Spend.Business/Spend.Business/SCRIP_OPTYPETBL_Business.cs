@@ -19,7 +19,7 @@ namespace Spend.Business
         }
         public List<SCRIP_OPTYPETBL_Model> getall()
         {
-            List<SCRIP_OPTYPETBL_Model> obj = db.SCRIP_OPTYPETBL_Model.ToList();
+            List<SCRIP_OPTYPETBL_Model> obj = db.SCRIP_OPTYPETBL_Model.Where(x => x.IS_DELETED == false).ToList();
 
 
             return obj;

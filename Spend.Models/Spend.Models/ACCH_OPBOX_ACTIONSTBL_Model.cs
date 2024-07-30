@@ -23,5 +23,8 @@ namespace Spend.Models
         
         [Column(TypeName = "VARCHAR2"), StringLength(400, ErrorMessage = "طول الحقل كبير جداً")]
         public string NOTE { get; set; }
+
+        [System.ComponentModel.DefaultValue(false)]
+        public bool IS_DELETED { get; set; }
     }
 }

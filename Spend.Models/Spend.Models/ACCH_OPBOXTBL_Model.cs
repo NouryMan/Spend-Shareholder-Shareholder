@@ -84,7 +84,7 @@ namespace Spend.Models
         [ForeignKey("ACC_HOLDER_NO")]
         public virtual ACC_HOLDERTBL_Model ACC_HOLDERTBL_Model { get; set; }
         [ForeignKey("TARGET_PROJ")]
-        public virtual PROJECTTBL_Model PROJECTTBL_Model { get; set; }
+        public virtual ACCH_PROJECT_Model PROJECTTBL_Model { get; set; }
         //[ForeignKey("OP_TYPE")]
         //public virtual BOXTBL_Model BOXTBL_Model { get; set; }
 

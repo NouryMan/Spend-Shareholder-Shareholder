@@ -64,18 +64,21 @@
 
                                     <div class="col-md-3">
                                         <div class="form-floating">
-                                            <label for="inputLastName">اسم المشروع</label>
-                                            <select id="PROJECT_NO" name="PROJECT_NO" dir="ltr" class="form-control selectpicker " data-live-search="true" required data-parsley-error-message="حقل مطلوب">
-                                                <option value="">اختار المشروع</option>
-                                                @foreach (var p in ViewBag.proj)
-                                                {
-                                                    <option class="themeprimary" value="@p.PROJECT_NO"> @p.PROJECT_NAME</option>
-                                                }
-
-                                            </select>
+                                            <label for="inputLastName">رقم السند</label>
+                                            <input type="text" class="form-control" disabled id="SCRIP_NO" name="SCRIP_NO" value="@ViewBag.spend_script_number" />
 
                                         </div>
                                     </div>
+                                    <div class="col-md-3">
+                                        <div class="form-floating">
+                                            <label for="inputLastName">رقم القيد</label>
+                                            <input type="text" class="form-control" id="UNDER_NO" name="UNDER_NO" disabled value="@ViewBag.UNDER_NO" />
+
+
+
+                                        </div>
+                                    </div>
+
                                     <div class="col-md-3">
                                         <div class="form-floating">
                                             <label for="inputLastName">مرحلة العمل</label>
@@ -90,6 +93,53 @@
 
                                         </div>
                                     </div>
+
+
+
+                                    <div class="col-md-3">
+                                        <div class="form-floating">
+                                            <label for="inputLastName">نوع العملية</label>
+                                            <select id="ACTION_TYPE" name="ACTION_TYPE" dir="ltr" class="form-control selectpicker " data-live-search="true" required data-parsley-error-message="حقل مطلوب">
+                                                <option value="">اختار نوع العملية</option>
+                                                @foreach (var p in ViewBag.ScACTION)
+                                                {
+                                                    if (p.ACTION_NO != 5 && p.ACTION_NO != 6)
+                                                    {
+                                                        <option class="themeprimary" value="@p.ACTION_NO"> @p.ACTION_NAME</option>
+                                                    }
+                                                }
+
+                                            </select>
+
+                                        </div>
+                                    </div>
+
+
+
+
+                                  
+
+                                </div>
+
+
+
+                                <div class="row mb-3">
+
+                                    <div class="col-md-3">
+                                        <div class="form-floating">
+                                            <label for="inputLastName">اسم المشروع</label>
+                                            <select id="PROJECT_NO" name="PROJECT_NO" dir="ltr" class="form-control selectpicker " data-live-search="true" required data-parsley-error-message="حقل مطلوب">
+                                                <option value="">اختار المشروع</option>
+                                                @foreach (var p in ViewBag.proj)
+                                                {
+                                                    <option class="themeprimary" value="@p.ID"> @p.PROJECT_AR_NAME</option>
+                                                }
+
+                                            </select>
+
+                                        </div>
+                                    </div>
+
                                     <div class="col-md-3">
                                         <div class="form-floating">
                                             <label for="inputLastName">نوع السند</label>
@@ -99,7 +149,8 @@
                                                 {
                                                     if (p.ID_NO != 3)
                                                     {
-                                                    <option class="themeprimary" value="@p.ID_NO"> @p.SCRIP_TYPE</option>}
+                                                        <option class="themeprimary" value="@p.ID_NO"> @p.SCRIP_TYPE</option>
+                                                    }
                                                 }
 
                                             </select>
@@ -121,58 +172,21 @@
                                         </div>
                                     </div>
 
-                                </div>
-
-
-
-                                <div class="row mb-3">
-
-
-
-
-
                                     <div class="col-md-3">
                                         <div class="form-floating">
-                                            <label for="inputLastName">نوع العملية</label>
-                                            <select id="ACTION_TYPE" name="ACTION_TYPE" dir="ltr" class="form-control selectpicker " data-live-search="true" required data-parsley-error-message="حقل مطلوب">
-                                                <option value="">اختار نوع العملية</option>
-                                                @foreach (var p in ViewBag.ScACTION)
+                                            <label for="inputLastName">الصندوق/او البنك </label>
+                                            <select id="SOURCE_BOX" name="SOURCE_BOX" dir="ltr" class="form-control selectpicker " data-live-search="true">
+                                                <option value="">اختار الصندوق/اوالبنك</option>
+                                                @foreach (var p in ViewBag.Box)
                                                 {
-                                                    if (p.ACTION_NO != 5 && p.ACTION_NO !=6 )
+                                                    try
                                                     {
-                                                     <option class="themeprimary" value="@p.ACTION_NO"> @p.ACTION_NAME</option>
+                                                        <option class="themeprimary" value="@p.BOX_NO"> @p.BOX_NAME</option>
                                                     }
+                                                    catch { }
                                                 }
 
                                             </select>
-
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <div class="form-floating">
-                                            <label for="inputLastName">رقم السند</label>
-                                            <input type="text" class="form-control" disabled id="SCRIP_NO" name="SCRIP_NO" value="@ViewBag.spend_script_number" />
-
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-floating">
-                                            <label for="inputLastName">رقم القيد</label>
-                                            <input type="text" class="form-control" id="UNDER_NO" name="UNDER_NO" disabled value="@ViewBag.UNDER_NO" />
-
-
-
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <div class="form-floating">
-                                            <label for="inputLastName">رقم السند/الشيك</label>
-                                            @Html.EditorFor(model => model.SHAKE_NO, new { htmlAttributes = new { @class = "form-control", @type = "number", @placeholder = "رقم السند/الشيك", @required = "required",@data_parsley_error_message="حقل مطلوب" } })
-                                            @Html.ValidationMessageFor(model => model.SHAKE_NO, "", new { @class = "text-danger" })
-
-
 
                                         </div>
                                     </div>
@@ -235,6 +249,16 @@
                                     </div>
 
 
+                                    <div class="col-md-3">
+                                        <div class="form-floating">
+                                            <label for="inputLastName">رقم السند/الشيك</label>
+                                            @Html.EditorFor(model => model.SHAKE_NO, new { htmlAttributes = new { @class = "form-control", @type = "number", @placeholder = "رقم السند/الشيك", @required = "required", @data_parsley_error_message = "حقل مطلوب" } })
+                                            @Html.ValidationMessageFor(model => model.SHAKE_NO, "", new { @class = "text-danger" })
+
+
+
+                                        </div>
+                                    </div>
 
                                     <div class="col-md-3">
                                         <div class="form-floating">
@@ -246,7 +270,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-6">
+                                    <div class="col-md-3">
                                         <div class="form-floating">
                                             <label for="inputLastName">البيان</label>
                                             @Html.EditorFor(model => model.REMARK, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = "البيان" } })
@@ -309,24 +333,7 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-3">
-                                        <div class="form-floating">
-                                            <label for="inputLastName">الصندوق/او البنك </label>
-                                            <select id="SOURCE_BOX" name="SOURCE_BOX" dir="ltr" class="form-control selectpicker " data-live-search="true">
-                                                <option value="">اختار الصندوق/اوالبنك</option>
-                                                @foreach (var p in ViewBag.Box)
-                                                {
-                                                    try
-                                                    {
-                                                        <option class="themeprimary" value="@p.BOX_NO"> @p.BOX_NAME</option>
-                                                    }
-                                                    catch { }
-                                                }
-
-                                            </select>
-
-                                        </div>
-                                    </div>
+                                  
 
 
                                 </div>

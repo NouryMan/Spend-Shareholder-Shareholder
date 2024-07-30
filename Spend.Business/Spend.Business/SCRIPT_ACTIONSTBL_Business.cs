@@ -20,7 +20,7 @@ namespace Spend.Business
         }
         public List<SCRIPT_ACTIONSTBL_Model> getall()
         {
-            List<SCRIPT_ACTIONSTBL_Model> obj = db.SCRIPT_ACTIONSTBL_Model.ToList();
+            List<SCRIPT_ACTIONSTBL_Model> obj = db.SCRIPT_ACTIONSTBL_Model.Where(x => x.IS_DELETED == false).ToList();
 
 
             return obj;
