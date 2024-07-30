@@ -89,7 +89,7 @@ namespace Spend.DataAccess
         public DbSet<HOLDER_PERCENT_HD_Model> HOLDER_PERCENT_HD_Model { set; get; }
         public DbSet<HOLDER_TRANS_DT_Model> HOLDER_TRANS_DT_Model { set; get; }
         public DbSet<HOLDER_TRANS_HD_Model> HOLDER_TRANS_HD_Model { set; get; }
-        public DbSet<FISCAL_YEAR_Model> FISCAL_YEAR_Model { set; get; }
+        public DbSet<FISCAL_YEAR_Model> FISCAL_YEAR_Model { set; get; } 
         public DbSet<ACCH_PROJECT_Model> ACCH_PROJECT_Model { set; get; }
        
 

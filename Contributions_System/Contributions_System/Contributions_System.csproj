@@ -220,6 +220,8 @@
     <Compile Include="Controllers\ACCH_PROJ_BOX_PERCENTController.cs" />
     <Compile Include="Controllers\ACC_HOLDERController.cs" />
     <Compile Include="Controllers\authController.cs" />
+    <Compile Include="Controllers\BANKController.cs" />
+    <Compile Include="Controllers\BoxController.cs" />
     <Compile Include="Controllers\DefaultController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\OPERATIONAL_PALANCEController.cs" />
@@ -936,6 +938,22 @@
     <Content Include="Views\AcchProject\Report.cshtml" />
     <Content Include="Views\AcchProject\Suite.cshtml" />
     <Content Include="Views\AcchProject\_buildDetail.cshtml" />
+    <Content Include="Views\BANK\._Create.cshtml" />
+    <Content Include="Views\BANK\._Details.cshtml" />
+    <Content Include="Views\BANK\._Edit.cshtml" />
+    <Content Include="Views\BANK\._Index.cshtml" />
+    <Content Include="Views\BANK\Create.cshtml" />
+    <Content Include="Views\BANK\Details.cshtml" />
+    <Content Include="Views\BANK\Edit.cshtml" />
+    <Content Include="Views\BANK\Index.cshtml" />
+    <Content Include="Views\Box\._Create.cshtml" />
+    <Content Include="Views\Box\._Details.cshtml" />
+    <Content Include="Views\Box\._Edit.cshtml" />
+    <Content Include="Views\Box\._Index.cshtml" />
+    <Content Include="Views\Box\Create.cshtml" />
+    <Content Include="Views\Box\Details.cshtml" />
+    <Content Include="Views\Box\Edit.cshtml" />
+    <Content Include="Views\Box\Index.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
