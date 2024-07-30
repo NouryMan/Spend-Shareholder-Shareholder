@@ -75,7 +75,7 @@
                                     <div class="col-md-6">
                                         <div class="form-floating mb-12 mb-md-0">
                                             <label for="inputPasswordConfirm">الاسم</label>
-                                            @Html.EditorFor(model => model.BOX_NAME, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = "الاسم ", @required = "required" , @disabled= "disabled" } })
+                                            @Html.EditorFor(model => model.BOX_NAME, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = "الاسم ", @required = "required", @disabled = "disabled" } })
                                             @Html.ValidationMessageFor(model => model.BOX_NAME, "", new { @class = "text-danger" })
 
                                         </div>
@@ -85,33 +85,19 @@
                                 <div class="row mb-3">
 
 
-                                    <div class="col-md-6">
+                                    <div class="col-md-6" hidden>
                                         <div class="form-floating mb-6 mb-md-0">
                                             <label for="inputPasswordConfirm"> نوعية الصندوق</label>
-                                            <select id="BOX_TYPE" name="BOX_TYPE" class="selectpicker  form-control" dir="rtl" data-live-search="true" disabled>
-                                                <option value="">اختار النوعية </option>
+                                            <select id="BOX_TYPE" name="BOX_TYPE" class="selectpicker  form-control" dir="rtl" data-live-search="true" required>
+                                                @*<option value="">اختار النوعية </option>*@
                                                 @foreach (var item in ViewBag.BoxType)
                                                 {
-                                                    if (item.OP_NO == Model.BOX_TYPE)
-                                                    {
-                                                        <option selected class="themeprimary" value="@item.OP_NO">
-                                                            @{ try
-                                                                { @item.NAME }
-                                                            catch { }
 
-                                                            }
-                                                        </option>
-                                                    }
-                                                    else
-                                                    {
-                                                        <option class="themeprimary" value="@item.OP_NO">
-                                                            @{ try
-                                                                { @item.NAME }
-                                                            catch { }
-
-                                                            }
-                                                        </option>
-                                                    }
+                                                    <option class="themeprimary" value="@item.OP_NO">
+                                                        @{ try
+                                                            { @item.NAME }
+                                                        catch { } }
+                                                    </option>
                                                 }
 
 
@@ -124,53 +110,30 @@
                                     <div class="col-md-6">
                                         <div class="form-floating mb-6 mb-md-0">
                                             <label for="inputPasswordConfirm"> نوعية العملية</label>
-                                            <select id="OP_TYPE" name="OP_TYPE" class="selectpicker  form-control" dir="rtl" data-live-search="true" disabled>
-                                                <option value="">اختار النوعية </option>
+
+                                            <select id="OP_TYPE" name="OP_TYPE" class="selectpicker  form-control" dir="rtl" data-live-search="true" required disabled>
+                                                @*<option value="">اختار النوعية </option>*@
                                                 @foreach (var item in ViewBag.BoxOp)
                                                 {
-                                                    if (item.OP_NO == Model.BOX_TYPE)
+                                                    if (item.OP_NO == 1)
                                                     {
-
-
-                                                        <option selected class="themeprimary" value="@item.OP_NO">
+                                                        <option class="themeprimary" value="@item.OP_NO" selected>
                                                             @{ try
                                                                 { @item.OP_NAME }
-                                                            catch { }
-                                                            }
-
-
-                                                        </option>
-}
-                                                    else
-                                                    {
-                                                        <option class="themeprimary" value="@item.OP_NO">
-                                                            @{ try
-                                                                { @item.OP_NAME }
-                                                            catch { }
-
-                                                            }
+                                                            catch { } }
                                                         </option>
                                                     }
+                                                    <option class="themeprimary" value="@item.OP_NO">
+                                                        @{ try
+                                                            { @item.OP_NAME }
+                                                        catch { } }
+                                                    </option>
                                                 }
 
 
                                             </select>
+                                            <input hidden id="OP_TYPE" name="OP_TYPE" value="1" />
                                             @Html.ValidationMessageFor(model => model.OP_TYPE, "", new { @class = "text-danger" })
-
-                                        </div>
-                                    </div>
-
-
-
-                                </div>
-
-                                <div class="row mb-3">
-                                    <div class="col-md-6">
-                                        <div class="form-floating mb-12 mb-md-0">
-                                            <label for="inputPasswordConfirm">الرصيد الافتتاحي</label>
-
-                                            @Html.EditorFor(model => model.OP_PALANCE, new { htmlAttributes = new { @class = "form-control", @type = "number", @placeholder = " الرصيد الافتتاحي", @disabled= "disabled" } })
-                                            @Html.ValidationMessageFor(model => model.OP_PALANCE, "", new { @class = "text-danger" })
 
                                         </div>
                                     </div>
@@ -184,53 +147,28 @@
                                         </div>
                                     </div>
 
-                                </div><div class="row mb-3">
-
-
-                                    <div class="col-md-6">
-
-                                        <label for="inputPasswordConfirm">صندوق صرف</label>
-                                        <div class="switch-h d-flex justify-content-between align-items-center border p-1 ">
-                                            <h5 class="font-size-h4 text-dark mb-0">نعم</h5>
-                                            <div class="custom-control switch custom-switch-info custom-switch custom-control-inline mr-0">
-                                                @if (Model.SPEND_BOX == true)
-                                                {
-                                                    @Html.CheckBoxFor(model => model.SPEND_BOX, new { @class = "custom-control-input", @id = "OP_ACC", @checked = "checked", @disabled= "disabled" })
-                                                }
-                                                else
-                                                {
-                                                    @Html.CheckBoxFor(model => model.SPEND_BOX, new { @class = "custom-control-input", @id = "OP_ACC", @disabled= "disabled" })
-
-                                                }
-                                                <label class="custom-control-label mr-1" for="SPEND_BOX">
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-
-
-                                        <label for="inputPasswordConfirm">حالة الحساب</label>
-                                        <div class="switch-h d-flex justify-content-between align-items-center border p-1 mb-3">
-                                            <h5 class="font-size-h4 text-dark mb-0">مفعل</h5>
-                                            <div class="custom-control switch custom-switch-info custom-switch custom-control-inline mr-0">
-                                                @if (Model.ACTIVE)
-                                                {
-                                                    @Html.CheckBoxFor(model => model.ACTIVE, new { @class = "custom-control-input", @id = "IS_ENABLED", @checked = "checked", @disabled = "disabled" })
-                                                }
-                                                else
-                                                {
-                                                    @Html.CheckBoxFor(model => model.ACTIVE, new { @class = "custom-control-input", @id = "IS_ENABLED", @disabled = "disabled" })
-
-                                                }
-                                                <label class="custom-control-label mr-1" for="IS_ENABLE">
-                                                </label>
-                                            </div>
-                                        </div>
-                                    </div>
                                 </div>
 
+                                @*<div class="row mb-3">
+                <div class="col-md-6">
+                    <div class="form-floating mb-12 mb-md-0">
+                        <label for="inputPasswordConfirm">الرصيد الافتتاحي</label>
+                        @Html.EditorFor(model => model.OP_PALANCE, new { htmlAttributes = new { @class = "form-control", @type = "number", @placeholder = " الرصيد الافتتاحي" } })
+                        @Html.ValidationMessageFor(model => model.OP_PALANCE, "", new { @class = "text-danger" })
 
+                    </div>
+                </div>
+
+                <div class="col-md-6">
+                    <div class="form-floating mb-12 mb-md-0">
+                        <label for="inputPasswordConfirm">ملاحظة</label>
+                        @Html.EditorFor(model => model.NOTE, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = " ملاحظة", } })
+                        @Html.ValidationMessageFor(model => model.NOTE, "", new { @class = "text-danger" })
+
+                    </div>
+                </div>
+
+            </div>*@
 
 
 
@@ -240,7 +178,7 @@
 
 
                                 <div class="row mt-4 mb-0">
-                                    
+
 
                                     <div class="d-grid col-md-12"><a class="btn btn-danger btn-block" href="~/box/Index">رجوع</a></div>
 
