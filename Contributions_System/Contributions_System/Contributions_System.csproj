@@ -951,6 +951,7 @@
     <Content Include="Views\OtherAcc\Details.cshtml" />
     <Content Include="Views\OtherAcc\Index.cshtml" />
     <Content Include="Views\OtherAcc\Update.cshtml" />
+    <Content Include="Views\Box\Report.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -183,5 +183,44 @@ namespace Contributions_System.Controllers
         }
 
 
+        public ActionResult Report(long? AccounNo, int? Project, DateTime? FromDate, DateTime? ToDate)
+        {
+            ViewBag.Acc = AccounNo;
+            ViewBag.PROJECT_NO = Project;
+
+            try { ViewBag.FromDate = FromDate.Value.ToString("yyyy-MM-dd"); } catch { ViewBag.FromDate = DateTime.Now.ToString("yyyy-MM-dd"); }
+            try { ViewBag.ToDate = ToDate.Value.ToString("yyyy-MM-dd"); } catch { ViewBag.ToDate = DateTime.Now.ToString("yyyy-MM-dd"); }
+
+            BOXTBL_Business bOXTBL_Business = new BOXTBL_Business();
+            ViewBag.BoxAcc = bOXTBL_Business.getall();
+
+            ACCH_PROJECT_Business pROJECTTBL = new ACCH_PROJECT_Business();
+            ViewBag.Project = pROJECTTBL.GetAllAsync(1).Result;
+
+            ACCH_OPBOXTBL_Business b = new ACCH_OPBOXTBL_Business();
+
+
+            var model = b.BoxStatement(AccounNo, Project, FromDate, ToDate);
+
+            //try { model.AddRange(b.SearchByParent(AccounNo, Project, Transe, FromDate, ToDate)); } catch { }
+            try
+            {
+                var OpenBalnce = b.BoxOpenBalnce(AccounNo.Value, Project, FromDate.Value);
+                ViewBag.SPEND_COST = Convert.ToDouble((OpenBalnce.Sum(x => x.SPEND_COST)).ToString("0.##"));//عكس لان الجدول مبني فقط على المساهمين قيد واحد للعملية 
+                ViewBag.INCOME = Convert.ToDouble((OpenBalnce.Sum(x => x.INCOME)).ToString("0.##"));
+
+            }
+            catch
+            {
+                ViewBag.FOR_HIM = 0;
+                ViewBag.FROM_HIM = 0;
+            }
+
+            return View(model);
+        }
+
+
+
+
     }
 }

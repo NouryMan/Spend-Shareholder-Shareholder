@@ -641,6 +641,58 @@ namespace Spend.Business
             return model;
         }
 
+        public List<ACCH_OPBOXTBL_Model> BoxStatement(long? boxId, int? PROJECT_NO, DateTime? FromDate, DateTime? ToDate)
+        {
+
+            if (ToDate == null)
+            {
+                ToDate = new DateTime();
+
+            }
+            if (FromDate == null)
+            {
+                FromDate = new DateTime();
+
+            }
+
+            ToDate = ToDate.Value.Date.AddDays(1).AddTicks(-1);
+
+
+            List<ACCH_OPBOXTBL_Model> model = new List<ACCH_OPBOXTBL_Model>();
+            if (boxId > 0)
+            {
+
+                model = db.ACCH_OPBOXTBL_Model.Where(x => x.SOURCE_BOX == boxId && x.DATE_M >= FromDate && x.DATE_M <= ToDate).OrderBy(x => x.DATE_M).ToList();
+            }
+            if (PROJECT_NO > 0)
+            {
+
+                model = model.Where(x => x.TARGET_PROJ == PROJECT_NO).OrderBy(x => x.ACC_HOLDER_NO).ToList();
+            }
+
+            return model.OrderBy(x => x.DATE_M).ToList(); ;
+        }
+        public List<ACCH_OPBOXTBL_Model> BoxOpenBalnce(long boxId, int? PROJECT_NO, DateTime ToDate)
+        {
+
+
+            List<ACCH_OPBOXTBL_Model> model = new List<ACCH_OPBOXTBL_Model>();
+            if (boxId > 0)
+            {
+
+                model = db.ACCH_OPBOXTBL_Model.Where(x => x.SOURCE_BOX == boxId && x.DATE_M < ToDate).OrderByDescending(x => x.DATE_M).ToList();
+
+
+                if (PROJECT_NO > 0)
+                {
+
+                    model = model.Where(x => x.TARGET_PROJ == PROJECT_NO).OrderBy(x => x.DATE_M).ToList();
+                }
+
+
+            }
+            return model;
+        }
 
 
 

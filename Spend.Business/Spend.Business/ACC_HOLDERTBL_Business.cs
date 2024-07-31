@@ -21,7 +21,7 @@ namespace Spend.Business
 
         public List<ACC_HOLDERTBL_Model> getall()
         {
-            List<ACC_HOLDERTBL_Model> obj = db.ACC_HOLDERTBL_Model.ToList();
+            List<ACC_HOLDERTBL_Model> obj = db.ACC_HOLDERTBL_Model.Where(x=>x.IS_DELETE==false).ToList();
 
             foreach (var model in obj)
             {
@@ -34,7 +34,7 @@ namespace Spend.Business
 
             return obj;
         }
-        public ACC_HOLDERTBL_Model GetPyID(long id)
+        public ACC_HOLDERTBL_Model GetById(long id)
         {
             ACC_HOLDERTBL_Model obj = db.ACC_HOLDERTBL_Model.FirstOrDefault(x=>x.ACC_HOLDER_NO==id);
 
@@ -47,7 +47,7 @@ namespace Spend.Business
 
 
 
-            List<ACC_HOLDERTBL_Model> obj = db.ACC_HOLDERTBL_Model.Where(x => x.ACC_PARENT == parent_id).ToList();
+            List<ACC_HOLDERTBL_Model> obj = db.ACC_HOLDERTBL_Model.Where(x => x.ACC_PARENT == parent_id && x.IS_DELETE==false).ToList();
 
 
             return obj;
@@ -89,6 +89,7 @@ namespace Spend.Business
 
             var parentAcc = b.GetPyID(Holder.ACC_PARENT.Value);
             Holder.ACC_HOLDER_NO = GetMaxID();
+            Holder.IS_DELETE = false;
 
 
             Holder.ACC_NO = Convert.ToInt64(parentAcc.ACC_NO.ToString() + Holder.Acc_NOString);
@@ -125,13 +126,37 @@ namespace Spend.Business
             Holder.ACCH_BALANCEV_Model_Collection=null; 
 
             db.Entry(Holder).State = EntityState.Modified;
-           
+            db.Entry(Holder).Property(x => x.IS_DELETE).IsModified = false;
+
 
             long return_value = db.SaveChanges();
 
           
             return return_value;
         }
+
+        public void Delete(long id)
+        {
+            try
+            {
+                var obj = GetById(id);
+                if (obj == null)
+                {
+                    throw new Exception("Entity not found.");
+                }
+               obj.ACCH_BALANCEV_Model_Collection = null;   
+
+                obj.IS_DELETE = true;
+               
+                db.SaveChanges();
+
+                return;
+            }catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
+
 
     }
 }

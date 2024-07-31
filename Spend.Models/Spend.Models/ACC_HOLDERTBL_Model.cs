@@ -70,7 +70,8 @@ namespace Spend.Models
         [RegularExpression("^[0-9.]*$", ErrorMessage = "هذا الحقل رقم ")]
         public Nullable<int> ACCH_TYPE { get; set; }
 
-
+        [System.ComponentModel.DefaultValue(false)]
+        public bool IS_DELETE { get; set; }
 
         public virtual ICollection<ACCH_OPBOXTBL_Model> ACCH_OPBOXTBL_Model_Collection { set; get; }
         public virtual ICollection<ACC_HOLDERTBL_Model> ACC_HOLDERTBL_Model_Collection { set; get; }

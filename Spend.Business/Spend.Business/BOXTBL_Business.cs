@@ -30,7 +30,7 @@ namespace Spend.Business
 
 
         }
-        public BOXTBL_Model GetPyID(int id)
+        public BOXTBL_Model GetById(int id)
         {
             BOXTBL_Model obj = db.BOXTBL_Model.Find(id);
 
@@ -92,15 +92,15 @@ namespace Spend.Business
             return return_value;
         }
 
-        public int Delete(long id)
+        public int Delete(int id)
         {
             int return_value = 0;
-            var obj = db.BOXTBL_Model.Find(id);
+            var obj = GetById(id);
             obj.IS_DELETE = true;
 
             try
             {
-                db.Entry(obj).State = EntityState.Modified;
+               
 
 
                 return_value = db.SaveChanges();
