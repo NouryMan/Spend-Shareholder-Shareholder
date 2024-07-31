@@ -58,24 +58,37 @@
 
                                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-                                <div class="row mb-3">
+                                <div class="row mb-3" hidden>
                                     <div class="col-md-6">
                                         <div class="form-floating mb-12 mb-md-0">
                                             <label for="inputPasswordConfirm">الحساب الرئيسي</label>
                                             <select id="ACC_PARENT" name="ACC_PARENT" class="selectpicker  form-control" dir="rtl" data-live-search="true" required onchange="getAcc_NO()">
-                                                <option value="">اختار حساب رئيسي </option>
+
                                                 @foreach (var item in ViewBag.Parent_ACC)
                                                 {
+                                                    if (item.ACC_NO == 22)
+                                                    {
+                                                        <option class="themeprimary"  value="@item.ACC_NO" selected>
+                                                            @{ try
+                                                                { @item.ACC_NAME <span>&nbsp;</span> @item.ACC_NO }
+                                                            catch { } }
+                                                        </option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option class="themeprimary" value="@item.ACC_NO">
+                                                            @{ try
+                                                                { @item.ACC_NAME <span>&nbsp;</span> @item.ACC_NO }
+                                                            catch { } }
+                                                        </option>
+}
 
-                                                    <option class="themeprimary" value="@item.ACC_NO">
-                                                        @{ try
-                                                            { @item.ACC_NAME <span>&nbsp;</span> @item.ACC_NO }
-                                                        catch { } }
-                                                    </option>
+
                                                 }
-                                                ""
+
 
                                             </select>
+                                            <input id="ACC_PARENT" name="ACC_PARENT" value="22" />
                                             @Html.ValidationMessageFor(model => model.ACC_PARENT, "", new { @class = "text-danger" })
 
                                         </div>
@@ -350,6 +363,12 @@
 
 
 <script>
+
+    $(document).ready(function () {
+
+        getAcc_NO() 
+    });
+    
     function getAcc_NO() {
 
 

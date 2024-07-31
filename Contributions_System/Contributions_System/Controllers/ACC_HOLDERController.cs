@@ -17,7 +17,7 @@ namespace Contributions_System.Controllers
             //ACCH_BALANCEV_Business n = new ACCH_BALANCEV_Business();
             //var d =n.GetAll();
             ACC_HOLDERTBL_Business  b=new ACC_HOLDERTBL_Business();
-            var model = b.getall();
+            var model = b.getall().Where(x => x.ACCH_TYPE == 1).ToList();
             return View(model);
         }
 
@@ -33,10 +33,10 @@ namespace Contributions_System.Controllers
             ACCH_TYPETBL_Business aCCH_TYPETBL_Business = new ACCH_TYPETBL_Business();
 
             ViewBag.Parent_ACC = Acc_b.getall().Where(x => x.OP_ACC == false);
-            ViewBag.ACC_TYPE = bT.getall();
+            ViewBag.ACC_TYPE = bT.getall() ;
             ViewBag.ACC_NAT = bN.getall();
-            ViewBag.PARENT_ACCH = PARENT_ACCH_B.getall();
-            ViewBag.ACCH_TYPE = aCCH_TYPETBL_Business.GetAll();
+            ViewBag.PARENT_ACCH = PARENT_ACCH_B.getall().Where(x => x.ACCH_TYPE == 1).ToList(); 
+            ViewBag.ACCH_TYPE = aCCH_TYPETBL_Business.GetAll().Where(x => x.ID == 1).ToList();
 
 
 
@@ -79,8 +79,8 @@ namespace Contributions_System.Controllers
             ViewBag.Parent_ACC = Acc_b.getall().Where(x => x.OP_ACC == false);
             ViewBag.ACC_TYPE = bT.getall();
             ViewBag.ACC_NAT = bN.getall();
-            ViewBag.PARENT_ACCH = b.getall();
-            ViewBag.ACCH_TYPE = aCCH_TYPETBL_Business.GetAll();
+            ViewBag.PARENT_ACCH = b.getall().Where(x => x.ACCH_TYPE == 1).ToList();
+            ViewBag.ACCH_TYPE = aCCH_TYPETBL_Business.GetAll().Where(x => x.ID == 1).ToList();
 
 
             return View(model);
@@ -99,9 +99,9 @@ namespace Contributions_System.Controllers
             ViewBag.Parent_ACC = Acc_b.getall().Where(x => x.OP_ACC == false);
             ViewBag.ACC_TYPE = bT.getall();
             ViewBag.ACC_NAT = bN.getall();
-            ViewBag.PARENT_ACCH = PARENT_ACCH_B.getall();
+            ViewBag.PARENT_ACCH = PARENT_ACCH_B.getall().Where(x => x.ACCH_TYPE == 1).ToList();
             var model = PARENT_ACCH_B.GetPyID(id);
-            ViewBag.ACCH_TYPE = aCCH_TYPETBL_Business.GetAll();
+            ViewBag.ACCH_TYPE = aCCH_TYPETBL_Business.GetAll().Where(x => x.ID == 1).ToList();
 
 
 
@@ -141,8 +141,8 @@ namespace Contributions_System.Controllers
             ViewBag.Parent_ACC = Acc_b.getall().Where(x => x.OP_ACC == false);
             ViewBag.ACC_TYPE = bT.getall();
             ViewBag.ACC_NAT = bN.getall();
-            ViewBag.PARENT_ACCH = b.getall();
-            ViewBag.ACCH_TYPE = aCCH_TYPETBL_Business.GetAll();
+            ViewBag.PARENT_ACCH = b.getall().Where(x => x.ACCH_TYPE == 1).ToList();
+            ViewBag.ACCH_TYPE = aCCH_TYPETBL_Business.GetAll().Where(x => x.ID == 1).ToList();
 
 
 

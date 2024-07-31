@@ -297,18 +297,7 @@
                 <ul class="sidebar-menu toggle-menu list-items">
                     <li class="page-active"><a href="~"><i class="la la-dashboard mr-2"></i>لوحة التحكم</a></li>
                     @*<li><a href="admin-dashboard-booking.html"><i class="la la-shopping-cart mr-2 text-color"></i>الحجز</a></li>*@
-                    <li>
-                        <span class="side-menu-icon toggle-menu-icon">
-                            <i class="la la-angle-down"></i>
-                        </span>
-                        <a> <i class="la la-cog mr-2 text-color-10"></i>تهئية النظام </a>
-                        <ul class="toggle-drop-menu">
-                            <li><a href="~/User/index">المستخدمين</a></li>
-                            <li><a href="~/Role/index">الصلاحيات</a></li>
 
-
-                        </ul>
-                    </li>
                     @*<li>
             <span class="side-menu-icon toggle-menu-icon">
                 <i class="la la-angle-down"></i>
@@ -354,15 +343,29 @@
                         <span class="side-menu-icon toggle-menu-icon">
                             <i class="la la-angle-down"></i>
                         </span>
-                        <a> <i class="la la-users mr-2 text-color-3"></i>ادارة الصناديق والبنوك</a>
+                        <a> <i class="la la-boxes mr-2 text-color-3"></i>ادارة الصناديق والبنوك</a>
                         <ul class="toggle-drop-menu">
-                            <li><a href="~/box/Index"> قائمة الصناديق/النوك</a></li>
+                            <li><a href="~/box/Index"> قائمة الصناديق/البنوك</a></li>
                             <li><a href="~/bank/Index"> اضافة صندوق/بنك</a></li>
 
 
                         </ul>
                     </li>
+                    <li>
+                        <span class="side-menu-icon toggle-menu-icon">
+                            <i class="la la-angle-down"></i>
+                        </span>
+                        <a> <i class="la la-file-invoice-dollar mr-2 text-color-2"></i>  الحسابات والعمليات المحاسبية</a>
+                        <ul class="toggle-drop-menu">
+                            <li><a href="~/ACCH_OPBOXT/Index">الحسابات</a></li>
+                            <li><a href="~/ACCH_OPBOXT/Index">اضافة حساب</a></li>
+                            <li><a href="~/ACCH_OPBOXT/Index">القيود</a></li>
+                            <li><a href="~/ACCH_OPBOXT/Trans">انشاء قيد جديد</a></li>
+                            <li><a href="~/SPEND_SCRIPTBL/Create">انشاء سند جديد</a></li>
 
+
+                        </ul>
+                    </li>
                     <li>
                         <span class="side-menu-icon toggle-menu-icon">
                             <i class="la la-angle-down"></i>
@@ -391,19 +394,7 @@
 
 
 
-                    <li>
-                        <span class="side-menu-icon toggle-menu-icon">
-                            <i class="la la-angle-down"></i>
-                        </span>
-                        <a> <i class="la la-file-invoice-dollar mr-2 text-color-2"></i>  العمليات المحاسبية</a>
-                        <ul class="toggle-drop-menu">
-                            <li><a href="~/ACCH_OPBOXT/Index">القيود</a></li>
-                            <li><a href="~/ACCH_OPBOXT/Trans">انشاء قيد جديد</a></li>
-                            <li><a href="~/SPEND_SCRIPTBL/Create">انشاء سند جديد</a></li>
 
-
-                        </ul>
-                    </li>
 
 
 
@@ -427,7 +418,18 @@
 
 
 
+                    <li>
+                        <span class="side-menu-icon toggle-menu-icon">
+                            <i class="la la-angle-down"></i>
+                        </span>
+                        <a> <i class="la la-cog mr-2 text-color-10"></i>تهئية النظام </a>
+                        <ul class="toggle-drop-menu">
+                            <li><a href="~/User/index">المستخدمين</a></li>
+                            <li><a href="~/Role/index">الصلاحيات</a></li>
 
+
+                        </ul>
+                    </li>
 
 
 
