@@ -3,13 +3,14 @@ using Spend.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
 namespace Contributions_System.Controllers
 {
     [Authorize]
-    public class ACC_HOLDERController : Controller
+    public class OtherAccController : Controller
     {
         // GET: ACC_HOLDERTBL
         public ActionResult Index()
@@ -17,7 +18,7 @@ namespace Contributions_System.Controllers
             //ACCH_BALANCEV_Business n = new ACCH_BALANCEV_Business();
             //var d =n.GetAll();
             ACC_HOLDERTBL_Business  b=new ACC_HOLDERTBL_Business();
-            var model = b.getall().Where(x => x.ACCH_TYPE == 1).ToList();
+            var model = b.getall().Where(x => x.ACCH_TYPE!=1).ToList();
             return View(model);
         }
 
@@ -35,8 +36,8 @@ namespace Contributions_System.Controllers
             ViewBag.Parent_ACC = Acc_b.getall().Where(x => x.OP_ACC == false);
             ViewBag.ACC_TYPE = bT.getall() ;
             ViewBag.ACC_NAT = bN.getall();
-            ViewBag.PARENT_ACCH = PARENT_ACCH_B.getall().Where(x => x.ACCH_TYPE == 1).ToList(); 
-            ViewBag.ACCH_TYPE = aCCH_TYPETBL_Business.GetAll().Where(x => x.ID == 1).ToList();
+            ViewBag.PARENT_ACCH = PARENT_ACCH_B.getall().Where(x => x.ACCH_TYPE!=1).ToList(); 
+            ViewBag.ACCH_TYPE = aCCH_TYPETBL_Business.GetAll().Where(x => x.ID!=1).ToList();
 
 
 
@@ -79,8 +80,8 @@ namespace Contributions_System.Controllers
             ViewBag.Parent_ACC = Acc_b.getall().Where(x => x.OP_ACC == false);
             ViewBag.ACC_TYPE = bT.getall();
             ViewBag.ACC_NAT = bN.getall();
-            ViewBag.PARENT_ACCH = b.getall().Where(x => x.ACCH_TYPE == 1).ToList();
-            ViewBag.ACCH_TYPE = aCCH_TYPETBL_Business.GetAll().Where(x => x.ID == 1).ToList();
+            ViewBag.PARENT_ACCH = b.getall().Where(x => x.ACCH_TYPE!=1).ToList();
+            ViewBag.ACCH_TYPE = aCCH_TYPETBL_Business.GetAll().Where(x => x.ID!=1).ToList();
 
 
             return View(model);
@@ -99,9 +100,9 @@ namespace Contributions_System.Controllers
             ViewBag.Parent_ACC = Acc_b.getall().Where(x => x.OP_ACC == false);
             ViewBag.ACC_TYPE = bT.getall();
             ViewBag.ACC_NAT = bN.getall();
-            ViewBag.PARENT_ACCH = PARENT_ACCH_B.getall().Where(x => x.ACCH_TYPE == 1).ToList();
+            ViewBag.PARENT_ACCH = PARENT_ACCH_B.getall().Where(x => x.ACCH_TYPE!=1).ToList();
             var model = PARENT_ACCH_B.GetById(id);
-            ViewBag.ACCH_TYPE = aCCH_TYPETBL_Business.GetAll().Where(x => x.ID == 1).ToList();
+            ViewBag.ACCH_TYPE = aCCH_TYPETBL_Business.GetAll().Where(x => x.ID!=1).ToList();
 
 
 
@@ -141,8 +142,8 @@ namespace Contributions_System.Controllers
             ViewBag.Parent_ACC = Acc_b.getall().Where(x => x.OP_ACC == false);
             ViewBag.ACC_TYPE = bT.getall();
             ViewBag.ACC_NAT = bN.getall();
-            ViewBag.PARENT_ACCH = b.getall().Where(x => x.ACCH_TYPE == 1).ToList();
-            ViewBag.ACCH_TYPE = aCCH_TYPETBL_Business.GetAll().Where(x => x.ID == 1).ToList();
+            ViewBag.PARENT_ACCH = b.getall().Where(x => x.ACCH_TYPE!=1).ToList();
+            ViewBag.ACCH_TYPE = aCCH_TYPETBL_Business.GetAll().Where(x => x.ID!=1).ToList();
 
 
 
@@ -197,25 +198,27 @@ namespace Contributions_System.Controllers
         }
 
 
+
         [Authorize]
         [HttpPost]
-        public JsonResult Delete(long id)
+        public  JsonResult Delete(long id)
         {
             bool result = false;
             ACC_HOLDERTBL_Business b = new ACC_HOLDERTBL_Business();
 
             try
             {
-                b.Delete(id);
+                 b.Delete(id);
                 result = true;
             }
             catch (Exception ex)
             {
-
+             
             }
 
             return Json(new { success = result });
         }
 
-        }
+
+    }
 }

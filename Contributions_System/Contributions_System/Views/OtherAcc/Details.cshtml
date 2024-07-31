@@ -1,6 +1,6 @@
 ﻿@model Spend.Models.ACC_HOLDERTBL_Model
 @{
-    ViewBag.Title = " بطاقة مساهم ";
+    ViewBag.Title = " بطاقة حساب ";
 }
 
 
@@ -18,7 +18,7 @@
                 <div class="col-lg-6">
                     <div class="breadcrumb-content">
                         <div class="section-heading">
-                            <h2 class="sec__title font-size-30 text-white">تعديل مساهم</h2>
+                            <h2 class="sec__title font-size-30 text-white">تفاصيل حساب</h2>
                         </div>
                     </div><!-- end breadcrumb-content -->
                 </div><!-- end col-lg-6 -->
@@ -27,7 +27,7 @@
                         <ul class="list-items">
                             <li><a href="~" class="text-white">الصفحة الرئيسية</a></li>
                             <li>ادارة المشاريع </li>
-                            <li>المساهمين</li>
+                            <li>الحسابات</li>
 
                         </ul>
                     </div><!-- end breadcrumb-list -->
@@ -42,7 +42,7 @@
                     <div class="form-box">
                         <div class="form-title-wrap">
                             <div>
-                                <h3 class="title"> بطاقة مساهم</h3>
+                                <h3 class="title"> بطاقة حساب</h3>
                                 @*<p class="font-size-14">إظهار 1 إلى 10 من أصل 20 مُدخل</p>*@
                             </div>
 
@@ -60,11 +60,11 @@
                                 @Html.HiddenFor(model => model.ACC_HOLDER_NO)
 
 
-                                <div class="row mb-3" hidden>
+                                <div class="row mb-3 " hidden>
                                     <div class="col-md-6">
                                         <div class="form-floating mb-12 mb-md-0">
                                             <label>الحساب الرئيسي</label>
-                                            <select id="ACC_PARENT" name="ACC_PARENT" class="selectpicker  form-control" dir="rtl" data-live-search="true" required onchange="getAcc_NO()">
+                                            <select id="ACC_PARENT" name="ACC_PARENT" class="selectpicker  form-control" dir="rtl" data-live-search="true" required  disabled>
                                                 <option value="">اختار حساب رئيسي </option>
                                                 @foreach (var item in ViewBag.Parent_ACC)
                                                 {
@@ -75,7 +75,7 @@
                                                                 { @item.ACC_NAME <span>&nbsp;</span> @item.ACC_NO }
                                                             catch { } }
                                                         </option>
-}
+                                                    }
                                                     else
                                                     {
                                                         <option class="themeprimary" value="@item.ACC_NO">
@@ -98,23 +98,16 @@
                                     <div class="row col-md-6">
                                         <div class="col-md-6 ml-0">
                                             <div class="form-floating mb-6 mb-md-0">
-                                                <label for="inputPasswordConfirm">خاتمة رقم الحساب</label>
-                                                @{string Aacc_Start = "";
-                                                    var  Aacc_Start1= Model.ACC_NO.ToString() ;
-                                                    var Aacc_Start2= Model.ACC_PARENT.ToString() ;
-                                                    Aacc_Start = Aacc_Start1.Substring(Aacc_Start2.Length);
-                                                 }
-                                               
-                                                <input type="number" class="form-control" name="Acc_NOString" id="Acc_NOString" value="@Aacc_Start" />
-                                                @Html.ValidationMessageFor(model => model.ACC_NO, "", new { @class = "text-danger" })
-
+                                                <label for="inputPasswordConfirm"> رقم المساهم</label>
+                                                <input type="text" class="form-control" id="parent-Acc" value="@Model.ACC_HOLDER_NO" disabled />
                                             </div>
                                         </div>
                                         <div class="col-md-6 pl-1 pr-0">
                                             <div class="form-floating mb-6 mb-md-0">
-                                              
-                                                <label for="inputPasswordConfirm">بادئة الحساب</label>
-                                                <input type="text" class="form-control" id="parent-Acc" value="@Model.ACC_PARENT" disabled />
+
+                                                <label for="inputPasswordConfirm"> رقم الحساب</label>
+
+                                                <input type="text" class="form-control" id="parent-Acc" value="@Model.ACC_NO" disabled />
                                             </div>
                                         </div>
                                     </div>
@@ -125,45 +118,11 @@
 
 
                                 <div class="row mb-3">
-                                    <div class="col-md-6">
-
-                                        <div class="form-floating mb-12 mb-md-0">
-                                            <label for="inputPasswordConfirm">الحساب الاب</label>
-                                            <select id="PARENT_ACCH" name="PARENT_ACCH" class="selectpicker  form-control" dir="rtl" data-live-search="true">
-                                                <option value="">اختار الحساب الاب </option>
-                                                @foreach (var item in ViewBag.PARENT_ACCH)
-                                                {
-                                                    if (Model.PARENT_ACCH == item.ACC_HOLDER_NO)
-                                                    {
-                                                        <option class="themeprimary" selected value="@item.ACC_HOLDER_NO">
-                                                            @{ try
-                                                                { @item.ACC_HOLDER_NAME <span>&nbsp;</span> @item.ACC_HOLDER_NO }
-                                                            catch { } }
-                                                        </option>
- }
-                                                    else
-                                                    {
-                                                        <option class="themeprimary" value="@item.ACC_HOLDER_NO">
-                                                            @{ try
-                                                                { @item.ACC_HOLDER_NAME <span>&nbsp;</span> @item.ACC_HOLDER_NO }
-                                                            catch { } }
-                                                        </option>
-                                                    }
-
-
-                                                }
-                                               
-
-                                            </select>
-                                            @Html.ValidationMessageFor(model => model.PARENT_ACCH, "", new { @class = "text-danger" })
-
-                                        </div>
-
-                                    </div>
-                                    <div class="col-md-6">
+                                    
+                                    <div class="col-md-12">
                                         <div class="form-floating mb-12 mb-md-0">
                                             <label for="inputPasswordConfirm">الاسم</label>
-                                            @Html.EditorFor(model => model.ACC_HOLDER_NAME, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = "الاسم العربي", @required = "required" } })
+                                            @Html.EditorFor(model => model.ACC_HOLDER_NAME, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = "الاسم العربي", @required = "required" , @disabled= "disabled" } })
                                             @Html.ValidationMessageFor(model => model.ACC_HOLDER_NAME, "", new { @class = "text-danger" })
 
                                         </div>
@@ -173,47 +132,16 @@
 
                                 </div>
 
-                                <div class="row mb-3">
-
-                                    <div class="col-md-4">
-                                        <div class="form-floating mb-12 mb-md-0">
-                                            <label for="inputPasswordConfirm">العنوان</label>
-                                            @Html.EditorFor(model => model.ACC_HOLDER_ADDRESS, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = " العنوان", } })
-                                            @Html.ValidationMessageFor(model => model.ACC_HOLDER_ADDRESS, "", new { @class = "text-danger" })
-
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-floating mb-12 mb-md-0">
-                                            <label for="inputPasswordConfirm">رقم الجوال</label>
-                                            @Html.EditorFor(model => model.ACC_HOLDER_MOBILE, new { htmlAttributes = new { @class = "form-control", @type = "number", @placeholder = " رقم الجوال" } })
-                                            @Html.ValidationMessageFor(model => model.ACC_HOLDER_MOBILE, "", new { @class = "text-danger" })
-
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-floating mb-12 mb-md-0">
-                                            <label for="inputPasswordConfirm">نسبة التنفيذ</label>
-                                            @Html.EditorFor(model => model.COMMIT_PERCENT, new { htmlAttributes = new { @class = "form-control", @type = "number", @placeholder = " نسبة التنفيذ", } })
-                                            @Html.ValidationMessageFor(model => model.COMMIT_PERCENT, "", new { @class = "text-danger" })
-
-                                        </div>
-                                    </div>
-
-
-                                </div>
-
-
-
 
 
 
                                 <div class="row mb-3">
+
 
                                     <div class="col-md-4">
                                         <div class="form-floating mb-6 mb-md-0">
                                             <label for="inputPasswordConfirm">نوع ألمساهم</label>
-                                            <select id="ACCH_TYPE" name="ACCH_TYPE" class="selectpicker  form-control" dir="rtl" data-live-search="true" required >
+                                            <select id="ACCH_TYPE" name="ACCH_TYPE" class="selectpicker  form-control" dir="rtl" data-live-search="true" required disabled>
 
                                                 @foreach (var item in ViewBag.ACCH_TYPE)
                                                 {
@@ -244,8 +172,8 @@
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-floating mb-6 mb-md-0">
-                                            <label for="inputPasswordConfirm">نوع الحساب</label>
-                                            <select id="ACC_TYPE" name="ACC_TYPE" class="selectpicker  form-control" dir="rtl" data-live-search="true" required>
+                                            <label for="inputPasswordConfirm">تحليل الحساب</label>
+                                            <select id="ACC_TYPE" name="ACC_TYPE" class="selectpicker  form-control" dir="rtl" data-live-search="true" required disabled>
 
                                                 @foreach (var item in ViewBag.ACC_TYPE)
                                                 {
@@ -279,7 +207,7 @@
                                     <div class="col-md-4">
                                         <div class="form-floating mb-12 mb-md-0">
                                             <label for="inputPasswordConfirm">طبيعة الحساب</label>
-                                            <select id="ACC_NAT" name="ACC_NAT" class="selectpicker  form-control" dir="rtl" data-live-search="true" required>
+                                            <select id="ACC_NAT" name="ACC_NAT" class="selectpicker  form-control" dir="rtl" data-live-search="true" required disabled>
 
                                                 @foreach (var item in ViewBag.ACC_NAT)
                                                 {
@@ -326,8 +254,8 @@
                                         <div class="switch-h d-flex justify-content-between align-items-center border p-1 ">
                                             <h5 class="font-size-h4 text-dark mb-0">نعم</h5>
                                             <div class="custom-control switch custom-switch-info custom-switch custom-control-inline mr-0">
-                                                
-                                                @Html.CheckBoxFor(model => model.OP_ACC, new { @class = "custom-control-input", @id = "OP_ACC", @checked =Model.OP_ACC, })
+
+                                                @Html.CheckBoxFor(model => model.OP_ACC, new { @class = "custom-control-input", @id = "OP_ACC", @checked = Model.OP_ACC,  @disabled = "disabled" })
                                                 <label class="custom-control-label mr-1" for="OP_ACC">
                                                 </label>
                                             </div>
@@ -340,7 +268,7 @@
                                         <div class="switch-h d-flex justify-content-between align-items-center border p-1 mb-3">
                                             <h5 class="font-size-h4 text-dark mb-0">مفعل</h5>
                                             <div class="custom-control switch custom-switch-info custom-switch custom-control-inline mr-0">
-                                                @Html.CheckBoxFor(model => model.IS_ENABLE, new { @class = "custom-control-input", @id = "IS_ENABLE", @checked = Model.OP_ACC, })
+                                                @Html.CheckBoxFor(model => model.IS_ENABLE, new { @class = "custom-control-input", @id = "IS_ENABLE", @checked = Model.OP_ACC, @disabled = "disabled" })
 
                                                 <label class="custom-control-label mr-1" for="IS_ENABLE">
                                                 </label>
@@ -356,7 +284,7 @@
                                     <div class="col-md-12">
                                         <div class="form-floating mb-12 mb-md-0">
                                             <label for="inputPasswordConfirm">ملاحظة</label>
-                                            @Html.EditorFor(model => model.NOTE, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = " ملاحظة", } })
+                                            @Html.EditorFor(model => model.NOTE, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = " ملاحظة", @disabled = "disabled" } })
                                             @Html.ValidationMessageFor(model => model.NOTE, "", new { @class = "text-danger" })
 
                                         </div>
@@ -367,9 +295,9 @@
 
 
                                 <div class="row mt-4 mb-0">
-                                    <div class="d-grid col-md-6 "><button class="btn btn-primary btn-block" type="submit">حفظ</button></div>
+                                    @*<div class="d-grid col-md-6 "><button class="btn btn-primary btn-block" type="submit">حفظ</button></div>*@
 
-                                    <div class="d-grid col-md-6"><a class="btn btn-danger btn-block" href="~/ACC_HOLDER/Index">رجوع</a></div>
+                                    <div class="d-grid col-md-12"><a class="btn btn-danger btn-block" href="~/OtherAcc/Index">رجوع</a></div>
 
 
 

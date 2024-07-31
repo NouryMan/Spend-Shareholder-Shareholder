@@ -103,7 +103,7 @@ namespace Contributions_System.Controllers
             BOX_TRANS_OPTYPES_Bussiness BOX_TRANS_OPTYPES_B = new BOX_TRANS_OPTYPES_Bussiness();
             BOX_OPTBL_Business BOX_OPTBL_B = new BOX_OPTBL_Business();
 
-            var model = b.GetPyID(id);
+            var model = b.GetById(id);
 
            
             ViewBag.BoxType = BOX_TRANS_OPTYPES_B.GetAll();
@@ -157,7 +157,7 @@ namespace Contributions_System.Controllers
             BOX_TRANS_OPTYPES_Bussiness BOX_TRANS_OPTYPES_B = new BOX_TRANS_OPTYPES_Bussiness();
             BOX_OPTBL_Business BOX_OPTBL_B = new BOX_OPTBL_Business();
 
-            var model = b.GetPyID(id);
+            var model = b.GetById(id);
 
             ViewBag.MaxBoxNo = b.GetMaxNo();
             ViewBag.BoxType = BOX_TRANS_OPTYPES_B.GetAll();

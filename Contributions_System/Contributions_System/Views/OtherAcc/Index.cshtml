@@ -1,6 +1,6 @@
 ﻿@model IEnumerable<Spend.Models.ACC_HOLDERTBL_Model>
 @{
-    ViewBag.Title = "المساهمين";
+    ViewBag.Title = "الحسابات";
 }
 
 
@@ -13,7 +13,7 @@
                     <div class="col-lg-6">
                         <div class="breadcrumb-content">
                             <div class="section-heading">
-                                <h2 class="sec__title font-size-30 text-white">المساهمين</h2>
+                                <h2 class="sec__title font-size-30 text-white">الحسابات</h2>
                             </div>
                         </div><!-- end breadcrumb-content -->
                     </div><!-- end col-lg-6 -->
@@ -22,7 +22,7 @@
                             <ul class="list-items">
                                 <li><a href="~" class="text-white">الصفحة الرئيسية</a></li>
                                 
-                                <li>المساهمين</li>
+                                <li>الحسابات</li>
                             </ul>
                         </div><!-- end breadcrumb-list -->
                     </div><!-- end col-lg-6 -->
@@ -40,7 +40,7 @@
                                         <p class="font-size-14">إظهار 1 إلى 10 من أصل 20 مُدخل</p>
                                     </div>*@
 
-                                <a href="~/ACC_HOLDER/create" class="btn btn-primary btn-sm "> <i class="fa fa-plus"> </i> انشاء مساهم </a>
+                                <a href="~/OtherAcc/create" class="btn btn-primary btn-sm "> <i class="fa fa-plus"> </i> انشاء حساب </a>
 
                             </div>
                             <div class="form-content">
@@ -50,11 +50,9 @@
                                             <tr>
                                                 <th>الرقم</th>
                                                 <th>الاسم </th>
-                                                <th>الجوال</th>
-                                                <th>العنوان</th>
-                                                <th>الحساب</th>
-                                                @*<th>الحساب الرئيسي</th>*@
-                                                <th>الحساب الاب</th>
+                                                <th>رقم الحساب</th>
+                                         
+                                                <th>النوع</th>
                                                 
                                                 <th>الرصيد</th>
                                                 <th>الحالة</th>
@@ -90,24 +88,7 @@
                                                         }
                                                         }
                                                     </td>
-                                                    <td>
-                                                        @{ try
-                                                            {@item.ACC_HOLDER_MOBILE }
-                                                        catch
-                                                        {
-
-                                                        }
-                                                        }
-                                                    </td>
-                                                    <td>
-                                                        @{ try
-                                                            {@item.ACC_HOLDER_ADDRESS }
-                                                        catch
-                                                        {
-
-                                                        }
-                                                        }
-                                                    </td>
+                                                    
                                                     <td>
                                                         @{ try
                                                             {@item.ACC_NO }
@@ -118,18 +99,10 @@
                                                         }
                                                     </td>
 
-                                                    @*<td>
-                                                        @{ try
-                                                            {@item.ACC_TREETBL_Model.ACC_NAME }
-                                                        catch
-                                                        {
-
-                                                        }
-                                                        }
-                                                    </td>*@
+                                                   
                                                     <td>
                                                         @{ try
-                                                            {@item.ACC_HOLDERTBL_Models.ACC_HOLDER_NAME }
+                                                            {@item.ACCH_TYPETBL_Model.NAME_AR}
                                                         catch
                                                         {
 
@@ -145,7 +118,7 @@
                                                         }
                                                         }
                                                     </td>
-                                                   
+
 
                                                     <td>
                                                         @if (item.IS_ENABLE)
@@ -176,20 +149,20 @@
                                                         <div class=" col-12">
                                                             <div class="row">
                                                                 <div class="col-md-3 m-1">
-                                                                    <a href="~/ACC_HOLDER/details/@item.ACC_HOLDER_NO" class="btn btn-success btn-sm "> <i class="la  la-eye"> </i></a>
+                                                                    <a href="~/OtherAcc/details/@item.ACC_HOLDER_NO" class="btn btn-success btn-sm "> <i class="la  la-eye"> </i></a>
                                                                 </div>
                                                                 <div class="col-md-3 m-1">
-                                                                    <a href="~/ACC_HOLDER/Update/@item.ACC_HOLDER_NO" class="btn btn-info btn-sm "> <i class="la  la-edit"></i></a>
-                                                                </div> 
-                                                                
+                                                                    <a href="~/OtherAcc/Update/@item.ACC_HOLDER_NO" class="btn btn-info btn-sm "> <i class="la  la-edit"></i></a>
+                                                                </div>
+
                                                                 <div class="col-md-3 m-1">
                                                                     <button class="btn btn-danger btn-sm " onclick="DeleteConfirmbox(@item.ACC_HOLDER_NO)"> <i class="la  la-trash"></i></button>
                                                                 </div>
 
-                                                                   </div>
-                                                                </div>
+                                                            </div>
+                                                        </div>
 
-</td>
+                                                    </td>
                                                 </tr>
                                             }
 
@@ -247,15 +220,14 @@
 
         });
 
-
-      function DeleteConfirmbox(id) {
+ function DeleteConfirmbox(id) {
 
 
 
      var result = confirm('هل انت متاكد من عملية الحذف?');
      if (result) {
          $.ajax({
-                 url: '@Url.Action("Delete", "ACC_HOLDER")',
+                 url: '@Url.Action("Delete", "OtherAcc")',
                  type: 'POST',
                  data: { id: id },
                  success: function(response) {
@@ -275,7 +247,6 @@
          return false;
      }
  }
-
 
 
 </script>

@@ -276,7 +276,7 @@
                     success: function(response) {
                         if (response.success) {
                             alert("تم الحذف بنجاح");
-                            // يمكنك إضافة إجراء آخر مثل إعادة تحميل الصفحة أو إزالة العنصر من الـDOM
+                            window.location.reload(true);
                         } else {
                             alert("فشل في الحذف");
                         }

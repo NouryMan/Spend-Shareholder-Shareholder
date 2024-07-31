@@ -218,6 +218,7 @@
     <Content Include="assets\css\projectIndexStyle.css" />
     <Compile Include="Controllers\ACCH_OPBOXTController.cs" />
     <Compile Include="Controllers\ACCH_PROJ_BOX_PERCENTController.cs" />
+    <Compile Include="Controllers\OtherAccController.cs" />
     <Compile Include="Controllers\ACC_HOLDERController.cs" />
     <Compile Include="Controllers\authController.cs" />
     <Compile Include="Controllers\BANKController.cs" />
@@ -946,6 +947,10 @@
     <Content Include="Views\Box\Details.cshtml" />
     <Content Include="Views\Box\Edit.cshtml" />
     <Content Include="Views\Box\Index.cshtml" />
+    <Content Include="Views\OtherAcc\Create.cshtml" />
+    <Content Include="Views\OtherAcc\Details.cshtml" />
+    <Content Include="Views\OtherAcc\Index.cshtml" />
+    <Content Include="Views\OtherAcc\Update.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

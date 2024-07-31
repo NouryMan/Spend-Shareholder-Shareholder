@@ -85,7 +85,7 @@ namespace callcenter.all.Areas.Spend.Api
                     //aCCH_OPBOXTBL_Model.ACC_HOLDER_NO = model.ACCH_OPBOXTBL_Model.a.Value;
                     model.ACCH_OPBOXTBL_Model.TARGET_PROJ = model.SPEND_SCRIPTBL_Model.PROJECT_NO;
                     model.ACCH_OPBOXTBL_Model.NOTE = model.SPEND_SCRIPTBL_Model.REMARK;
-                    model.ACCH_OPBOXTBL_Model.PARENT_ACCH = ACcHb.GetPyID(model.ACCH_OPBOXTBL_Model.ACC_HOLDER_NO).PARENT_ACCH;
+                    model.ACCH_OPBOXTBL_Model.PARENT_ACCH = ACcHb.GetById(model.ACCH_OPBOXTBL_Model.ACC_HOLDER_NO).PARENT_ACCH;
                     //  model.ACCH_OPBOXTBL_Model.SCRIP_NO = script.SCRIP_NO;
                     //  model.ACCH_OPBOXTBL_Model.UNDER_NO = script.UNDER_NO.Value;
                     model.ACCH_OPBOXTBL_Model.SCRIP_NO = 0;

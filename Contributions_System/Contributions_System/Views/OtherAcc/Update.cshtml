@@ -173,40 +173,7 @@
 
                                 </div>
 
-                                <div class="row mb-3">
-
-                                    <div class="col-md-4">
-                                        <div class="form-floating mb-12 mb-md-0">
-                                            <label for="inputPasswordConfirm">العنوان</label>
-                                            @Html.EditorFor(model => model.ACC_HOLDER_ADDRESS, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = " العنوان", } })
-                                            @Html.ValidationMessageFor(model => model.ACC_HOLDER_ADDRESS, "", new { @class = "text-danger" })
-
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-floating mb-12 mb-md-0">
-                                            <label for="inputPasswordConfirm">رقم الجوال</label>
-                                            @Html.EditorFor(model => model.ACC_HOLDER_MOBILE, new { htmlAttributes = new { @class = "form-control", @type = "number", @placeholder = " رقم الجوال" } })
-                                            @Html.ValidationMessageFor(model => model.ACC_HOLDER_MOBILE, "", new { @class = "text-danger" })
-
-                                        </div>
-                                    </div>
-                                    <div class="col-md-4">
-                                        <div class="form-floating mb-12 mb-md-0">
-                                            <label for="inputPasswordConfirm">نسبة التنفيذ</label>
-                                            @Html.EditorFor(model => model.COMMIT_PERCENT, new { htmlAttributes = new { @class = "form-control", @type = "number", @placeholder = " نسبة التنفيذ", } })
-                                            @Html.ValidationMessageFor(model => model.COMMIT_PERCENT, "", new { @class = "text-danger" })
-
-                                        </div>
-                                    </div>
-
-
-                                </div>
-
-
-
-
-
+                              
 
                                 <div class="row mb-3">
 
@@ -369,7 +336,7 @@
                                 <div class="row mt-4 mb-0">
                                     <div class="d-grid col-md-6 "><button class="btn btn-primary btn-block" type="submit">حفظ</button></div>
 
-                                    <div class="d-grid col-md-6"><a class="btn btn-danger btn-block" href="~/ACC_HOLDER/Index">رجوع</a></div>
+                                    <div class="d-grid col-md-6"><a class="btn btn-danger btn-block" href="~/OtherAcc/Index">رجوع</a></div>
 
 
 
