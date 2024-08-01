@@ -83,6 +83,7 @@
     <Compile Include="FEATURETBL_Model.cs" />
     <Compile Include="FEATURE_ROLETBL_Model.cs" />
     <Compile Include="FISCAL_YEAR_Model.cs" />
+    <Compile Include="Helper\AcchOpBoxModelView.cs" />
     <Compile Include="Helper\Pagination.cs" />
     <Compile Include="Helper\AcchFilter.cs" />
     <Compile Include="HOLDER_PERCENT_DT_Model.cs" />

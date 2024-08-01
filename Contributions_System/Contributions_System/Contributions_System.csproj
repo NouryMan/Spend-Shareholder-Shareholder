@@ -906,7 +906,7 @@
     <Content Include="Views\OPERATIONAL_PALANCE\Details.cshtml" />
     <Content Include="Views\OPERATIONAL_PALANCE\Create.cshtml" />
     <Content Include="Views\OPERATIONAL_PALANCE\Update.cshtml" />
-    <Content Include="Views\ACCH_OPBOXT\Create.cshtml" />
+    <Content Include="Views\ACCH_OPBOXT\SpendProsses.cshtml" />
     <Content Include="Views\ACCH_OPBOXT\Details.cshtml" />
     <Content Include="Views\ACCH_PROJ_BOX_PERCENT\Index.cshtml" />
     <Content Include="Views\OPERATIONAL_PALANCE\PERCENT_Details.cshtml" />
@@ -952,6 +952,7 @@
     <Content Include="Views\OtherAcc\Index.cshtml" />
     <Content Include="Views\OtherAcc\Update.cshtml" />
     <Content Include="Views\Box\Report.cshtml" />
+    <Content Include="Views\ACCH_OPBOXT\CreateSpend.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

@@ -2,6 +2,7 @@
 using Spend.Api.Models;
 using Spend.Business;
 using Spend.Models;
+using Spend.Models.Helper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -69,7 +70,7 @@ namespace Contributions_System.Controllers
         }
 
 
-        public ActionResult Create()
+        public ActionResult SpendProsses()
         {
 
 
@@ -92,7 +93,7 @@ namespace Contributions_System.Controllers
         }
 
         [HttpPost]
-        public ActionResult Create(ACCH_OPBOXTBL_Model model)
+        public ActionResult SpendProsses(ACCH_OPBOXTBL_Model model)
         {
             ACCH_OPBOXTBL_Business aCCH_OPBOXTBL_B = new ACCH_OPBOXTBL_Business();
             if (ModelState.IsValid)
@@ -102,10 +103,11 @@ namespace Contributions_System.Controllers
                 {
 
 
-                    int reusert = aCCH_OPBOXTBL_B.Create(model);
-                    if (reusert > 0)
+                    var reusert = aCCH_OPBOXTBL_B.SpendProsses(model);
+                    if (reusert!=null)
                     {
-                        return RedirectToAction("Index", new {type= "block" });
+                        TempData["reusert"] = reusert;
+                        return RedirectToAction("CreateSpend");
                     }
                 }
                 catch (Exception ex)
@@ -132,6 +134,90 @@ namespace Contributions_System.Controllers
 
             return View();
         }
+
+
+        [HttpGet]
+        public ActionResult CreateSpend()
+        {
+
+            var model = TempData["reusert"] as AcchOpBoxModelView;
+            if (model == null)
+            {
+                return RedirectToAction("SpendProsses");
+            }
+
+
+            ACC_HOLDERTBL_Business aCC_HOLDERTBL_Business = new ACC_HOLDERTBL_Business();
+            ViewBag.Holder = aCC_HOLDERTBL_Business.getall();
+
+
+            ACCH_OPBOXTBL_Business aCCH_OPBOXTBL_B = new ACCH_OPBOXTBL_Business();
+            ViewBag.SCRIP_NO = aCCH_OPBOXTBL_B.GetMaxSCRIP_NO();
+
+            ACCH_PROJECT_Business proj_b = new ACCH_PROJECT_Business();
+            ViewBag.proj = proj_b.GetAllAsync(1).Result.Where(x => x.OPERATIONAL_PALANCE_Collection.Count() > 0);
+
+            BOXTBL_Business Box_B = new BOXTBL_Business();
+            ViewBag.Box = Box_B.getall();
+
+            BOX_OPTBL_Business BOX_OP = new BOX_OPTBL_Business();
+            ViewBag.BOX_OP = BOX_OP.GetAll();
+
+            ACCH_OPBOX_ACTIONSTBL_Business OPBOX_ACTIONS = new ACCH_OPBOX_ACTIONSTBL_Business();
+            ViewBag.OPBOX_ACTIONS = OPBOX_ACTIONS.GetAll();
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult CreateSpend(AcchOpBoxModelView model)
+        {
+            ACCH_OPBOXTBL_Business aCCH_OPBOXTBL_B = new ACCH_OPBOXTBL_Business();
+            if (ModelState.IsValid)
+            {
+
+                try
+                {
+
+
+                    //var reusert = aCCH_OPBOXTBL_B.SpendProsses(model);
+                    //if (reusert != null)
+                    //{
+                    //    return RedirectToAction("Index", new { type = "block" });
+                    //}
+                }
+                catch (Exception ex)
+                {
+
+                }
+            }
+
+
+
+            ViewBag.SCRIP_NO = aCCH_OPBOXTBL_B.GetMaxSCRIP_NO();
+
+            ACCH_PROJECT_Business proj_b = new ACCH_PROJECT_Business();
+            ViewBag.proj = proj_b.GetAllAsync(1).Result.Where(x => x.OPERATIONAL_PALANCE_Collection.Count() > 0);
+
+            BOXTBL_Business Box_B = new BOXTBL_Business();
+            ViewBag.Box = Box_B.getall();
+
+            BOX_OPTBL_Business BOX_OP = new BOX_OPTBL_Business();
+            ViewBag.BOX_OP = BOX_OP.GetAll();
+
+            ACCH_OPBOX_ACTIONSTBL_Business OPBOX_ACTIONS = new ACCH_OPBOX_ACTIONSTBL_Business();
+            ViewBag.OPBOX_ACTIONS = OPBOX_ACTIONS.GetAll();
+
+            return View();
+        }
+
+
+
+
+
+
+
+
 
 
         public ActionResult TranseSaleInv(int? ProjNo, int? Transe, DateTime? FromDate, DateTime? ToDate)

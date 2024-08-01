@@ -117,30 +117,31 @@
 
                                 <div class="row mb-3">
 
-                                      <div class="col-md-4">
+                                    <div class="col-md-4">
                                         <div class="form-floating">
                                             <label for="inputLastName">نوع حدث العملية</label>
-                                            <select id="ACTION_TYPE" name="ACTION_TYPE" dir="ltr" class="form-control selectpicker " data-live-search="true" >
+                                            <select id="ACTION_TYPE" name="ACTION_TYPE" dir="ltr" class="form-control selectpicker " data-live-search="true">
                                                 <option value="">اختار نوع العملية </option>
                                                 @foreach (var p in ViewBag.OPBOX_ACTIONS)
                                                 {
                                                     if (p.ID == 4 || p.ID == 1 || p.ID == 6)
                                                     {
-                                                        <option class="themeprimary" value="@p.ID"> @p.ACTION_NAME</option>}
-                                                    }
+                                                        <option class="themeprimary" value="@p.ID"> @p.ACTION_NAME</option>
+}
+                                                }
 
                                             </select>
 
                                         </div>
                                     </div>
 
-                                    <div class="col-md-4">
-                                        <div class="form-floating">
-                                            <label for="inputLastName"> الرقم</label>
-                                            <input type="text" class="form-control" disabled id="SCRIP_NO" name="SCRIP_NO" value="@ViewBag.SCRIP_NO" />
+                                    @*<div class="col-md-4">
+            <div class="form-floating">
+                <label for="inputLastName"> الرقم</label>
+                <input type="text" class="form-control" disabled id="SCRIP_NO" name="SCRIP_NO" value="@ViewBag.SCRIP_NO" />
 
-                                        </div>
-                                    </div>
+            </div>
+        </div>*@
 
 
 
@@ -153,15 +154,8 @@
 
                                         </div>
                                     </div>
-                                    
 
-
-
-                                </div>
-
-                                <div class="row mb-3">
-
-                                    <div class="col-md-6">
+                                    <div class="col-md-4">
                                         <div class="form-floating">
                                             <label for="inputLastName">المبلغ</label>
                                             @Html.EditorFor(model => model.SPEND_COST, new { htmlAttributes = new { @class = "form-control", @type = "number", @placeholder = "المبلغ", @required = "required", } })
@@ -171,7 +165,14 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-6">
+
+                                </div>
+
+                                <div class="row mb-3">
+
+                                 
+
+                                    <div class="col-md-12">
                                         <div class="form-floating">
                                             <label for="inputLastName">البيان</label>
                                             @Html.EditorFor(model => model.NOTE, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = "البيان" } })
