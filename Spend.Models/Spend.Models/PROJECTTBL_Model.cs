@@ -19,7 +19,7 @@ namespace Spend.Models
         {
             this.PERSON_ACC_PROJTBL_Collection = new HashSet<PERSON_ACC_PROJTBL_Model>();
             this.USER_UTLIST_PROJECTTBL_Collection = new HashSet<USER_UTLIST_PROJECTTBL_Model>();
-            this.OPERATIONAL_PALANCE_Collection = new HashSet<OPERATIONAL_PALANCE_Model>();
+          //  this.OPERATIONAL_PALANCE_Collection = new HashSet<OPERATIONAL_PALANCE_Model>();
 
         }
 
@@ -129,14 +129,14 @@ namespace Spend.Models
         [IgnoreDataMember]
 
         public virtual ICollection<USER_UTLIST_PROJECTTBL_Model> USER_UTLIST_PROJECTTBL_Collection { set; get; }
-        [JsonIgnore]
-        [IgnoreDataMember]
+        //[JsonIgnore]
+        //[IgnoreDataMember]
 
-        public virtual ICollection<OPERATIONAL_PALANCE_Model> OPERATIONAL_PALANCE_Collection { set; get; }
-        [JsonIgnore]
-        [IgnoreDataMember]
+        //public virtual ICollection<OPERATIONAL_PALANCE_Model> OPERATIONAL_PALANCE_Collection { set; get; }
+        //[JsonIgnore]
+        //[IgnoreDataMember]
 
-        public virtual ICollection<ACCH_PROJ_BOX_PERCENTTBL_Model> ACCH_PROJ_BOX_PERCENT_Collection { set; get; }
+        //public virtual ICollection<ACCH_PROJ_BOX_PERCENTTBL_Model> ACCH_PROJ_BOX_PERCENT_Collection { set; get; }
 
     }
 }

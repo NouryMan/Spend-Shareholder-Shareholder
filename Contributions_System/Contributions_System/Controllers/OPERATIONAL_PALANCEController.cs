@@ -27,13 +27,13 @@ namespace Contributions_System.Controllers
 
             ACC_HOLDERTBL_Business ACCH_B = new ACC_HOLDERTBL_Business();
 
-            PROJECTTBL_Business PROJ_B = new PROJECTTBL_Business();
+            ACCH_PROJECT_Business PROJ_B = new ACCH_PROJECT_Business();
 
 
             var model = ACCH_B.getall();
           
           
-            ViewBag.PROJ = PROJ_B.getall().Where(x => x.OPERATIONAL_PALANCE_Collection.Count()<=0);
+            ViewBag.PROJ = PROJ_B.GetAllAsync(1).Result.Where(x => x.OPERATIONAL_PALANCE_Collection.Count()<=0).ToList();
 
 
 

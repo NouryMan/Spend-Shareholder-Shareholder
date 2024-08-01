@@ -5,6 +5,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using System.Runtime.Serialization;
 
 namespace Spend.Models
 {
@@ -14,7 +16,8 @@ namespace Spend.Models
         public ACCH_PROJECT_Model()
         {
             this.Project_Collection = new HashSet<ACCH_PROJECT_Model>();
-          
+            this.ACCH_PROJ_BOX_PERCENT_Collection = new HashSet<ACCH_PROJ_BOX_PERCENTTBL_Model>();
+            this.OPERATIONAL_PALANCE_Collection = new HashSet<OPERATIONAL_PALANCE_Model>();
         }
         //public int ROW_NO { get; set; }
         public Nullable<Guid> GUID_ID { get; set; }
@@ -188,7 +191,15 @@ namespace Spend.Models
         public int BRANCH_ID { get; set; }
 
         public virtual ICollection<ACCH_PROJECT_Model> Project_Collection { get; set; }
-       
+
+        [JsonIgnore]
+        [IgnoreDataMember]
+
+        public virtual ICollection<OPERATIONAL_PALANCE_Model> OPERATIONAL_PALANCE_Collection { set; get; }
+        [JsonIgnore]
+        [IgnoreDataMember]
+
+        public virtual ICollection<ACCH_PROJ_BOX_PERCENTTBL_Model> ACCH_PROJ_BOX_PERCENT_Collection { set; get; }
 
 
     }

@@ -76,8 +76,8 @@ namespace Contributions_System.Controllers
             ACCH_OPBOXTBL_Business aCCH_OPBOXTBL_B = new ACCH_OPBOXTBL_Business();
             ViewBag.SCRIP_NO = aCCH_OPBOXTBL_B.GetMaxSCRIP_NO();
 
-            PROJECTTBL_Business proj_b = new PROJECTTBL_Business();
-            ViewBag.proj = proj_b.getall().Where(x => x.OPERATIONAL_PALANCE_Collection.Count() > 0);
+            ACCH_PROJECT_Business proj_b = new ACCH_PROJECT_Business();
+            ViewBag.proj = proj_b.GetAllAsync(1).Result.Where(x => x.OPERATIONAL_PALANCE_Collection.Count() > 0);
 
             BOXTBL_Business Box_B = new BOXTBL_Business();
             ViewBag.Box = Box_B.getall();
@@ -118,8 +118,8 @@ namespace Contributions_System.Controllers
 
             ViewBag.SCRIP_NO = aCCH_OPBOXTBL_B.GetMaxSCRIP_NO();
 
-            PROJECTTBL_Business proj_b = new PROJECTTBL_Business();
-            ViewBag.proj = proj_b.getall().Where(x => x.OPERATIONAL_PALANCE_Collection.Count() > 0);
+            ACCH_PROJECT_Business proj_b = new ACCH_PROJECT_Business();
+            ViewBag.proj = proj_b.GetAllAsync(1).Result.Where(x => x.OPERATIONAL_PALANCE_Collection.Count() > 0);
 
             BOXTBL_Business Box_B = new BOXTBL_Business();
             ViewBag.Box = Box_B.getall();
@@ -143,8 +143,8 @@ namespace Contributions_System.Controllers
             try { ViewBag.ToDate = ToDate.Value.ToString("yyyy-MM-dd"); } catch { ViewBag.ToDate = DateTime.Now.ToString("yyyy-MM-dd"); }
 
 
-            PROJECTTBL_Business pROJECTTBL = new PROJECTTBL_Business();
-            ViewBag.Project = pROJECTTBL.getall();
+            ACCH_PROJECT_Business pROJECTTBL = new ACCH_PROJECT_Business();
+            ViewBag.Project = pROJECTTBL.GetAllAsync(1).Result;
 
             SALES_INVTBL_Business b = new SALES_INVTBL_Business();
             List<SALES_INVTBL_Model> model = new List<SALES_INVTBL_Model>();
@@ -175,6 +175,9 @@ namespace Contributions_System.Controllers
             ACC_HOLDERTBL_Business AccHolderB= new ACC_HOLDERTBL_Business();
 
             ViewBag.AccHolder= AccHolderB.getall();
+            ACCH_PROJECT_Business proj_b = new ACCH_PROJECT_Business();
+            ViewBag.proj = proj_b.GetAllAsync(1).Result;
+
 
 
             return View();
@@ -184,8 +187,8 @@ namespace Contributions_System.Controllers
 
         public ActionResult Distribution()
         {
-            PROJECTTBL_Business pROJECTTBL = new PROJECTTBL_Business();
-            ViewBag.Project = pROJECTTBL.getall().Where(x=>x.ACCH_PROJ_BOX_PERCENT_Collection.Count>0);
+            ACCH_PROJECT_Business pROJECTTBL = new ACCH_PROJECT_Business();
+            ViewBag.Project = pROJECTTBL.GetAllAsync(1).Result.Where(x=>x.ACCH_PROJ_BOX_PERCENT_Collection.Count>0);
             return View();  
         }
 
@@ -210,8 +213,8 @@ namespace Contributions_System.Controllers
                 ModelState.AddModelError("",ex.Message);
 
             }
-            PROJECTTBL_Business pROJECTTBL = new PROJECTTBL_Business();
-            ViewBag.Project = pROJECTTBL.getall().Where(x => x.ACCH_PROJ_BOX_PERCENT_Collection.Count > 0);
+            ACCH_PROJECT_Business pROJECTTBL = new ACCH_PROJECT_Business();
+            ViewBag.Project = pROJECTTBL.GetAllAsync(1).Result.Where(x => x.ACCH_PROJ_BOX_PERCENT_Collection.Count > 0);
             return View(model);
         }
 

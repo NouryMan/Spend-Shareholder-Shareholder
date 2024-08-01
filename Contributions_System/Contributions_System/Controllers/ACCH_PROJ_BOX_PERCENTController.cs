@@ -40,11 +40,11 @@ namespace Contributions_System.Controllers
 
 
          
-            PROJECTTBL_Business PROJ_B = new PROJECTTBL_Business();
+            ACCH_PROJECT_Business PROJ_B = new ACCH_PROJECT_Business();
 
           
             
-            ViewBag.PROJ = PROJ_B.getall().Where(x => x.ACCH_PROJ_BOX_PERCENT_Collection.Count() <= 0); 
+            ViewBag.PROJ = PROJ_B.GetAllAsync(1).Result.Where(x => x.ACCH_PROJ_BOX_PERCENT_Collection.Count() <= 0); 
             BOXTBL_Business Box_B = new BOXTBL_Business();
             ViewBag.Box = Box_B.getall();
 
@@ -79,9 +79,9 @@ namespace Contributions_System.Controllers
             }
 
 
-            PROJECTTBL_Business PROJ_B = new PROJECTTBL_Business();
+            ACCH_PROJECT_Business PROJ_B = new ACCH_PROJECT_Business();
 
-            ViewBag.PROJ = PROJ_B.getall().Where(x => x.ACCH_PROJ_BOX_PERCENT_Collection.Count() <= 0);
+            ViewBag.PROJ = PROJ_B.GetAllAsync(1).Result.Where(x => x.ACCH_PROJ_BOX_PERCENT_Collection.Count() <= 0);
 
             BOXTBL_Business Box_B = new BOXTBL_Business();
             ViewBag.Box = Box_B.getall();

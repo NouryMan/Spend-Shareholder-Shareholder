@@ -40,7 +40,7 @@
 
 
                                 @*<a href="~/ACC_HOLDER/create" class="btn btn-primary btn-sm "> <i class="fa fa-plus"> </i> انشاء مساهم </a>*@
-                               @try {  <span>@Model.FirstOrDefault().OPERATIONAL_PALANCE_Model_ACC_HOLDER_NO.PROJECTTBL_Model.PROJECT_NAME</span>}catch{}
+                               @try {  <span>@Model.FirstOrDefault().OPERATIONAL_PALANCE_Model_ACC_HOLDER_NO.ACCH_PROJECT_Model.PROJECT_AR_NAME</span>}catch{}
 
 
                               @try
@@ -131,11 +131,11 @@
                                                     </td>
                                                     <td>
                                                         @{ try
-                                                            { @item.PARENT_PERCENT }
-                                                        catch
-                                                        {
+                                                            { @(item.PARENT_PERCENT * 100)<span> %</span> }
+                                                            catch
+                                                            {
 
-                                                        }
+                                                            }
                                                         }
                                                     </td>
 
