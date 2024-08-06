@@ -6,6 +6,7 @@ using Spend.Models.Helper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Transactions;
 using System.Web;
 using System.Web.Mvc;
 
@@ -173,6 +174,7 @@ namespace Contributions_System.Controllers
         public ActionResult CreateSpend(AcchOpBoxModelView model)
         {
             ACCH_OPBOXTBL_Business aCCH_OPBOXTBL_B = new ACCH_OPBOXTBL_Business();
+            MAX_UNDER_OPV_Business mAX_UNDER_OPV_Business = new MAX_UNDER_OPV_Business();
             if (ModelState.IsValid)
             {
 
@@ -180,11 +182,49 @@ namespace Contributions_System.Controllers
                 {
 
 
-                    //var reusert = aCCH_OPBOXTBL_B.SpendProsses(model);
-                    //if (reusert != null)
-                    //{
-                    //    return RedirectToAction("Index", new { type = "block" });
-                    //}
+                    var scriptNo = aCCH_OPBOXTBL_B.GetMaxSCRIP_NO();
+                    var opNo = aCCH_OPBOXTBL_B.GetMaxOP_NO();
+                    long underNo = 0;
+                    try
+                    {
+                         underNo = mAX_UNDER_OPV_Business.getall().Where(x => x.NAM == "under_no").FirstOrDefault().MAX_NO;
+                    }
+                    catch
+                    {
+
+                    }
+
+                    using (TransactionScope tran = new TransactionScope())
+                    {
+
+                        foreach (var item in model.AcchOpBoxDetailsModelView)
+                        {
+                            ACCH_OPBOXTBL_Model aCCH_OPBOXTBL_Model = new ACCH_OPBOXTBL_Model();
+
+                           
+                            aCCH_OPBOXTBL_Model.DATE_M = model.Date;
+                            aCCH_OPBOXTBL_Model.INCOME = 0;
+                            aCCH_OPBOXTBL_Model.UNDER_NO = underNo;
+                            aCCH_OPBOXTBL_Model.ACC_HOLDER_NO = item.AccHolderId;
+                            aCCH_OPBOXTBL_Model.ACTION_TYPE = model.OpActionTypeId;
+                            aCCH_OPBOXTBL_Model.NOTE = model.NOTE;
+                            // aCCH_OPBOXTBL_Model.OLD_VAL = model.OLD_VAL;
+                            aCCH_OPBOXTBL_Model.OP_NO = opNo++;
+                            aCCH_OPBOXTBL_Model.OP_TYPE = model.OpTypeId;
+                            aCCH_OPBOXTBL_Model.TARGET_PROJ = model.ProjectId;
+                            aCCH_OPBOXTBL_Model.SOURCE_BOX = model.BoxId;
+                            aCCH_OPBOXTBL_Model.SCRIP_NO = scriptNo;
+                            //  aCCH_OPBOXTBL_Model.PARENT_BOX = model.PARENT_BOX;
+                            //  aCCH_OPBOXTBL_Model.PARENT_ACCH = model.PARENT_ACCH;
+                            aCCH_OPBOXTBL_Model.SPEND_COST = item.Amount;
+
+                            aCCH_OPBOXTBL_B.Create(aCCH_OPBOXTBL_Model);
+                        }
+
+                        tran.Complete();    
+                        return RedirectToAction("Index", new { type = "block" });
+                    }
+                    
                 }
                 catch (Exception ex)
                 {
@@ -192,6 +232,8 @@ namespace Contributions_System.Controllers
                 }
             }
 
+            ACC_HOLDERTBL_Business aCC_HOLDERTBL_Business = new ACC_HOLDERTBL_Business();
+            ViewBag.Holder = aCC_HOLDERTBL_Business.getall();
 
 
             ViewBag.SCRIP_NO = aCCH_OPBOXTBL_B.GetMaxSCRIP_NO();

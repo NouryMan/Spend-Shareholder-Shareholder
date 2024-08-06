@@ -23,6 +23,7 @@ namespace Spend.Models.Helper
         public long AccHolderId { get; set; }
         public double percentage { get; set; }
         public bool IsPercentage { get; set; }
+        public double Balance { get; set; }
   
         public double Amount { get; set; }
     }

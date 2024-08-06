@@ -88,149 +88,16 @@ namespace Spend.Business
         }
 
 
-        public int Create(ACCH_OPBOXTBL_Model OpBox)
+        public void Create(ACCH_OPBOXTBL_Model OpBox)
         {
-            using (TransactionScope tran = new TransactionScope())
+            if (OpBox.ACTION_TYPE == 1 && OpBox.ACTION_TYPE == 4 && OpBox.ACTION_TYPE == 6)  // اذا كانت  تشغلية ليست خاصة او غير تشغلية
             {
-
-                int return_value = 0;
-
-                try
-                {
-                    OpBox.SCRIP_NO = GetMaxSCRIP_NO();
-                    OpBox.OP_NO = GetMaxOP_NO();
-
-                    try { OpBox.UNDER_NO = db.MAX_UNDER_OPV_Model.Where(x => x.NAM == "under_no").FirstOrDefault().MAX_NO; } catch { OpBox.UNDER_NO = 1; }
-
-
-                    if (OpBox.SPEND_COST > 0)
-                    {
-                        var persentList = db.PERCENT_EST_Model.Where(x => x.TARGET_PROJ == OpBox.TARGET_PROJ);//نسب المشروع
-
-
-
-
-                        foreach (var persent in persentList.Where(x => x.SPEND_DETERMINED == true && x.DET_COST > 0))//اولا حجز المبلغ من اصحاب المبالغ المحددة
-                        {
-
-                            if (OpBox.SPEND_COST > 0)
-                            {
-                                ACCH_OPBOXTBL_Model aCCH_OPBOXTBL_Model = new ACCH_OPBOXTBL_Model();
-
-                                if (OpBox.ACTION_TYPE == 1 && OpBox.ACTION_TYPE == 4 && OpBox.ACTION_TYPE == 6)  // اذا كانت  تشغلية ليست خاصة او غير تشغلية
-                                {
-                                    aCCH_OPBOXTBL_Model.OUT = false;
-                                }
-
-                                else { aCCH_OPBOXTBL_Model.OUT = true; }
-
-
-                                aCCH_OPBOXTBL_Model.DATE_M = OpBox.DATE_M;
-                                aCCH_OPBOXTBL_Model.INCOME = 0;
-                                aCCH_OPBOXTBL_Model.UNDER_NO = OpBox.UNDER_NO;
-                                // aCCH_OPBOXTBL_Model.DATE_H = OpBox.DATE_H;
-                                aCCH_OPBOXTBL_Model.PARENT_ACCH = OpBox.PARENT_ACCH;
-                                aCCH_OPBOXTBL_Model.ACC_HOLDER_NO = persent.ACC_HOLDER_NO;
-                                aCCH_OPBOXTBL_Model.ACTION_TYPE = OpBox.ACTION_TYPE;
-                                aCCH_OPBOXTBL_Model.NOTE = OpBox.NOTE;
-                                aCCH_OPBOXTBL_Model.OLD_VAL = OpBox.OLD_VAL;
-                                aCCH_OPBOXTBL_Model.OP_NO = OpBox.OP_NO++;
-                                aCCH_OPBOXTBL_Model.OP_TYPE = OpBox.OP_TYPE;
-
-                                aCCH_OPBOXTBL_Model.TARGET_PROJ = OpBox.TARGET_PROJ;
-                                aCCH_OPBOXTBL_Model.SOURCE_BOX = OpBox.SOURCE_BOX;
-                                aCCH_OPBOXTBL_Model.SCRIP_NO = OpBox.SCRIP_NO;
-                                aCCH_OPBOXTBL_Model.PARENT_BOX = OpBox.PARENT_BOX;
-                                aCCH_OPBOXTBL_Model.PARENT_ACCH = OpBox.PARENT_ACCH;
-
-                                //حساب المبلغ المصروف
-                                double oldDET_COST = 0;
-                                try { oldDET_COST = db.ACCH_OPBOXTBL_Model.Where(x => x.ACC_HOLDER_NO == persent.ACC_HOLDER_NO && x.TARGET_PROJ == persent.TARGET_PROJ).Sum(x => x.SPEND_COST); } catch { }
-                                double DET_COST = persent.DET_COST.Value - oldDET_COST;
-
-                                if (OpBox.SPEND_COST >= DET_COST)//اذا كان المبلغ المصروف اكبر من المحدد
-                                {
-                                    OpBox.SPEND_COST -= DET_COST;
-                                    aCCH_OPBOXTBL_Model.SPEND_COST = DET_COST;
-                                }
-                                else
-                                {
-                                    aCCH_OPBOXTBL_Model.SPEND_COST = OpBox.SPEND_COST;
-
-                                    OpBox.SPEND_COST = 0;
-                                }
-
-
-                                if (aCCH_OPBOXTBL_Model.SPEND_COST > 0)
-                                {
-                                    db.ACCH_OPBOXTBL_Model.Add(aCCH_OPBOXTBL_Model);
-                                }
-                            }
-
-                        }
-
-                        foreach (var persent in persentList.Where(x => x.DET_COST <= 0 && x.SPEND_PERCENT > 0))//ثانيا حجز المبلغ من اصحاب النسب
-
-
-
-                            if (OpBox.SPEND_COST > 0)
-                            {
-                                ACCH_OPBOXTBL_Model aCCH_OPBOXTBL_Model = new ACCH_OPBOXTBL_Model();
-                                if (OpBox.ACTION_TYPE == 1 && OpBox.ACTION_TYPE == 4 && OpBox.ACTION_TYPE == 6) // اذا كانت  تشغلية ليست خاصة او غير تشغلية
-                                {
-                                    aCCH_OPBOXTBL_Model.OUT = false;
-                                }
-                                else { aCCH_OPBOXTBL_Model.OUT = true; }
-
-
-
-                                aCCH_OPBOXTBL_Model.DATE_M = OpBox.DATE_M;
-                                aCCH_OPBOXTBL_Model.INCOME = 0;
-                                aCCH_OPBOXTBL_Model.UNDER_NO = OpBox.UNDER_NO;
-                                // aCCH_OPBOXTBL_Model.DATE_H = OpBox.DATE_H;
-                                aCCH_OPBOXTBL_Model.PARENT_ACCH = OpBox.PARENT_ACCH;
-                                aCCH_OPBOXTBL_Model.ACC_HOLDER_NO = persent.ACC_HOLDER_NO;
-                                aCCH_OPBOXTBL_Model.ACTION_TYPE = OpBox.ACTION_TYPE;
-                                aCCH_OPBOXTBL_Model.NOTE = OpBox.NOTE;
-                                aCCH_OPBOXTBL_Model.OLD_VAL = OpBox.OLD_VAL;
-                                aCCH_OPBOXTBL_Model.OP_NO = OpBox.OP_NO++;
-                                aCCH_OPBOXTBL_Model.OP_TYPE = OpBox.OP_TYPE;
-
-                                aCCH_OPBOXTBL_Model.TARGET_PROJ = OpBox.TARGET_PROJ;
-                                aCCH_OPBOXTBL_Model.SOURCE_BOX = OpBox.SOURCE_BOX;
-                                aCCH_OPBOXTBL_Model.SCRIP_NO = OpBox.SCRIP_NO;
-                                aCCH_OPBOXTBL_Model.PARENT_BOX = OpBox.PARENT_BOX;
-                                aCCH_OPBOXTBL_Model.PARENT_ACCH = OpBox.PARENT_ACCH;
-
-
-                                aCCH_OPBOXTBL_Model.SPEND_COST = OpBox.SPEND_COST * persent.SPEND_PERCENT * persent.PARENT_PERCENT;
-
-                                db.ACCH_OPBOXTBL_Model.Add(aCCH_OPBOXTBL_Model);
-
-
-
-                            }
-
-                        return_value = db.SaveChanges();
-
-                        if (return_value > 0)
-                        {
-                            tran.Complete();
-                        }
-
-
-                    }
-                }
-                catch
-                {
-
-                }
-
-
-                return return_value;
-
-
+                OpBox.OUT = false;
             }
+            else { OpBox.OUT = true; }
+
+            db.ACCH_OPBOXTBL_Model.Add(OpBox); 
+            db.SaveChanges();
         }
 
 
@@ -238,7 +105,8 @@ namespace Spend.Business
         {
 
             AcchOpBoxModelView acchOpBoxModelView = new AcchOpBoxModelView();
-
+            ACCH_BALANCEV_Business aCCH_BALANCEV_Business = new ACCH_BALANCEV_Business();
+           
 
             acchOpBoxModelView.ProjectId = OpBox.TARGET_PROJ;
             acchOpBoxModelView.BoxId = OpBox.SOURCE_BOX;
@@ -273,8 +141,8 @@ namespace Spend.Business
                             acchOpBox.AccHolderId = persent.ACC_HOLDER_NO;
                             acchOpBox.percentage = persent.DET_COST.Value;
                             acchOpBox.IsPercentage = false;
-
-
+                          
+                            acchOpBox.Balance = aCCH_BALANCEV_Business.GetPyID(persent.ACC_HOLDER_NO).BALANCE??0;
 
 
                             //حساب المبلغ المصروف
@@ -310,10 +178,13 @@ namespace Spend.Business
                         if (OpBox.SPEND_COST > 0)
                         {
                             AcchOpBoxDetailsModelView acchOpBox = new AcchOpBoxDetailsModelView();
+                           
 
                             acchOpBox.AccHolderId = persent.ACC_HOLDER_NO;
                             acchOpBox.percentage = persent.SPEND_PERCENT * persent.PARENT_PERCENT;
                             acchOpBox.IsPercentage = true;
+                            acchOpBox.Balance = aCCH_BALANCEV_Business.GetPyID(persent.ACC_HOLDER_NO).BALANCE ?? 0;
+
 
 
 
