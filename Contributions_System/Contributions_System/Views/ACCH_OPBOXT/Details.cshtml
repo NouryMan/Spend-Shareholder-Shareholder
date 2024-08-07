@@ -60,12 +60,8 @@
                                                 <th>التاريخ</th>
 
                                                 <th>نوع العملية</th>
-                                                @*<th> </th>*@
-
-
-
-
-                                                @*<th></th>*@
+                                                <th> </th>
+                                             
                                             </tr>
                                         </thead>
 
@@ -101,38 +97,23 @@
                                             </td>
 
 
-                                            @*<td>
 
-
-                                                    <div class="row">
-                                                        <div class="col-md-5 m-1">
-                                                            <a href="~/SPEND_SCRIPTBL/details/@item.SCRIP_NO?type=@item.OP_TYPE" class="btn btn-info btn-sm "> <i class="la  la-eye"> </i>  </a>
-                                                        </div>
-
-
-
-                                                    </div>
-
-                                                </td>*@
-
-                                            @*<td>
+                                            <td>
                                                     <div class=" col-12">
                                                         <div class="row">
+                                                           
                                                             <div class="col-md-3 m-1">
-                                                                <a href="~/ACC_HOLDER/details/@item.ACC_HOLDER_NO" class="btn btn-success btn-sm "> <i class="la  la-eye"> </i></a>
-                                                            </div>
-                                                            <div class="col-md-3 m-1">
-                                                                <a href="~/ACC_HOLDER/Update/@item.ACC_HOLDER_NO" class="btn btn-info btn-sm "> <i class="la  la-edit"></i></a>
+                                                                <a href="~/ACCH_OPBOXT/edit/@item.ID" class="btn btn-info btn-sm "> <i class="la  la-edit"></i></a>
                                                             </div>
 
                                                             <div class="col-md-3 m-1">
-                                                                <a href="" class="btn btn-danger btn-sm "> <i class="la  la-trash"></i></a>
+                                                                <a href="" class="btn btn-danger btn-sm " onclick="DeleteConfirmbox(@item.ID)"> <i class="la  la-trash"></i></a>
                                                             </div>
 
                                                         </div>
                                                     </div>
 
-                                                </td>*@
+                                                </td>
                                         </tr>
                                     }
 
@@ -193,7 +174,7 @@
                 { extend: 'csv', text: 'csv' },
                 {
                     extend: 'excelHtml5',
-                    title:'كشف حساب'+$("#AccounNo option:selected").text()+'من تاريخ:'+'@ViewBag.FromDate'+'الى:'+'@ViewBag.ToDate',
+                   // title:'كشف حساب'+$("#AccounNo option:selected").text()+'من تاريخ:'+'@ViewBag.FromDate'+'الى:'+'@ViewBag.ToDate',
                     text: ' اكسل',
                     titleAttr: 'تصدير اكسل',
                     customizeData: function (data) { // for long number
@@ -248,5 +229,35 @@
 
 
     });
+
+         function DeleteConfirmbox(id) {
+
+
+
+    var result = confirm('هل انت متاكد من عملية الحذف?');
+    if (result) {
+        $.ajax({
+                url: '@Url.Action("Delete", "ACCH_OPBOXT")',
+                type: 'POST',
+                data: { id: id },
+                success: function(response) {
+                    if (response.success) {
+                        alert("تم الحذف بنجاح");
+                        window.location.reload(true);
+                    } else {
+                        alert("فشل في الحذف");
+                    }
+                },
+                error: function(xhr, status, error) {
+                    console.log(xhr.responseText);
+                    alert("حدث خطأ أثناء الحذف");
+                }
+            });
+
+        return false;
+    }
+}
+
+
 </script>
 

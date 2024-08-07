@@ -953,6 +953,7 @@
     <Content Include="Views\OtherAcc\Update.cshtml" />
     <Content Include="Views\Box\Report.cshtml" />
     <Content Include="Views\ACCH_OPBOXT\CreateSpend.cshtml" />
+    <Content Include="Views\ACCH_OPBOXT\Edit.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

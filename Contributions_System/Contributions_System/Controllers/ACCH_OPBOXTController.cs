@@ -6,6 +6,7 @@ using Spend.Models.Helper;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Cryptography;
 using System.Transactions;
 using System.Web;
 using System.Web.Mvc;
@@ -347,6 +348,97 @@ namespace Contributions_System.Controllers
         }
 
 
+
+
+
+
+        public ActionResult Edit(int id)
+        {
+            ACCH_OPBOXTBL_Business aCCH_OPBOXTBL_Business = new ACCH_OPBOXTBL_Business();
+            var model=aCCH_OPBOXTBL_Business.GetById(id);
+
+
+            ACC_HOLDERTBL_Business aCC_HOLDERTBL_Business = new ACC_HOLDERTBL_Business();
+            ViewBag.Holder = new SelectList(aCC_HOLDERTBL_Business.getall(), "ACC_HOLDER_NO", "ACC_HOLDER_NAME", model.ACC_HOLDER_NO); 
+
+            ACCH_PROJECT_Business proj_b = new ACCH_PROJECT_Business();
+            ViewBag.proj = new SelectList(proj_b.GetAllAsync(1).Result.Where(x => x.OPERATIONAL_PALANCE_Collection.Count() > 0), "ID", "PROJECT_AR_NAME", model.TARGET_PROJ);
+            ViewBag.building = new SelectList(proj_b.GetProjectListByParentIdAsync(model.TARGET_PROJ).Result, "ID", "PROJECT_AR_NAME", model.BUILDING_ID);
+            ViewBag.unit = new SelectList(proj_b.GetProjectListByParentIdAsync(model.BUILDING_ID).Result, "ID", "PROJECT_AR_NAME", model.UNIT_ID);
+
+            BOXTBL_Business Box_B = new BOXTBL_Business();
+            ViewBag.Box = new SelectList(Box_B.getall(), "BOX_NO", "BOX_NAME", model.SOURCE_BOX); 
+
+            BOX_OPTBL_Business BOX_OP = new BOX_OPTBL_Business();
+            ViewBag.BOX_OP = new SelectList(BOX_OP.GetAll(), "OP_NO", "OP_NAME", model.OP_TYPE); 
+
+            ACCH_OPBOX_ACTIONSTBL_Business OPBOX_ACTIONS = new ACCH_OPBOX_ACTIONSTBL_Business();
+            ViewBag.OPBOX_ACTIONS = new SelectList(OPBOX_ACTIONS.GetAll(), "ID", "ACTION_NAME", model.ACTION_TYPE);
+
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Edit(ACCH_OPBOXTBL_Model model)
+        {
+            try
+            {
+                if (ModelState.IsValid)
+                {
+                    ACCH_OPBOXTBL_Business aCCH_OPBOXTBL_Business = new ACCH_OPBOXTBL_Business();
+
+                    aCCH_OPBOXTBL_Business.Update(model);
+                    return RedirectToAction("Details", new { UnderNo=model.UNDER_NO ,type = "block" });
+
+                }
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", ex.Message);
+
+            }
+
+            ACC_HOLDERTBL_Business aCC_HOLDERTBL_Business = new ACC_HOLDERTBL_Business();
+            ViewBag.Holder = new SelectList(aCC_HOLDERTBL_Business.getall(), "ACC_HOLDER_NO", "ACC_HOLDER_NAME", model.ACC_HOLDER_NO);
+
+            ACCH_PROJECT_Business proj_b = new ACCH_PROJECT_Business();
+            ViewBag.proj = new SelectList(proj_b.GetAllAsync(1).Result.Where(x => x.OPERATIONAL_PALANCE_Collection.Count() > 0), "ID", "PROJECT_AR_NAME", model.TARGET_PROJ);
+            ViewBag.building = new SelectList(proj_b.GetProjectListByParentIdAsync(model.TARGET_PROJ).Result, "ID", "PROJECT_AR_NAME", model.BUILDING_ID);
+            ViewBag.unit = new SelectList(proj_b.GetProjectListByParentIdAsync(model.BUILDING_ID).Result, "ID", "PROJECT_AR_NAME", model.UNIT_ID);
+
+            BOXTBL_Business Box_B = new BOXTBL_Business();
+            ViewBag.Box = new SelectList(Box_B.getall(), "BOX_NO", "BOX_NAME", model.SOURCE_BOX);
+
+            BOX_OPTBL_Business BOX_OP = new BOX_OPTBL_Business();
+            ViewBag.BOX_OP = new SelectList(BOX_OP.GetAll(), "OP_NO", "OP_NAME", model.OP_TYPE);
+
+            ACCH_OPBOX_ACTIONSTBL_Business OPBOX_ACTIONS = new ACCH_OPBOX_ACTIONSTBL_Business();
+            ViewBag.OPBOX_ACTIONS = new SelectList(OPBOX_ACTIONS.GetAll(), "ID", "ACTION_NAME", model.ACTION_TYPE);
+            return View(model);
+        }
+
+
+
+
+        [Authorize]
+        [HttpPost]
+        public JsonResult Delete(int id)
+        {
+            bool result = false;
+            ACCH_OPBOXTBL_Business aCCH_OPBOXTBL_Business = new ACCH_OPBOXTBL_Business();
+
+            try
+            {
+                aCCH_OPBOXTBL_Business.Delete(id);
+                result = true;
+            }
+            catch (Exception ex)
+            {
+
+            }
+
+            return Json(new { success = result });
+        }
 
 
 

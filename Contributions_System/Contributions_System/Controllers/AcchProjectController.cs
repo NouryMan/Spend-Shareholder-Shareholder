@@ -316,25 +316,17 @@ namespace Contributions_System.Controllers
             return Json(new { success = result });
         }
 
-        //[Authorize]
-        //public async Task<ActionResult> Report(RentalReport model)
-        //{
+        [HttpGet]
+        public async Task<JsonResult> GetByParintId(int id)
+        {
+            ACCH_PROJECT_Business projectb = new ACCH_PROJECT_Business();
 
+            var project =await projectb.GetProjectListByParentIdAsync(id);
 
-        //    callRentalPaybusiness b = new callRentalPaybusiness();
-        //    callProjectBusiness projB = new callProjectBusiness(true);
-        //    model.FromDate = Date.FromStampToDateTime(model.FromDateTimeStamp);
-        //    model.ToDate = Date.FromStampToDateTime(model.ToDateTimeStamp);
-        //    model = b.RentalReport(model);
+            return Json(new SelectList(project, "ID", "PROJECT_AR_NAME"), JsonRequestBehavior.AllowGet);
+        }
 
-        //    List<callProjectModel> projectList = projB.GetProjectListByParentId(null).ToList();
-        //    ViewBag.projectList = projectList;
-        //    ViewBag.projectId = model.ProjectID;
-        //    ViewBag.TypeId = model.TypeId;
-
-        //    return View(model);
-        //}
-
+       
 
 
     }

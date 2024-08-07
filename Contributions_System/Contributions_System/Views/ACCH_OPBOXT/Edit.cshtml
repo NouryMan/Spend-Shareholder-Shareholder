@@ -1,0 +1,279 @@
+﻿@model Spend.Models.ACCH_OPBOXTBL_Model
+@{
+    ViewBag.Title = " بطاقة قيد ";
+}
+
+
+
+
+
+
+
+
+
+<div class="dashboard-content-wrap">
+    <div class="dashboard-bread dashboard--bread dashboard-bread-2">
+        <div class="container-fluid">
+            <div class="row align-items-center">
+                <div class="col-lg-6">
+                    <div class="breadcrumb-content">
+                        <div class="section-heading">
+                            <h2 class="sec__title font-size-30 text-white">تعديل قيد</h2>
+                        </div>
+                    </div><!-- end breadcrumb-content -->
+                </div><!-- end col-lg-6 -->
+                <div class="col-lg-6">
+                    <div class="breadcrumb-list text-right">
+                        <ul class="list-items">
+                            <li><a href="~" class="text-white">الصفحة الرئيسية</a></li>
+                            <li>ادارة القيدود </li>
+                            <li>قيد</li>
+
+                        </ul>
+                    </div><!-- end breadcrumb-list -->
+                </div><!-- end col-lg-6 -->
+            </div><!-- end row -->
+        </div>
+    </div><!-- end dashboard-bread -->
+    <div class="dashboard-main-content">
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="form-box">
+                        <div class="form-title-wrap">
+                            <div>
+                                <h3 class="title"> بطاقة قيد</h3>
+                                @*<p class="font-size-14">إظهار 1 إلى 10 من أصل 20 مُدخل</p>*@
+                            </div>
+
+
+
+                        </div>
+                        <div class="form-content">
+
+
+                            @using (Html.BeginForm())
+                            {
+                                @Html.AntiForgeryToken()
+
+                                @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+                                @Html.HiddenFor(model => model.UNDER_NO)
+                                @Html.HiddenFor(model => model.OP_NO)
+                                @Html.HiddenFor(model => model.SCRIP_NO)
+                                @Html.HiddenFor(model => model.ID)
+                                
+
+                              
+
+                            <div class="row mb-3">
+                                <div class="col-md-4">
+
+                                    <div class="form-floating mb-12 mb-md-0">
+                                        <label>المساهم</label>
+
+                                        @Html.DropDownList("ACC_HOLDER_NO", (SelectList)ViewBag.Holder, "اختار مساهم", new { @class = "form-control" })
+                                        @Html.ValidationMessageFor(model => model.PARENT_ACCH, "", new { @class = "text-danger" })
+                                        
+                                    </div>
+
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-floating mb-12 mb-md-0">
+                                        <label>نوع العملية </label>
+
+                                        @Html.DropDownList("OP_TYPE", (SelectList)ViewBag.BOX_OP, "اختار نوع العملية", new { @class = "form-control", @disabled = "disabled" })
+                                        @Html.ValidationMessageFor(model => model.OP_TYPE, "", new { @class = "text-danger" })
+                                        @Html.HiddenFor(model => model.OP_TYPE)
+                                       
+
+
+                                    </div>
+                                </div>
+
+                                <div class="col-md-4">
+                                    <div class="form-floating mb-12 mb-md-0">
+                                        <label>نوع حدث العملية </label>
+
+                                        @Html.DropDownList("ACTION", (SelectList)ViewBag.OPBOX_ACTIONS, "اختار نوع حدث العملية", new { @class = "form-control", @disabled = "disabled" })
+                                        @Html.ValidationMessageFor(model => model.ACTION_TYPE, "", new { @class = "text-danger" })
+                                        @Html.HiddenFor(model => model.ACTION_TYPE)
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+                            <div class="row mb-3">
+
+                                <div class="col-md-4">
+                                    <div class="form-floating mb-12 mb-md-0">
+                                        <label for="inputPasswordConfirm">المشروع</label>
+                                        @Html.DropDownList("TARGET_PROJ", (SelectList)ViewBag.proj, "اختار المشروع", new { @class = "form-control", @id = "projectDropdown" })
+                                        @Html.ValidationMessageFor(model => model.TARGET_PROJ, "", new { @class = "text-danger" })
+
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-floating mb-12 mb-md-0">
+                                        <label>العمارة</label>
+                                        @Html.DropDownList("BUILDING_ID", (SelectList)ViewBag.building, "اختار عمارة", new { @class = "form-control", @id = "buildingDropdown" })
+                                        @Html.ValidationMessageFor(model => model.BUILDING_ID, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-floating mb-12 mb-md-0">
+                                        <label >الوحدة</label>
+                                        @Html.DropDownList("UNIT_ID", (SelectList)ViewBag.unit, "اختار وحدة", new { @class = "form-control", @id = "unitDropdown" })
+                                        @Html.ValidationMessageFor(model => model.UNIT_ID, "", new { @class = "text-danger" })
+
+                                    </div>
+                                </div>
+
+
+
+                            </div>
+
+
+
+
+
+
+                                <div class="row mb-3">
+
+                                    <div class="col-md-4">
+                                        <div class="form-floating mb-6 mb-md-0">
+                                            <label>الصندوق/البنك</label>
+
+                                            @Html.DropDownList("SOURCE_BOX", (SelectList)ViewBag.Box, "اختار ", new { @class = "form-control" })
+                                            @Html.ValidationMessageFor(model => model.SOURCE_BOX, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-floating mb-6 mb-md-0">
+                                            <label for="inputPasswordConfirm">صرف</label>
+                                            @Html.EditorFor(model => model.SPEND_COST, new { htmlAttributes = new { @class = "form-control", @placeholder = "صرف", } })
+                                            @Html.ValidationMessageFor(model => model.SPEND_COST, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+
+
+                                    <div class="col-md-4">
+                                        <div class="form-floating mb-12 mb-md-0">
+                                            <label for="inputPasswordConfirm">قبض</label>
+                                            @Html.EditorFor(model => model.INCOME, new { htmlAttributes = new { @class = "form-control",  @placeholder = "قبض", } })
+                                            @Html.ValidationMessageFor(model => model.INCOME, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+
+
+
+
+                                </div>
+
+
+
+
+
+
+                                <div class="row mb-3">
+
+                                    <div class="col-md-12">
+                                        <div class="form-floating mb-12 mb-md-0">
+                                            <label for="inputPasswordConfirm">ملاحظة</label>
+                                            @Html.EditorFor(model => model.NOTE, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = " ملاحظة", } })
+                                            @Html.ValidationMessageFor(model => model.NOTE, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+                                </div>
+
+
+
+
+                                <div class="row mt-4 mb-0">
+                                    <div class="d-grid col-md-6 "><button class="btn btn-primary btn-block" type="submit">حفظ</button></div>
+
+                                    <div class="d-grid col-md-6"><a class="btn btn-danger btn-block" href="~/ACC_HOLDER/Index">رجوع</a></div>
+
+
+
+
+
+                                </div>
+                            }
+
+                        </div>
+                    </div><!-- end form-box -->
+                </div><!-- end col-lg-12 -->
+            </div><!-- end row -->
+
+            <div class="border-top mt-5"></div>
+            <div class="row align-items-center">
+                <div class="col-lg-7">
+                    <div class="copy-right padding-top-30px">
+
+                        <p class="copy__desc">
+                            &copy; Copyright Tech Light 2022. Made with
+                            <span class="la la-heart"></span> by <a href="http://TechLightsa.com/">Noury</a>
+                        </p>
+
+                    </div><!-- end copy-right -->
+                </div><!-- end col-lg-7 -->
+                <div class="col-lg-5">
+                    <div class="footer-social-box text-right padding-top-30px">
+                        <ul class="social-profile">
+                            <li><a href="#"><i class="lab la-facebook-f"></i></a></li>
+                            <li><a href="#"><i class="lab la-twitter"></i></a></li>
+                            <li><a href="#"><i class="lab la-instagram"></i></a></li>
+                            <li><a href="#"><i class="lab la-linkedin-in"></i></a></li>
+                        </ul>
+                    </div><!-- end copy-right-content -->
+                </div><!-- end col-lg-5 -->
+            </div><!-- end row -->
+        </div><!-- end container-fluid -->
+    </div><!-- end dashboard-main-content -->
+</div><!-- end dashboard-content-wrap -->
+
+
+
+
+
+
+<script>
+
+      $(document).ready(function () {
+            $('#projectDropdown').change(function () {
+                var projectId = $(this).val();
+                $('#buildingDropdown').empty();
+                $('#unitDropdown').empty();
+                if (projectId) {
+                    $.getJSON('@Url.Action("GetByParintId", "AcchProject")', { Id: projectId }, function (data) {
+                        var items = '<option>اختار عمارة </option>';
+                        $.each(data, function (i, building) {
+                            items += "<option value='" + building.Value + "'>" + building.Text + "</option>";
+                        });
+                        $('#buildingDropdown').html(items);
+                    });
+                }
+            });
+
+            $('#buildingDropdown').change(function () {
+                var buildingId = $(this).val();
+                $('#unitDropdown').empty();
+                if (buildingId) {
+                    $.getJSON('@Url.Action("GetByParintId", "AcchProject")', { Id: buildingId }, function (data) {
+                        var items = '<option>اختار وحدة</option>';
+                        $.each(data, function (i, unit) {
+                            items += "<option value='" + unit.Value + "'>" + unit.Text + "</option>";
+                        });
+                        $('#unitDropdown').html(items);
+                    });
+                }
+            });
+        });
+
+</script>
