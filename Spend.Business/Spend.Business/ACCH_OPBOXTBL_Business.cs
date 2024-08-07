@@ -4,6 +4,7 @@ using Spend.Models;
 using Spend.Models.Helper;
 using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -42,7 +43,7 @@ namespace Spend.Business
         }
 
 
-        public ACCH_OPBOXTBL_Model GetPyID(long id)
+        public ACCH_OPBOXTBL_Model GetById(long id)
         {
             ACCH_OPBOXTBL_Model obj = db.ACCH_OPBOXTBL_Model.Find(id);
 
@@ -87,6 +88,19 @@ namespace Spend.Business
             return id;
         }
 
+        public int GetMaxId()
+        {
+            int id = 0;
+            try
+            {
+                id = db.ACCH_OPBOXTBL_Model.Max(x => x.ID) + 1;
+            }
+            catch
+            {
+                id++;
+            }
+            return id;
+        }
 
         public void Create(ACCH_OPBOXTBL_Model OpBox)
         {
@@ -95,11 +109,57 @@ namespace Spend.Business
                 OpBox.OUT = false;
             }
             else { OpBox.OUT = true; }
-
+            OpBox.ID = GetMaxId();
             db.ACCH_OPBOXTBL_Model.Add(OpBox); 
             db.SaveChanges();
         }
 
+        public void Update(ACCH_OPBOXTBL_Model OpBox)
+        {
+            if (OpBox.ACTION_TYPE == 1 && OpBox.ACTION_TYPE == 4 && OpBox.ACTION_TYPE == 6)  // اذا كانت  تشغلية ليست خاصة او غير تشغلية
+            {
+                OpBox.OUT = false;
+            }
+            else { OpBox.OUT = true; }
+            
+            db.Entry(OpBox).State = EntityState.Modified;
+            db.Entry(OpBox).Property(x => x.IS_DELETE).IsModified = false;
+            db.Entry(OpBox).Property(x => x.UNDER_NO).IsModified = false;
+            db.Entry(OpBox).Property(x => x.OP_NO).IsModified = false;
+            db.Entry(OpBox).Property(x => x.DATE_M).IsModified = false;
+            db.Entry(OpBox).Property(x => x.DATE_H).IsModified = false;
+        
+          
+
+            db.SaveChanges();
+
+
+          
+        }
+
+
+        public void Delete(int id)
+        {
+            try
+            {
+                var obj = GetById(id);
+                if (obj == null)
+                {
+                    throw new Exception("Entity not found.");
+                }
+              
+
+                obj.IS_DELETE = true;
+
+                db.SaveChanges();
+
+                return;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+        }
 
         public AcchOpBoxModelView SpendProsses(ACCH_OPBOXTBL_Model OpBox)
         {
@@ -547,6 +607,7 @@ namespace Spend.Business
 
                 var OpNo = GetMaxOP_NO();
                 item.UNDER_NO = UnderNo;
+                item.ID = GetMaxId();
                 item.OP_NO = OpNo;
                 if (item.ACTION_TYPE == 1 && item.ACTION_TYPE == 4 && item.ACTION_TYPE == 6)
                 {

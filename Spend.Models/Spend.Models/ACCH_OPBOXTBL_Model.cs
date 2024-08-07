@@ -13,30 +13,27 @@ namespace Spend.Models
     {
 
     
-        [Key, Column(Order = 0)]
+        [Key]
         [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
        
+        public int ID { get; set; }
         public long ACC_HOLDER_NO { get; set; }
 
         public double INCOME { get; set; }
 
 
-        [Key, Column(Order = 1)]
-        [Required]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-    
+        
         public int SOURCE_BOX { get; set; }
 
         
         public double SPEND_COST { get; set; }
 
 
-        [Key, Column(Order = 2)]
-        [Required]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        
+       
         public int TARGET_PROJ { get; set; }
+        public int? BUILDING_ID { get; set; }
+        public int? UNIT_ID { get; set; }
 
 
 
@@ -46,14 +43,10 @@ namespace Spend.Models
 
 
 
-        [Key, Column(Order = 3)]
-        [Required]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        
         public double OP_NO { get; set; }
 
-        [Key, Column(Order = 4)]
-        [Required]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
+        
           public decimal UNDER_NO { get; set; }
 
         public double SCRIP_NO { get; set; }
@@ -81,13 +74,14 @@ namespace Spend.Models
         [RegularExpression("^[0-9.]*$", ErrorMessage = "هذا الحقل رقم ")]
         public Nullable<int> ACTION_TYPE { get; set; }
 
+        [System.ComponentModel.DefaultValue(false)]
+        public bool IS_DELETE { get; set; }
+
         [ForeignKey("ACC_HOLDER_NO")]
         public virtual ACC_HOLDERTBL_Model ACC_HOLDERTBL_Model { get; set; }
         [ForeignKey("TARGET_PROJ")]
         public virtual ACCH_PROJECT_Model PROJECTTBL_Model { get; set; }
-        //[ForeignKey("OP_TYPE")]
-        //public virtual BOXTBL_Model BOXTBL_Model { get; set; }
-
+       
         [ForeignKey("SOURCE_BOX")]
         public virtual BOXTBL_Model BOXTBL_Model { get; set; }
 
