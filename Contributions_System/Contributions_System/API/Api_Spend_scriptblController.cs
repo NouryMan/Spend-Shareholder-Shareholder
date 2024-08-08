@@ -84,12 +84,32 @@ namespace callcenter.all.Areas.Spend.Api
                     model.ACCH_OPBOXTBL_Model.DATE_M = DateTime.Now;
                     //aCCH_OPBOXTBL_Model.ACC_HOLDER_NO = model.ACCH_OPBOXTBL_Model.a.Value;
                     model.ACCH_OPBOXTBL_Model.TARGET_PROJ = model.SPEND_SCRIPTBL_Model.PROJECT_NO;
+                    model.ACCH_OPBOXTBL_Model.BUILDING_ID = model.SPEND_SCRIPTBL_Model.PART_NO;
+                    model.ACCH_OPBOXTBL_Model.UNIT_ID = model.SPEND_SCRIPTBL_Model.UNIT_NO;
                     model.ACCH_OPBOXTBL_Model.NOTE = model.SPEND_SCRIPTBL_Model.REMARK;
+                    model.ACCH_OPBOXTBL_Model.SCRIPT_TYPE = model.SPEND_SCRIPTBL_Model.SCRIPT_TYPE;
                     model.ACCH_OPBOXTBL_Model.PARENT_ACCH = ACcHb.GetById(model.ACCH_OPBOXTBL_Model.ACC_HOLDER_NO).PARENT_ACCH;
-                    //  model.ACCH_OPBOXTBL_Model.SCRIP_NO = script.SCRIP_NO;
-                    //  model.ACCH_OPBOXTBL_Model.UNDER_NO = script.UNDER_NO.Value;
-                    model.ACCH_OPBOXTBL_Model.SCRIP_NO = 0;
-                    model.ACCH_OPBOXTBL_Model.UNDER_NO = 55665;
+                   
+
+                    ACCH_OPBOXTBL_Business aCCH_OPBOXTBL_B = new ACCH_OPBOXTBL_Business();
+                    MAX_UNDER_OPV_Business mAX_UNDER_OPV_Business = new MAX_UNDER_OPV_Business();
+                    var scriptNo = aCCH_OPBOXTBL_B.GetMaxSCRIP_NO();
+                    var spendScriptNo = aCCH_OPBOXTBL_B.GetMaxSpendSCRIP_NO(DateTime.Now.Year,model.ACCH_OPBOXTBL_Model.SCRIPT_TYPE.Value);
+                    
+                    long underNo = 0;
+                    try
+                    {
+                        underNo = mAX_UNDER_OPV_Business.getall().Where(x => x.NAM == "under_no").FirstOrDefault().MAX_NO;
+                    }
+                    catch
+                    {
+
+                    }
+                     model.ACCH_OPBOXTBL_Model.SCRIP_NO = scriptNo;
+                     model.ACCH_OPBOXTBL_Model.SPEND_SCRIPT_NO = spendScriptNo;
+                     model.ACCH_OPBOXTBL_Model.UNDER_NO = underNo;
+
+
                     if (model.SPEND_SCRIPTBL_Model.SCRIPT_TYPE == 1)
                     {
                         model.ACCH_OPBOXTBL_Model.SPEND_COST = Convert.ToDouble(model.SPEND_SCRIPTBL_Model.COST);
@@ -136,9 +156,12 @@ namespace callcenter.all.Areas.Spend.Api
 
             try
             {
-                SPEND_SCRIPTBL_Business spend_script_B = new SPEND_SCRIPTBL_Business();
+                //SPEND_SCRIPTBL_Business spend_script_B = new SPEND_SCRIPTBL_Business();
+                ACCH_OPBOXTBL_Business aCCH_OPBOXTBL_B = new ACCH_OPBOXTBL_Business();
 
-                result = spend_script_B.getMaxNO(id.ToString(),type);
+               // result = spend_script_B.getMaxNO(id.ToString(),type);
+                result = aCCH_OPBOXTBL_B.GetMaxSpendSCRIP_NO(id, type);
+                ;
 
 
 

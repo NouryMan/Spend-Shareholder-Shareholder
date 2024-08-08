@@ -1,7 +1,17 @@
 ﻿@model PagedList.IPagedList<IEnumerable<Spend.Models.ACCH_OPBOXTBL_Model>>
 @using PagedList.Mvc;
+@using System.Globalization;
 @{
     ViewBag.Title = "العمليات";
+    NumberFormatInfo nfi = new CultureInfo("en-US", false).NumberFormat;
+    nfi.CurrencyDecimalDigits = 2;
+    nfi.NumberDecimalDigits = 2;
+    nfi.CurrencyDecimalSeparator = ".";
+    nfi.CurrencyGroupSeparator = ",";
+    nfi.CurrencySymbol = "";
+    nfi.NegativeSign = "-";
+    nfi.NumberNegativePattern = 1;
+    nfi.CurrencyNegativePattern = 1;
 }
 
 
@@ -70,83 +80,95 @@
 
                                     </div>
                                 }
-                            <div class="table-form table-responsive">
-                                <table class="table  table-bordered table-striped ">
-                                    <thead>
-                                        <tr>
-                                            <th>رقم القيد</th>
-                                           
-                                            <th>المشروع</th>
-                                            <th>الصندوق</th>
-                                            <th>الملاحظة </th>
-                                            <th>الايداع</th>
-                                            <th>الصرف</th>
-
-                                            <th>التاريخ</th>
-
-                                            <th>نوع العملية</th>
-
-
-
-
-                                            <th></th>
-                                        </tr>
-                                    </thead>
-
-                                    <tbody>
-                                        @foreach (var item in Model)
-                                        {
-
-
+                                <div class="table-form table-responsive">
+                                    <table class="table  table-bordered table-striped ">
+                                        <thead>
                                             <tr>
+                                                <th>رقم القيد</th>
+                                                <th>رقم السند</th>
 
-                                                <td>@item.FirstOrDefault().UNDER_NO</td>
-                                              
-                                                <td>@item.FirstOrDefault().PROJECTTBL_Model.PROJECT_AR_NAME</td>
-                                                <td>@try
-                                                { @item.FirstOrDefault().BOXTBL_Model.BOX_NAME}
-catch { }</td>
-                                                <td>@item.FirstOrDefault().NOTE</td>
-                                                <td>@item.Sum(x=>x.INCOME)</td>
-                                                <td>@item.Sum(x => x.SPEND_COST)</td>
-                                                <td>@try
-                                                {  @item.FirstOrDefault().DATE_M.Value.ToString("dd/MM/yyyy")}catch{}
+                                                <th>المشروع</th>
+                                                <th>العمارة</th>
+                                                <th>الوحدة</th>
+                                                <th>الصندوق</th>
+                                                <th>الملاحظة </th>
+                                                <th>الايداع</th>
+                                                <th>الصرف</th>
 
-</td>
-                                                <td>@try
-                                                { @item.FirstOrDefault().BOX_OPTBL_Model.OP_NAME}
-                    catch { }</td>
+                                                <th>التاريخ</th>
+
+                                                <th>نوع العملية</th>
 
 
 
 
-                                                <td>
-                                                    <div class=" col-12">
-                                                        <div class="row">
-                                                            <div class="col-md-3 m-1">
-                                                                <a href="~/ACCH_OPBOXT/details?UnderNo=@item.FirstOrDefault().UNDER_NO&reuternPage=@ViewBag.type" class="btn btn-success btn-sm "> <i class="la  la-eye"> </i></a>
-                                                            </div>
-                                                            @*<div class="col-md-3 m-1">
-                                                                <a href="~/ACCH_OPBOXT/Update/@item.FirstOrDefault().UNDER_NO" class="btn btn-info btn-sm "> <i class="la  la-edit"></i></a>
-                                                            </div>
-
-                                                            <div class="col-md-3 m-1">
-                                                                <a href="" class="btn btn-danger btn-sm "> <i class="la  la-trash"></i></a>
-                                                            </div>*@
-
-                                                        </div>
-                                                    </div>
-
-                                                </td>
+                                                <th></th>
                                             </tr>
-                                        }
+                                        </thead>
+
+                                        <tbody>
+                                            @foreach (var item in Model)
+                                            {
 
 
-                                    </tbody>
-                                </table>
+                                                <tr>
+
+                                                    <td>@item.FirstOrDefault().UNDER_NO</td>
+                                                    <td>@item.FirstOrDefault().SPEND_SCRIPT_NO</td>
+
+                                                    <td> @try { @item.FirstOrDefault().PROJECTTBL_Model.PROJECT_AR_NAME } catch { } </td>
+                                                    <td> @try { @item.FirstOrDefault().BUILDING_Model.PROJECT_AR_NAME } catch { } </td>
+                                                    <td> @try { @item.FirstOrDefault().UNIT_Model.PROJECT_AR_NAME } catch { } </td>
+                                                    <td>
+                                                        @try
+                                                        {@item.FirstOrDefault().BOXTBL_Model.BOX_NAME}
+                                                    catch { }
+                                                </td>
+                                                <td>@item.FirstOrDefault().NOTE</td>
+                                                <td>@item.Sum(x => x.INCOME).ToString("C", nfi)</td>
+                                                <td>@item.Sum(x => x.SPEND_COST).ToString("C", nfi)</td>
+                                                <td>
+                                                    @try
+                                                    {@item.FirstOrDefault().DATE_M.Value.ToString("dd/MM/yyyy")}
+                                                catch { }
+
+                                            </td>
+                                            <td>
+                                                @try
+                                                {@item.FirstOrDefault().BOX_OPTBL_Model.OP_NAME}
+                                            catch { }
+                                        </td>
 
 
-                            </div>
+
+
+                                        <td>
+                                            <div class=" col-12">
+                                                <div class="row">
+                                                    <div class="col-md-3 m-1">
+                                                        <a href="~/ACCH_OPBOXT/details?UnderNo=@item.FirstOrDefault().UNDER_NO&reuternPage=@ViewBag.type" class="btn btn-success btn-sm "> <i class="la  la-eye"> </i></a>
+                                                    </div>
+                                                    @*<div class="col-md-3 m-1">
+                                                            <a href="~/ACCH_OPBOXT/Update/@item.FirstOrDefault().UNDER_NO" class="btn btn-info btn-sm "> <i class="la  la-edit"></i></a>
+                                                        </div>
+
+                                                        <div class="col-md-3 m-1">
+                                                            <a href="" class="btn btn-danger btn-sm "> <i class="la  la-trash"></i></a>
+                                                        </div>*@
+
+                                                </div>
+                                            </div>
+
+                                        </td>
+                                    </tr>
+                                }
+
+
+                                        </tbody>
+                                    </table>
+
+
+                                </div>
                             </div>
                         </div><!-- end form-box -->
                     </div><!-- end col-lg-12 -->

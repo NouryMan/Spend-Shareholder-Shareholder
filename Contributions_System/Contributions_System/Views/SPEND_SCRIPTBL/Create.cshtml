@@ -79,34 +79,51 @@
                                         </div>
                                     </div>
 
-                                    <div class="col-md-3">
-                                        <div class="form-floating">
-                                            <label for="inputLastName">مرحلة العمل</label>
-                                            <select id="GROUP_NO" name="GROUP_NO" dir="ltr" class="form-control selectpicker " data-live-search="true">
-                                                <option value="">اختار مرحلة العمل</option>
-                                                @foreach (var p in ViewBag.STAGES)
-                                                {
-                                                    <option class="themeprimary" value="@p.STAGE_NO"> @p.STAGE_NAME</option>
-                                                }
-
-                                            </select>
-
-                                        </div>
-                                    </div>
 
 
+
+                                    @*<div class="col-md-3">
+            <div class="form-floating">
+                <label for="inputLastName">نوع العملية</label>
+                <select id="ACTION_TYPE" name="ACTION_TYPE" dir="ltr" class="form-control selectpicker " data-live-search="true" required data-parsley-error-message="حقل مطلوب">
+                    <option value="">اختار نوع العملية</option>
+                    @foreach (var p in ViewBag.ScACTION)
+                    {
+                        if (p.ACTION_NO != 5 && p.ACTION_NO != 6)
+                        {
+                            <option class="themeprimary" value="@p.ACTION_NO"> @p.ACTION_NAME</option>
+                        }
+                    }
+
+                </select>
+
+            </div>
+        </div>*@
 
                                     <div class="col-md-3">
                                         <div class="form-floating">
                                             <label for="inputLastName">نوع العملية</label>
-                                            <select id="ACTION_TYPE" name="ACTION_TYPE" dir="ltr" class="form-control selectpicker " data-live-search="true" required data-parsley-error-message="حقل مطلوب">
-                                                <option value="">اختار نوع العملية</option>
-                                                @foreach (var p in ViewBag.ScACTION)
+                                            <select id="HOP_TYPE" name="HOP_TYPE" dir="ltr" class="form-control selectpicker " data-live-search="true" required>
+                                                <option value="">اختار نوع العملية </option>
+                                                @foreach (var p in ViewBag.BOX_OP)
                                                 {
-                                                    if (p.ACTION_NO != 5 && p.ACTION_NO != 6)
-                                                    {
-                                                        <option class="themeprimary" value="@p.ACTION_NO"> @p.ACTION_NAME</option>
-                                                    }
+                                                    <option class="themeprimary" value="@p.OP_NO"> @p.OP_NAME</option>
+                                                }
+
+
+                                            </select>
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-3">
+                                        <div class="form-floating">
+                                            <label for="inputLastName">نوع حدث العملية</label>
+                                            <select id="ACTION_TYPE" name="ACTION_TYPE" dir="ltr" class="form-control selectpicker " data-live-search="true">
+                                                <option value="">اختار نوع العملية </option>
+                                                @foreach (var p in ViewBag.OPBOX_ACTIONS)
+                                                {
+                                                    <option class="themeprimary" value="@p.ID"> @p.ACTION_NAME</option>
                                                 }
 
                                             </select>
@@ -117,7 +134,6 @@
 
 
 
-                                  
 
                                 </div>
 
@@ -125,20 +141,6 @@
 
                                 <div class="row mb-3">
 
-                                    <div class="col-md-3">
-                                        <div class="form-floating">
-                                            <label for="inputLastName">اسم المشروع</label>
-                                            <select id="PROJECT_NO" name="PROJECT_NO" dir="ltr" class="form-control selectpicker " data-live-search="true" required data-parsley-error-message="حقل مطلوب">
-                                                <option value="">اختار المشروع</option>
-                                                @foreach (var p in ViewBag.proj)
-                                                {
-                                                    <option class="themeprimary" value="@p.ID"> @p.PROJECT_AR_NAME</option>
-                                                }
-
-                                            </select>
-
-                                        </div>
-                                    </div>
 
                                     <div class="col-md-3">
                                         <div class="form-floating">
@@ -187,6 +189,25 @@
                                                 }
 
                                             </select>
+
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-floating">
+                                            <label for="inputLastName">الحساب</label>
+                                            <select id="ACCH_NO" name="ACCH_NO" dir="ltr" class="form-control selectpicker " data-live-search="true" required data-parsley-error-message="حقل مطلوب">
+                                                <option value="">اختار الحساب</option>
+                                                @foreach (var item in ViewBag.ACCH)
+                                                {
+                                                    <option class="themeprimary" value="@item.ACC_HOLDER_NO">
+                                                        @{ try
+                                                            { @item.ACC_HOLDER_NAME <span>&nbsp;</span> @item.ACC_HOLDER_NO }
+                                                        catch { } }
+                                                    </option>
+                                                }
+
+                                            </select>
+
 
                                         </div>
                                     </div>
@@ -279,66 +300,63 @@
 
                                         </div>
                                     </div>
+
+
                                 </div>
+
+
 
                                 <div class="row mb-3">
-                                    <div class="col-md-3">
-                                        <div class="form-floating">
-                                            <label for="inputLastName">المساهم</label>
-                                            <select id="ACCH_NO" name="ACCH_NO" dir="ltr" class="form-control selectpicker " data-live-search="true" required data-parsley-error-message="حقل مطلوب">
-                                                <option value="">اختار المساهم</option>
-                                                @foreach (var item in ViewBag.ACCH)
-                                                {
-                                                    <option class="themeprimary" value="@item.ACC_HOLDER_NO">
-                                                        @{ try
-                                                            { @item.ACC_HOLDER_NAME <span>&nbsp;</span> @item.ACC_HOLDER_NO }
-                                                        catch { } }
-                                                    </option>
-                                                }
-
-                                            </select>
-
-
-                                        </div>
-                                    </div>
-
 
                                     <div class="col-md-3">
                                         <div class="form-floating">
-                                            <label for="inputLastName">نوع حدث العملية</label>
-                                            <select id="ACTION_TYPE" name="ACTION_TYPE" dir="ltr" class="form-control selectpicker " data-live-search="true">
-                                                <option value="">اختار نوع العملية </option>
-                                                @foreach (var p in ViewBag.OPBOX_ACTIONS)
+                                            <label for="inputLastName">مرحلة العمل</label>
+                                            <select id="GROUP_NO" name="GROUP_NO" dir="ltr" class="form-control selectpicker " data-live-search="true">
+                                                <option value="">اختار مرحلة العمل</option>
+                                                @foreach (var p in ViewBag.STAGES)
                                                 {
-                                                    <option class="themeprimary" value="@p.ID"> @p.ACTION_NAME</option>
+                                                    <option class="themeprimary" value="@p.STAGE_NO"> @p.STAGE_NAME</option>
                                                 }
 
                                             </select>
 
                                         </div>
                                     </div>
+
                                     <div class="col-md-3">
-                                        <div class="form-floating">
-                                            <label for="inputLastName">نوع العملية</label>
-                                            <select id="HOP_TYPE" name="HOP_TYPE" dir="ltr" class="form-control selectpicker " data-live-search="true" required>
-                                                <option value="">اختار نوع العملية </option>
-                                                @foreach (var p in ViewBag.BOX_OP)
-                                                {
-                                                    <option class="themeprimary" value="@p.OP_NO"> @p.OP_NAME</option>
-                                                }
+                                        <div class="form-floating mb-12 mb-md-0">
+                                            <label for="inputPasswordConfirm">المشروع</label>
+                                            @Html.DropDownList("PROJECT_NO", (SelectList)ViewBag.proj, "اختار المشروع", new { @class = "form-control project-select", @data_index = "0", @id = "projectDropdown" })
+                                            @Html.ValidationMessageFor(model => model.PROJECT_NO, "", new { @class = "text-danger" })
 
 
-                                            </select>
 
                                         </div>
                                     </div>
+                                    <div class="col-md-3">
+                                        <div class="form-floating mb-12 mb-md-0">
+                                            <label>العمارة</label>
+                                            @Html.DropDownList("PART_NO", Enumerable.Empty<SelectListItem>(), "اختار عمارة", new { @class = "form-control building-select", @data_index = "0", @id = "buildingDropdown" })
+                                            @Html.ValidationMessageFor(model => Model.PART_NO, "", new { @class = "text-danger" })
 
-                                  
+                                        </div>
+                                    </div>
+                                    <div class="col-md-3">
+                                        <div class="form-floating mb-12 mb-md-0">
+                                            <label>الوحدة</label>
+                                            @Html.DropDownList("UNDER_NO", Enumerable.Empty<SelectListItem>(), "اختار وحدة", new { @class = "form-control unit-select", @data_index = "0", @id = "unitDropdown" })
+
+                                            @Html.ValidationMessageFor(model => Model.UNDER_NO, "", new { @class = "text-danger" })
 
 
+
+
+                                        </div>
+
+                                    </div>
                                 </div>
 
-
+                               
 
                                 <div class="row mb-3">
 
@@ -426,65 +444,65 @@
 
 
 
-                                    <div class="col-md-3">
-                                        <div class="form-floating">
-                                            <label for="inputLastName">جزء المشروع</label>
-                                            <select id="SUB_PROJ" name="SUB_PROJ" dir="ltr" class="form-control selectpicker " data-live-search="true" >
-                                                <option>اختار</option>
-                                                @foreach (var p in ViewBag.Subproj)
-                                                {
-                                                    <option class="themeprimary" value="@p.SUB_PROJ_NO"> @p.SUB_PROJ_NAME</option>
-                                                }
+            <div class="col-md-3">
+                <div class="form-floating">
+                    <label for="inputLastName">جزء المشروع</label>
+                    <select id="SUB_PROJ" name="SUB_PROJ" dir="ltr" class="form-control selectpicker " data-live-search="true" >
+                        <option>اختار</option>
+                        @foreach (var p in ViewBag.Subproj)
+                        {
+                            <option class="themeprimary" value="@p.SUB_PROJ_NO"> @p.SUB_PROJ_NAME</option>
+                        }
 
-                                            </select>
-
-
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-floating">
-                                            <label for="inputLastName">العمارة</label>
-                                            <select id="PART_NO" name="PART_NO" dir="ltr" class="form-control selectpicker " data-live-search="true" >
-                                                <option>اختار</option>
-                                                @foreach (var p in ViewBag.Part_b)
-                                                {
-                                                    <option class="themeprimary" value="@p.PART_NO"> @p.PART_NAME</option>
-                                                }
-
-                                            </select>
+                    </select>
 
 
-                                        </div>
-                                    </div>
-                                    <div class="col-md-3">
-                                        <div class="form-floating">
-                                            <label for="inputLastName">الوحدة</label>
-                                            <select id="UNIT_NO" name="UNIT_NO" dir="ltr" class="form-control selectpicker " data-live-search="true" >
-                                                <option>اختار</option>
-                                                @foreach (var p in ViewBag.Unitt_b)
-                                                {
-                                                    <option class="themeprimary" value="@p.UNIT_NO"> @p.UNIT_NAME</option>
-                                                }
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-floating">
+                    <label for="inputLastName">العمارة</label>
+                    <select id="PART_NO" name="PART_NO" dir="ltr" class="form-control selectpicker " data-live-search="true" >
+                        <option>اختار</option>
+                        @foreach (var p in ViewBag.Part_b)
+                        {
+                            <option class="themeprimary" value="@p.PART_NO"> @p.PART_NAME</option>
+                        }
 
-                                            </select>
-
-
-                                        </div>
-                                    </div>
-
-                                    <div class="col-md-3">
-                                        <div class="form-floating">
-                                            <label for="inputLastName">البيان</label>
-                                            @Html.EditorFor(model => model.REMARK, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = "البيان" } })
-                                            @Html.ValidationMessageFor(model => model.REMARK, "", new { @class = "text-danger" })
+                    </select>
 
 
-                                        </div>
-                                    </div>
+                </div>
+            </div>
+            <div class="col-md-3">
+                <div class="form-floating">
+                    <label for="inputLastName">الوحدة</label>
+                    <select id="UNIT_NO" name="UNIT_NO" dir="ltr" class="form-control selectpicker " data-live-search="true" >
+                        <option>اختار</option>
+                        @foreach (var p in ViewBag.Unitt_b)
+                        {
+                            <option class="themeprimary" value="@p.UNIT_NO"> @p.UNIT_NAME</option>
+                        }
+
+                    </select>
+
+
+                </div>
+            </div>
+
+            <div class="col-md-3">
+                <div class="form-floating">
+                    <label for="inputLastName">البيان</label>
+                    @Html.EditorFor(model => model.REMARK, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = "البيان" } })
+                    @Html.ValidationMessageFor(model => model.REMARK, "", new { @class = "text-danger" })
+
+
+                </div>
+            </div>
 
 
 
-                                </div>*@
+        </div>*@
 
 
 
@@ -549,6 +567,36 @@
         $('#DATE_M').val(today);
         $('#FISCAL_YEAR').val(moment().format("YYYY"));
         $("#SCRIP_DATE").val(GetDate($("#DATE_M").val()))
+
+           $('#projectDropdown').change(function () {
+       var projectId = $(this).val();
+       $('#buildingDropdown').empty();
+       $('#unitDropdown').empty();
+       if (projectId) {
+           $.getJSON('@Url.Action("GetByParintId", "AcchProject")', { Id: projectId }, function (data) {
+               var items = '<option>اختار عمارة </option>';
+               $.each(data, function (i, building) {
+                   items += "<option value='" + building.Value + "'>" + building.Text + "</option>";
+               });
+               $('#buildingDropdown').html(items);
+           });
+       }
+   });
+
+   $('#buildingDropdown').change(function () {
+       var buildingId = $(this).val();
+       $('#unitDropdown').empty();
+       if (buildingId) {
+           $.getJSON('@Url.Action("GetByParintId", "AcchProject")', { Id: buildingId }, function (data) {
+               var items = '<option>اختار وحدة</option>';
+               $.each(data, function (i, unit) {
+                   items += "<option value='" + unit.Value + "'>" + unit.Text + "</option>";
+               });
+               $('#unitDropdown').html(items);
+           });
+       }
+   });
+
     });
 
 
@@ -644,7 +692,7 @@
     function create() {
         var script = {
 
-            PROJECT_NO: $("#PROJECT_NO").val(),
+            PROJECT_NO: $("#projectDropdown").val(),
             SCRIPT_TYPE: $("#SCRIPT_TYPE").val(),
             OP_TYPE: $("#OP_TYPE").val(),
             ACTION_TYPE: $("#ACTION_TYPE").val(),
@@ -659,12 +707,12 @@
             RECEIVED: $("#RECEIVED").is(":checked"),
             M_SCRIP: $("#M_SCRIP").is(":checked"),
             SCRIP_TRANS: $("#SCRIP_TRANS").is(":checked"),
-            SUB_PROJ: $("#SUB_PROJ").val(),
-            PART_NO: $("#PART_NO").val(),
-            UNIT_NO: $("#UNIT_NO").val(),
+           // SUB_PROJ: $("#projectDropdown").val(),
+            PART_NO: $("#buildingDropdown").val(),
+            UNIT_NO: $("#unitDropdown").val(),
             REMARK: $("#REMARK").val(),
             GROUP_NO: $("#GROUP_NO").val(),
-            
+
 
 
 
@@ -677,7 +725,7 @@
             ACTION_TYPE: $("#ACTION_TYPE").val(),
             OP_TYPE: $("#HOP_TYPE").val(),
             SOURCE_BOX: $("#SOURCE_BOX").val(),
-           
+
 
         }
 

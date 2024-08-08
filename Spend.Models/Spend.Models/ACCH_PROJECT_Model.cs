@@ -196,6 +196,7 @@ namespace Spend.Models
         [IgnoreDataMember]
 
         public virtual ICollection<OPERATIONAL_PALANCE_Model> OPERATIONAL_PALANCE_Collection { set; get; }
+
         [JsonIgnore]
         [IgnoreDataMember]
 

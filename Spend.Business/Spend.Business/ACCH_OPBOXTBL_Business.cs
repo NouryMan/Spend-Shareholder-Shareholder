@@ -24,7 +24,7 @@ namespace Spend.Business
 
         public List<ACCH_OPBOXTBL_Model> GetAll()
         {
-            List<ACCH_OPBOXTBL_Model> obj = db.ACCH_OPBOXTBL_Model.ToList();
+            List<ACCH_OPBOXTBL_Model> obj = db.ACCH_OPBOXTBL_Model.Where(x=>x.IS_DELETE==false).ToList();
 
 
 
@@ -34,7 +34,7 @@ namespace Spend.Business
         public IEnumerable<IGrouping<decimal, ACCH_OPBOXTBL_Model>> GetpyGroup()
         {
 
-            var obj = db.ACCH_OPBOXTBL_Model.GroupBy(x => x.UNDER_NO).ToList();
+            var obj = db.ACCH_OPBOXTBL_Model.Where(x => x.IS_DELETE == false).GroupBy(x => x.UNDER_NO).ToList();
 
 
 
@@ -52,7 +52,7 @@ namespace Spend.Business
         }
         public List<ACCH_OPBOXTBL_Model> GetAllPyProject(int id)
         {
-            List<ACCH_OPBOXTBL_Model> obj = db.ACCH_OPBOXTBL_Model.Where(x => x.TARGET_PROJ == id).ToList();
+            List<ACCH_OPBOXTBL_Model> obj = db.ACCH_OPBOXTBL_Model.Where(x => x.TARGET_PROJ == id && x.IS_DELETE == false).ToList();
 
 
 
@@ -73,6 +73,22 @@ namespace Spend.Business
                 id++;
             }
             return id;
+        }
+
+        public int GetMaxSpendSCRIP_NO(int year, int type)
+        {
+            int SCRIP_NO = year;
+            try
+            {
+                SCRIP_NO = db.ACCH_OPBOXTBL_Model.Where(x => x.DATE_M.HasValue && x.DATE_M.Value.Year == year && x.SPEND_SCRIPT_NO.HasValue && x.SCRIPT_TYPE == type).Max(x => x.SPEND_SCRIPT_NO.Value) + 1;
+            }
+            catch
+            {
+                SCRIP_NO = SCRIP_NO * 10000 + 1;
+            }
+
+            return SCRIP_NO;
+
         }
         public double GetMaxOP_NO()
         {
@@ -110,6 +126,7 @@ namespace Spend.Business
             }
             else { OpBox.OUT = true; }
             OpBox.ID = GetMaxId();
+            OpBox.IS_DELETE =false;
             db.ACCH_OPBOXTBL_Model.Add(OpBox); 
             db.SaveChanges();
         }
@@ -650,7 +667,7 @@ namespace Spend.Business
             if (ACC_NO > 0)
             {
 
-                model = db.ACCH_OPBOXTBL_Model.Where(x => x.ACC_HOLDER_NO == ACC_NO && x.DATE_M >= FromDate && x.DATE_M <= ToDate).OrderBy(x => x.DATE_M).ToList();
+                model = db.ACCH_OPBOXTBL_Model.Where(x => x.ACC_HOLDER_NO == ACC_NO && x.DATE_M >= FromDate && x.DATE_M <= ToDate && x.IS_DELETE == false).OrderBy(x => x.DATE_M).ToList();
             }
             if (PROJECT_NO > 0)
             {
@@ -669,7 +686,7 @@ namespace Spend.Business
             if (ACC_NO > 0)
             {
 
-                model = db.ACCH_OPBOXTBL_Model.Where(x => x.ACC_HOLDER_NO == ACC_NO && x.DATE_M < ToDate).OrderByDescending(x => x.DATE_M).ToList();
+                model = db.ACCH_OPBOXTBL_Model.Where(x => x.ACC_HOLDER_NO == ACC_NO && x.DATE_M < ToDate && x.IS_DELETE == false).OrderByDescending(x => x.DATE_M).ToList();
 
 
                 if (PROJECT_NO > 0)
@@ -704,7 +721,7 @@ namespace Spend.Business
             if (boxId > 0)
             {
 
-                model = db.ACCH_OPBOXTBL_Model.Where(x => x.SOURCE_BOX == boxId && x.DATE_M >= FromDate && x.DATE_M <= ToDate).OrderBy(x => x.DATE_M).ToList();
+                model = db.ACCH_OPBOXTBL_Model.Where(x => x.SOURCE_BOX == boxId && x.DATE_M >= FromDate && x.DATE_M <= ToDate && x.IS_DELETE == false).OrderBy(x => x.DATE_M).ToList();
             }
             if (PROJECT_NO > 0)
             {
@@ -722,7 +739,7 @@ namespace Spend.Business
             if (boxId > 0)
             {
 
-                model = db.ACCH_OPBOXTBL_Model.Where(x => x.SOURCE_BOX == boxId && x.DATE_M < ToDate).OrderByDescending(x => x.DATE_M).ToList();
+                model = db.ACCH_OPBOXTBL_Model.Where(x => x.SOURCE_BOX == boxId && x.DATE_M < ToDate && x.IS_DELETE == false).OrderByDescending(x => x.DATE_M).ToList();
 
 
                 if (PROJECT_NO > 0)

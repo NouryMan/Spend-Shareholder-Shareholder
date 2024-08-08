@@ -50,6 +50,7 @@ namespace Spend.Models
           public decimal UNDER_NO { get; set; }
 
         public double SCRIP_NO { get; set; }
+       
 
 
         [Column(TypeName = "VARCHAR2"), StringLength(400, ErrorMessage = "طول الحقل كبير جداً")]
@@ -76,12 +77,18 @@ namespace Spend.Models
 
         [System.ComponentModel.DefaultValue(false)]
         public bool IS_DELETE { get; set; }
-
+        public Nullable<int> SCRIPT_TYPE { get; set; }
+        public Nullable<int> SPEND_SCRIPT_NO { get; set; }
         [ForeignKey("ACC_HOLDER_NO")]
         public virtual ACC_HOLDERTBL_Model ACC_HOLDERTBL_Model { get; set; }
         [ForeignKey("TARGET_PROJ")]
         public virtual ACCH_PROJECT_Model PROJECTTBL_Model { get; set; }
-       
+
+        [ForeignKey("BUILDING_ID")]
+        public virtual ACCH_PROJECT_Model BUILDING_Model { get; set; }
+        [ForeignKey("UNIT_ID")]
+        public virtual ACCH_PROJECT_Model UNIT_Model { get; set; }
+
         [ForeignKey("SOURCE_BOX")]
         public virtual BOXTBL_Model BOXTBL_Model { get; set; }
 

@@ -47,8 +47,8 @@ namespace Contributions_System.Controllers
 
         public ActionResult Create(int? id ,string redirect )
         {
-            SPEND_SCRIPTBL_Business spend_script = new SPEND_SCRIPTBL_Business();
-            ViewBag.spend_script_number = spend_script.getMaxNO(DateTime.Now.Year.ToString(),1);
+            ACCH_OPBOXTBL_Business aCCH_OPBOXTBL_B = new ACCH_OPBOXTBL_Business();
+            ViewBag.spend_script_number = aCCH_OPBOXTBL_B.GetMaxSpendSCRIP_NO(DateTime.Now.Year,1);
 
             SCRIPT_TYPE_Business script_type = new SCRIPT_TYPE_Business();
             ViewBag.script_type = script_type.getall();
@@ -56,8 +56,10 @@ namespace Contributions_System.Controllers
             SCRIP_OPTYPETBL_Business SRIP_OPTYPE = new SCRIP_OPTYPETBL_Business();
             ViewBag.SRIP_OPTYPE = SRIP_OPTYPE.getall();
 
+          
             ACCH_PROJECT_Business proj_b = new ACCH_PROJECT_Business();
-            ViewBag.proj = proj_b.GetAllAsync(1).Result;
+            ViewBag.proj = new SelectList(proj_b.GetAllAsync(1).Result, "ID", "PROJECT_AR_NAME");
+
 
             SCRIPT_ACTIONSTBL_Business ScACTION_b = new SCRIPT_ACTIONSTBL_Business();
             ViewBag.ScACTION= ScACTION_b.getall();

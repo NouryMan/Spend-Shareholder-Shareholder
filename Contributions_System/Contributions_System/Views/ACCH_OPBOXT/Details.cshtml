@@ -1,8 +1,17 @@
 ﻿@model IEnumerable<Spend.Models.ACCH_OPBOXTBL_Model>
-
+@using System.Globalization;
 @{
     ViewBag.Title = "العمليات";
     int i = 0;
+    NumberFormatInfo nfi = new CultureInfo("en-US", false).NumberFormat;
+    nfi.CurrencyDecimalDigits = 2;
+    nfi.NumberDecimalDigits = 2;
+    nfi.CurrencyDecimalSeparator = ".";
+    nfi.CurrencyGroupSeparator = ",";
+    nfi.CurrencySymbol = "";
+    nfi.NegativeSign = "-";
+    nfi.NumberNegativePattern = 1;
+    nfi.CurrencyNegativePattern = 1;
 }
 
 
@@ -50,8 +59,11 @@
                                             <tr>
                                                 <th>#</th>
                                                 <th>الرقم</th>
+                                                <th>رقم السند</th>
                                                 <th>الاسم</th>
                                                 <th>المشروع</th>
+                                                <th>العمارة</th>
+                                                <th>الوحدة</th>
                                                 <th>الصندوق</th>
                                                 <th>الملاحظة </th>
                                                 <th>الايداع</th>
@@ -61,7 +73,7 @@
 
                                                 <th>نوع العملية</th>
                                                 <th> </th>
-                                             
+
                                             </tr>
                                         </thead>
 
@@ -73,49 +85,66 @@
                                                 <tr>
                                                     <td>@i</td>
                                                     <td>@item.ACC_HOLDER_NO</td>
+                                                    <td>@item.SPEND_SCRIPT_NO</td>
                                                     <td>@item.ACC_HOLDERTBL_Model.ACC_HOLDER_NAME</td>
-                                                    <td>@item.PROJECTTBL_Model.PROJECT_AR_NAME</td>
+
+
+                                                    <td>
+                                                        @try
+                                                        {@item.PROJECTTBL_Model.PROJECT_AR_NAME}
+                                                    catch { }
+                                                    </td>
+                                                    <td>
+                                                        @try
+                                                        {@item.BUILDING_Model.PROJECT_AR_NAME}
+                                                    catch { }
+                                                    </td>
+                                                    <td>
+                                                        @try
+                                                        {@item.UNIT_Model.PROJECT_AR_NAME}
+                                                    catch { }
+                                                    </td>
                                                     <td>
                                                         @try
                                                         {@item.BOXTBL_Model.BOX_NAME}
                                                     catch { }
-                                                </td>
-                                                <td>@item.NOTE</td>
-                                                <td>@item.INCOME</td>
-                                                <td>@item.SPEND_COST</td>
-                                                <td>
-                                                    @try
-                                                    {@item.DATE_M.Value.ToString("dd/MM/yyyy")}
-                                                catch { }
+                                                    </td>
+                                                    <td>@item.NOTE</td>
+                                                    <td>@item.INCOME.ToString("C", nfi)</td>
+                                                    <td>@item.SPEND_COST.ToString("C", nfi)</td>
+                                                    <td>
+                                                        @try
+                                                        {@item.DATE_M.Value.ToString("dd/MM/yyyy")}
+                                                    catch { }
 
 
-                                                </td>
-                                                <td>
-                                                    @try
-                                                    {@item.BOX_OPTBL_Model.OP_NAME}
-                                                catch { }
-                                            </td>
+                                                    </td>
+                                                    <td>
+                                                        @try
+                                                        {@item.BOX_OPTBL_Model.OP_NAME}
+                                                    catch { }
+                                                    </td>
 
 
 
-                                            <td>
-                                                    <div class=" col-12">
-                                                        <div class="row">
-                                                           
-                                                            <div class="col-md-3 m-1">
-                                                                <a href="~/ACCH_OPBOXT/edit/@item.ID" class="btn btn-info btn-sm "> <i class="la  la-edit"></i></a>
+                                                    <td>
+                                                        <div class=" col-12">
+                                                            <div class="row">
+
+                                                                <div class="col-md-3 m-1">
+                                                                    <a href="~/ACCH_OPBOXT/edit/@item.ID" class="btn btn-info btn-sm "> <i class="la  la-edit"></i></a>
+                                                                </div>
+
+                                                                <div class="col-md-3 m-1">
+                                                                    <a href="" class="btn btn-danger btn-sm " onclick="DeleteConfirmbox(@item.ID)"> <i class="la  la-trash"></i></a>
+                                                                </div>
+
                                                             </div>
-
-                                                            <div class="col-md-3 m-1">
-                                                                <a href="" class="btn btn-danger btn-sm " onclick="DeleteConfirmbox(@item.ID)"> <i class="la  la-trash"></i></a>
-                                                            </div>
-
                                                         </div>
-                                                    </div>
 
-                                                </td>
-                                        </tr>
-                                    }
+                                                    </td>
+                                                </tr>
+                                            }
 
 
                                         </tbody>
