@@ -48,7 +48,7 @@ namespace Spend.Models
         public virtual ACC_HOLDERTBL_Model ACC_HOLDERTBL_Model { get; set; }
 
         [ForeignKey("PROJ_NO")]
-        public virtual PROJECTTBL_Model PROJECTTBL_Model { get; set; }
+        public virtual ACCH_PROJECT_Model PROJECTTBL_Model { get; set; }
 
         //[ForeignKey("PROJ_NO,ACCH_PERCENT")]
         //public virtual ACCH_PROJ_BOX_PERCENTTBL_Model ACCH_PROJ_BOX_PERCENTTBL_Model { get; set; }
