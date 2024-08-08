@@ -218,9 +218,9 @@
     </div>
     <script>
       $(document).ready(function () {
-    var index = @Model.AcchOpBoxDetailsModelView.Count;
+      var index = @Model.AcchOpBoxDetailsModelView.Count;
 
-    $('#addAccholder').click(function () {
+       $('#addAccholder').click(function () {
         var newItem = `<tr class="form-group">
                         <td>
                         <select id="AcchOpBoxDetailsModelView-${index}-AccHolderId" name="AcchOpBoxDetailsModelView[${index}].AccHolderId" dir="ltr" class="form-control selectpicker" data-live-search="true">

@@ -251,66 +251,117 @@ namespace Contributions_System.Controllers
             ACCH_OPBOX_ACTIONSTBL_Business OPBOX_ACTIONS = new ACCH_OPBOX_ACTIONSTBL_Business();
             ViewBag.OPBOX_ACTIONS = OPBOX_ACTIONS.GetAll();
 
-            return View();
-        }
-
-
-
-
-
-
-
-
-
-
-        public ActionResult TranseSaleInv(int? ProjNo, int? Transe, DateTime? FromDate, DateTime? ToDate)
-        {
-
-            ViewBag.PROJECT_NO = ProjNo;
-            ViewBag.Transe = Transe;
-            try { ViewBag.FromDate = FromDate.Value.ToString("yyyy-MM-dd"); } catch { ViewBag.FromDate = DateTime.Now.ToString("yyyy-MM-dd"); }
-            try { ViewBag.ToDate = ToDate.Value.ToString("yyyy-MM-dd"); } catch { ViewBag.ToDate = DateTime.Now.ToString("yyyy-MM-dd"); }
-
-
-            ACCH_PROJECT_Business pROJECTTBL = new ACCH_PROJECT_Business();
-            ViewBag.Project = pROJECTTBL.GetAllAsync(1).Result;
-
-            SALES_INVTBL_Business b = new SALES_INVTBL_Business();
-            List<SALES_INVTBL_Model> model = new List<SALES_INVTBL_Model>();
-
-            try
-            {
-                bool boxTrans;
-                if (Transe.Value == 1)
-                {
-                    boxTrans = true;
-                }
-                else { boxTrans = false; }
-                model = b.GetTransForBox(ProjNo.Value, boxTrans, FromDate, ToDate);
-
-
-            }
-            catch
-            {
-
-            }
-
             return View(model);
         }
+
+
+
+
+
+
+
+
+
 
 
         public ActionResult Trans()
         {
             ACC_HOLDERTBL_Business AccHolderB= new ACC_HOLDERTBL_Business();
-
             ViewBag.AccHolder= AccHolderB.getall();
+
             ACCH_PROJECT_Business proj_b = new ACCH_PROJECT_Business();
-            ViewBag.proj = proj_b.GetAllAsync(1).Result;
+            ViewBag.proj = new SelectList(proj_b.GetAllAsync(1).Result, "ID", "PROJECT_AR_NAME");
+            
+            BOXTBL_Business Box_B = new BOXTBL_Business();
+            ViewBag.Box = new SelectList(Box_B.getall(), "BOX_NO", "BOX_NAME");
+
+            BOX_OPTBL_Business BOX_OP = new BOX_OPTBL_Business();
+            ViewBag.BOX_OP = new SelectList(BOX_OP.GetAll(), "OP_NO", "OP_NAME");
+
+            ACCH_OPBOX_ACTIONSTBL_Business OPBOX_ACTIONS = new ACCH_OPBOX_ACTIONSTBL_Business();
+            ViewBag.OPBOX_ACTIONS = new SelectList(OPBOX_ACTIONS.GetAll(), "ID", "ACTION_NAME");
 
 
 
-            return View();
+            return View(new TransModelView());
         }
+
+
+        [HttpPost]
+        public ActionResult Trans(TransModelView model)
+        {
+            ACCH_OPBOXTBL_Business aCCH_OPBOXTBL_B = new ACCH_OPBOXTBL_Business();
+            MAX_UNDER_OPV_Business mAX_UNDER_OPV_Business = new MAX_UNDER_OPV_Business();
+       
+                try
+                {
+              
+
+                    var scriptNo = aCCH_OPBOXTBL_B.GetMaxSCRIP_NO();
+                    var opNo = aCCH_OPBOXTBL_B.GetMaxOP_NO();
+                    long underNo = 0;
+                    try
+                    {
+                        underNo = mAX_UNDER_OPV_Business.getall().Where(x => x.NAM == "under_no").FirstOrDefault().MAX_NO;
+                    }
+                    catch
+                    {
+
+                    }
+
+                    using (TransactionScope tran = new TransactionScope())
+                    {
+
+                        foreach (var item in model.ACCH_OPBOXTBLs)
+                        {
+
+                            item.DATE_M = model.DATE_M;
+                            item.UNDER_NO = underNo;
+                            item.ACTION_TYPE = model.ACTION_TYPE;
+                            item.NOTE = model.NOTE;
+                            item.OP_NO = opNo++;
+                            item.OP_TYPE = model.OP_TYPE;
+                            item.TARGET_PROJ = model.TARGET_PROJ;
+                            item.BUILDING_ID = model.BUILDING_ID;
+                            item.UNIT_ID = model.UNIT_ID;
+                            item.SOURCE_BOX = model.SOURCE_BOX;
+                            item.SCRIP_NO = scriptNo;
+
+                            aCCH_OPBOXTBL_B.Create(item);
+                        }
+
+                        tran.Complete();
+                        return RedirectToAction("Index");
+                    }
+                }
+                
+                catch (Exception ex)
+                {
+
+                }
+            
+
+
+            ACC_HOLDERTBL_Business AccHolderB = new ACC_HOLDERTBL_Business();
+            ViewBag.AccHolder = AccHolderB.getall();
+
+            ACCH_PROJECT_Business proj_b = new ACCH_PROJECT_Business();
+            ViewBag.proj = new SelectList(proj_b.GetAllAsync(1).Result, "ID", "PROJECT_AR_NAME");
+
+            BOXTBL_Business Box_B = new BOXTBL_Business();
+            ViewBag.Box = new SelectList(Box_B.getall(), "BOX_NO", "BOX_NAME");
+
+            BOX_OPTBL_Business BOX_OP = new BOX_OPTBL_Business();
+            ViewBag.BOX_OP = new SelectList(BOX_OP.GetAll(), "OP_NO", "OP_NAME");
+
+            ACCH_OPBOX_ACTIONSTBL_Business OPBOX_ACTIONS = new ACCH_OPBOX_ACTIONSTBL_Business();
+            ViewBag.OPBOX_ACTIONS = new SelectList(OPBOX_ACTIONS.GetAll(), "ID", "ACTION_NAME");
+
+            return View(model);
+        }
+
+
+
 
 
 
@@ -362,7 +413,7 @@ namespace Contributions_System.Controllers
             ViewBag.Holder = new SelectList(aCC_HOLDERTBL_Business.getall(), "ACC_HOLDER_NO", "ACC_HOLDER_NAME", model.ACC_HOLDER_NO); 
 
             ACCH_PROJECT_Business proj_b = new ACCH_PROJECT_Business();
-            ViewBag.proj = new SelectList(proj_b.GetAllAsync(1).Result.Where(x => x.OPERATIONAL_PALANCE_Collection.Count() > 0), "ID", "PROJECT_AR_NAME", model.TARGET_PROJ);
+            ViewBag.proj = new SelectList(proj_b.GetAllAsync(1).Result, "ID", "PROJECT_AR_NAME", model.TARGET_PROJ);
             ViewBag.building = new SelectList(proj_b.GetProjectListByParentIdAsync(model.TARGET_PROJ).Result, "ID", "PROJECT_AR_NAME", model.BUILDING_ID);
             ViewBag.unit = new SelectList(proj_b.GetProjectListByParentIdAsync(model.BUILDING_ID).Result, "ID", "PROJECT_AR_NAME", model.UNIT_ID);
 
@@ -441,6 +492,41 @@ namespace Contributions_System.Controllers
         }
 
 
+
+        public ActionResult TranseSaleInv(int? ProjNo, int? Transe, DateTime? FromDate, DateTime? ToDate)
+        {
+
+            ViewBag.PROJECT_NO = ProjNo;
+            ViewBag.Transe = Transe;
+            try { ViewBag.FromDate = FromDate.Value.ToString("yyyy-MM-dd"); } catch { ViewBag.FromDate = DateTime.Now.ToString("yyyy-MM-dd"); }
+            try { ViewBag.ToDate = ToDate.Value.ToString("yyyy-MM-dd"); } catch { ViewBag.ToDate = DateTime.Now.ToString("yyyy-MM-dd"); }
+
+
+            ACCH_PROJECT_Business pROJECTTBL = new ACCH_PROJECT_Business();
+            ViewBag.Project = pROJECTTBL.GetAllAsync(1).Result;
+
+            SALES_INVTBL_Business b = new SALES_INVTBL_Business();
+            List<SALES_INVTBL_Model> model = new List<SALES_INVTBL_Model>();
+
+            try
+            {
+                bool boxTrans;
+                if (Transe.Value == 1)
+                {
+                    boxTrans = true;
+                }
+                else { boxTrans = false; }
+                model = b.GetTransForBox(ProjNo.Value, boxTrans, FromDate, ToDate);
+
+
+            }
+            catch
+            {
+
+            }
+
+            return View(model);
+        }
 
 
 

@@ -86,6 +86,7 @@
     <Compile Include="Helper\AcchOpBoxModelView.cs" />
     <Compile Include="Helper\Pagination.cs" />
     <Compile Include="Helper\AcchFilter.cs" />
+    <Compile Include="Helper\TransModelView.cs" />
     <Compile Include="HOLDER_PERCENT_DT_Model.cs" />
     <Compile Include="HOLDER_PERCENT_HD.cs" />
     <Compile Include="HOLDER_TRANS_DT_Model.cs" />

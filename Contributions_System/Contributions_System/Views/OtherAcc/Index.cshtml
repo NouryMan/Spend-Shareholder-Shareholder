@@ -1,6 +1,16 @@
 ﻿@model IEnumerable<Spend.Models.ACC_HOLDERTBL_Model>
+@using System.Globalization;
 @{
     ViewBag.Title = "الحسابات";
+    NumberFormatInfo nfi = new CultureInfo("en-US", false).NumberFormat;
+    nfi.CurrencyDecimalDigits = 2;
+    nfi.NumberDecimalDigits = 2;
+    nfi.CurrencyDecimalSeparator = ".";
+    nfi.CurrencyGroupSeparator = ",";
+    nfi.CurrencySymbol = "";
+    nfi.NegativeSign = "-";
+    nfi.NumberNegativePattern = 1;
+    nfi.CurrencyNegativePattern = 1;
 }
 
 
@@ -21,7 +31,7 @@
                         <div class="breadcrumb-list text-right">
                             <ul class="list-items">
                                 <li><a href="~" class="text-white">الصفحة الرئيسية</a></li>
-                                
+
                                 <li>الحسابات</li>
                             </ul>
                         </div><!-- end breadcrumb-list -->
@@ -45,15 +55,15 @@
                             </div>
                             <div class="form-content">
                                 <div class="table-form table-responsive">
-                                    <table class="display "  id="data-table">
+                                    <table class="display " id="data-table">
                                         <thead>
                                             <tr>
                                                 <th>الرقم</th>
                                                 <th>الاسم </th>
                                                 <th>رقم الحساب</th>
-                                         
+
                                                 <th>النوع</th>
-                                                
+
                                                 <th>الرصيد</th>
                                                 <th>الحالة</th>
                                                 <th>الملاحظة</th>
@@ -88,7 +98,7 @@
                                                         }
                                                         }
                                                     </td>
-                                                    
+
                                                     <td>
                                                         @{ try
                                                             {@item.ACC_NO }
@@ -99,7 +109,7 @@
                                                         }
                                                     </td>
 
-                                                   
+
                                                     <td>
                                                         @{ try
                                                             {@item.ACCH_TYPETBL_Model.NAME_AR}
@@ -111,7 +121,7 @@
                                                     </td>
                                                     <td>
                                                         @{ try
-                                                            {@item.BALANCE}
+                                                            {@item.BALANCE.ToString("C", nfi)}
                                                         catch
                                                         {
 
@@ -176,7 +186,7 @@
                         </div><!-- end form-box -->
                     </div><!-- end col-lg-12 -->
                 </div><!-- end row -->
-                
+
                 <div class="border-top mt-5"></div>
                 <div class="row align-items-center">
                     <div class="col-lg-7">

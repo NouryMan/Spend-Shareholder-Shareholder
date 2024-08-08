@@ -1,6 +1,17 @@
 ﻿@model IEnumerable<Spend.Models.ACC_HOLDERTBL_Model>
+@using System.Globalization;
 @{
     ViewBag.Title = "المساهمين";
+
+    NumberFormatInfo nfi = new CultureInfo("en-US", false).NumberFormat;
+    nfi.CurrencyDecimalDigits = 2;
+    nfi.NumberDecimalDigits = 2;
+    nfi.CurrencyDecimalSeparator = ".";
+    nfi.CurrencyGroupSeparator = ",";
+    nfi.CurrencySymbol = "";
+    nfi.NegativeSign = "-";
+    nfi.NumberNegativePattern = 1;
+    nfi.CurrencyNegativePattern = 1;
 }
 
 
@@ -21,7 +32,7 @@
                         <div class="breadcrumb-list text-right">
                             <ul class="list-items">
                                 <li><a href="~" class="text-white">الصفحة الرئيسية</a></li>
-                                
+
                                 <li>المساهمين</li>
                             </ul>
                         </div><!-- end breadcrumb-list -->
@@ -45,7 +56,7 @@
                             </div>
                             <div class="form-content">
                                 <div class="table-form table-responsive">
-                                    <table class="display "  id="data-table">
+                                    <table class="display " id="data-table">
                                         <thead>
                                             <tr>
                                                 <th>الرقم</th>
@@ -55,7 +66,7 @@
                                                 <th>الحساب</th>
                                                 @*<th>الحساب الرئيسي</th>*@
                                                 <th>الحساب الاب</th>
-                                                
+
                                                 <th>الرصيد</th>
                                                 <th>الحالة</th>
                                                 <th>الملاحظة</th>
@@ -119,14 +130,14 @@
                                                     </td>
 
                                                     @*<td>
-                                                        @{ try
-                                                            {@item.ACC_TREETBL_Model.ACC_NAME }
-                                                        catch
-                                                        {
+                                                            @{ try
+                                                                {@item.ACC_TREETBL_Model.ACC_NAME }
+                                                            catch
+                                                            {
 
-                                                        }
-                                                        }
-                                                    </td>*@
+                                                            }
+                                                            }
+                                                        </td>*@
                                                     <td>
                                                         @{ try
                                                             {@item.ACC_HOLDERTBL_Models.ACC_HOLDER_NAME }
@@ -138,14 +149,14 @@
                                                     </td>
                                                     <td>
                                                         @{ try
-                                                            {@item.BALANCE}
+                                                            {@item.BALANCE.ToString("C", nfi)}
                                                         catch
                                                         {
 
                                                         }
                                                         }
                                                     </td>
-                                                   
+
 
                                                     <td>
                                                         @if (item.IS_ENABLE)
@@ -180,13 +191,13 @@
                                                                 </div>
                                                                 <div class="col-md-3 m-1">
                                                                     <a href="~/ACC_HOLDER/Update/@item.ACC_HOLDER_NO" class="btn btn-info btn-sm "> <i class="la  la-edit"></i></a>
-                                                                </div> 
-                                                                
+                                                                </div>
+
                                                                 <div class="col-md-3 m-1">
                                                                     <button class="btn btn-danger btn-sm " onclick="DeleteConfirmbox(@item.ACC_HOLDER_NO)"> <i class="la  la-trash"></i></button>
                                                                 </div>
                                                             </div>
-                                                          </div>
+                                                        </div>
                                                     </td>
                                                 </tr>
                                             }
@@ -201,7 +212,7 @@
                         </div><!-- end form-box -->
                     </div><!-- end col-lg-12 -->
                 </div><!-- end row -->
-                
+
                 <div class="border-top mt-5"></div>
                 <div class="row align-items-center">
                     <div class="col-lg-7">
