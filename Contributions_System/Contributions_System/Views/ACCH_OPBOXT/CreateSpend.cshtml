@@ -43,18 +43,33 @@
                                 {
                                     @Html.AntiForgeryToken()
                                     @Html.ValidationSummary(true, "", new { @class = "text-danger" })
-                                    <div class="row mb-3">
-                                        <div class="col-md-4">
-                                            <div class="form-floating">
-                                                <label for="inputLastName">اسم المشروع</label>
-                                                <select id="ProjectId" name="ProjectId" dir="ltr" class="form-control selectpicker" data-live-search="true" required onchange="GetAccCenterForProj()">
-                                                    @foreach (var p in ViewBag.proj)
-                                                    {
-                                                        <option class="themeprimary" value="@p.ID" @(Model.ProjectId == p.ID ? "selected" : "")>@p.PROJECT_AR_NAME</option>
-                                                    }
-                                                </select>
-                                            </div>
+                                <div class="row mb-3">
+                                    <div class="col-md-4">
+                                        <div class="form-floating">
+                                            <label for="inputLastName">اسم المشروع</label>
+                                            @Html.DropDownList("ProjectId", (SelectList)ViewBag.proj, "اختار المشروع", new { @class = "form-control", @id = "projectDropdown" })
+                                            @Html.ValidationMessageFor(model => model.ProjectId, "", new { @class = "text-danger" })
+
                                         </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-floating mb-12 mb-md-0">
+                                            <label>العمارة</label>
+                                            @Html.DropDownList("BuildingId", (SelectList)ViewBag.building, "اختار عمارة", new { @class = "form-control", @id = "buildingDropdown" })
+                                            @Html.ValidationMessageFor(model => model.BuildingId, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-floating mb-12 mb-md-0">
+                                            <label>الوحدة</label>
+                                            @Html.DropDownList("UnitId", (SelectList)ViewBag.unit, "اختار وحدة", new { @class = "form-control", @id = "unitDropdown" })
+                                            @Html.ValidationMessageFor(model => model.UnitId, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+
+                                </div>
+                                    <div class="row mb-3">
                                         <div class="col-md-4">
                                             <div class="form-floating">
                                                 <label for="inputLastName">الصندوق</label>
@@ -81,8 +96,7 @@
                                                 </select>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row mb-3">
+
                                         <div class="col-md-4">
                                             <div class="form-floating">
                                                 <label for="inputLastName">نوع حدث العملية</label>
@@ -98,6 +112,9 @@
                                                 </select>
                                             </div>
                                         </div>
+                                      
+                                    </div>
+                                    <div class="row mb-3">
                                         <div class="col-md-4">
                                             <div class="form-floating">
                                                 <label for="inputLastName">التاريخ</label>
@@ -112,13 +129,11 @@
                                         <div class="col-md-4">
                                             <div class="form-floating">
                                                 <label for="inputLastName">المبلغ</label>
-                                                @Html.EditorFor(model => model.TotalAmount, new { htmlAttributes = new {@id= "TotalAmount", @class = "form-control", @type = "text", @placeholder = "المبلغ",@disabled = "disabled" } })
+                                                @Html.EditorFor(model => model.TotalAmount, new { htmlAttributes = new { @id = "TotalAmount", @class = "form-control", @type = "text", @placeholder = "المبلغ", @disabled = "disabled" } })
                                                 @Html.ValidationMessageFor(model => model.TotalAmount, "", new { @class = "text-danger" })
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="row mb-3">
-                                        <div class="col-md-12">
+                                        <div class="col-md-4">
                                             <div class="form-floating">
                                                 <label for="inputLastName">البيان</label>
                                                 @Html.EditorFor(model => model.NOTE, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = "البيان" } })
@@ -217,7 +232,37 @@
         </div>
     </div>
     <script>
-      $(document).ready(function () {
+        $(document).ready(function () {
+
+             $('#projectDropdown').change(function () {
+     var projectId = $(this).val();
+     $('#buildingDropdown').empty();
+     $('#unitDropdown').empty();
+     if (projectId) {
+         $.getJSON('@Url.Action("GetByParintId", "AcchProject")', { Id: projectId }, function (data) {
+             var items = '<option>اختار عمارة </option>';
+             $.each(data, function (i, building) {
+                 items += "<option value='" + building.Value + "'>" + building.Text + "</option>";
+             });
+             $('#buildingDropdown').html(items);
+         });
+     }
+ });
+
+ $('#buildingDropdown').change(function () {
+     var buildingId = $(this).val();
+     $('#unitDropdown').empty();
+     if (buildingId) {
+         $.getJSON('@Url.Action("GetByParintId", "AcchProject")', { Id: buildingId }, function (data) {
+             var items = '<option>اختار وحدة</option>';
+             $.each(data, function (i, unit) {
+                 items += "<option value='" + unit.Value + "'>" + unit.Text + "</option>";
+             });
+             $('#unitDropdown').html(items);
+         });
+     }
+ });
+
       var index = @Model.AcchOpBoxDetailsModelView.Count;
 
        $('#addAccholder').click(function () {
@@ -247,7 +292,7 @@
     });
 
           function updateTotalNetBalance() {
-              
+
               var totalNetBalance = 0;
               $('.Amount').each(function () {
                   var value = parseFloat($(this).val()) || 0;

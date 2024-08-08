@@ -9,6 +9,8 @@ namespace Spend.Models.Helper
     public class AcchOpBoxModelView
     {
         public int ProjectId { get; set; }
+        public int? BuildingId { get; set; }
+        public int? UnitId { get; set; }
         public int BoxId { get; set; }
         public int OpTypeId { get; set; }
         public int OpActionTypeId { get; set; }

@@ -57,22 +57,39 @@
 
 
 
-                                <div class="row mb-3">
+                            <div class="row mb-3">
 
-                                    <div class="col-md-4">
-                                        <div class="form-floating">
-                                            <label for="inputLastName">اسم المشروع</label>
-                                            <select id="TARGET_PROJ" name="TARGET_PROJ" dir="ltr" class="form-control selectpicker " data-live-search="true" required onchange="GetAccCenterForProj()">
-                                                <option value="">اختار المشروع</option>
-                                                @foreach (var p in ViewBag.proj)
-                                                {
-                                                    <option class="themeprimary" value="@p.ID"> @p.PROJECT_AR_NAME</option>
-                                                }
 
-                                            </select>
+                                <div class="col-md-4">
+                                    <div class="form-floating mb-12 mb-md-0">
+                                        <label for="inputPasswordConfirm">المشروع</label>
+                                        @Html.DropDownList("TARGET_PROJ", (SelectList)ViewBag.proj, "اختار المشروع", new { @class = "form-control", @id = "projectDropdown" })
+                                        @Html.ValidationMessageFor(model => model.TARGET_PROJ, "", new { @class = "text-danger" })
 
-                                        </div>
                                     </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-floating mb-12 mb-md-0">
+                                        <label>العمارة</label>
+                                        @Html.DropDownList("BUILDING_ID", Enumerable.Empty<SelectListItem>(), "اختار عمارة", new { @class = "form-control", @id = "buildingDropdown" })
+                                        @Html.ValidationMessageFor(model => model.BUILDING_ID, "", new { @class = "text-danger" })
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="form-floating mb-12 mb-md-0">
+                                        <label>الوحدة</label>
+                                        @Html.DropDownList("UNIT_ID", Enumerable.Empty<SelectListItem>(), "اختار وحدة", new { @class = "form-control", @id = "unitDropdown" })
+                                        @Html.ValidationMessageFor(model => model.UNIT_ID, "", new { @class = "text-danger" })
+
+                                    </div>
+                                </div>
+
+
+                            </div>
+
+
+
+                                <div class="row mb-3">
                                     <div class="col-md-4">
                                         <div class="form-floating">
                                             <label for="inputLastName">الصندوق/البنك</label>
@@ -94,13 +111,13 @@
                                     <div class="col-md-4">
                                         <div class="form-floating">
                                             <label for="inputLastName">نوع العملية</label>
-                                            <select id="OP_TYPE" name="OP_TYPE" dir="ltr" class="form-control selectpicker " data-live-search="true"required>
+                                            <select id="OP_TYPE" name="OP_TYPE" dir="ltr" class="form-control selectpicker " data-live-search="true" required>
                                                 <option value="">اختار نوع العملية </option>
                                                 @foreach (var p in ViewBag.BOX_OP)
                                                 {
                                                     if (p.OP_NO == 3 || p.OP_NO == 5 || p.OP_NO == 7)
                                                     {
-                                                    <option class="themeprimary" value="@p.OP_NO"> @p.OP_NAME</option>
+                                                        <option class="themeprimary" value="@p.OP_NO"> @p.OP_NAME</option>
                                                     }
                                                 }
 
@@ -109,13 +126,6 @@
 
                                         </div>
                                     </div>
-
-
-                                </div>
-
-
-
-                                <div class="row mb-3">
 
                                     <div class="col-md-4">
                                         <div class="form-floating">
@@ -127,7 +137,7 @@
                                                     if (p.ID == 4 || p.ID == 1 || p.ID == 6)
                                                     {
                                                         <option class="themeprimary" value="@p.ID"> @p.ACTION_NAME</option>
-}
+                                                    }
                                                 }
 
                                             </select>
@@ -142,6 +152,14 @@
 
             </div>
         </div>*@
+
+
+
+
+
+                                </div>
+
+                                <div class="row mb-3">
 
 
 
@@ -161,18 +179,9 @@
                                             @Html.EditorFor(model => model.SPEND_COST, new { htmlAttributes = new { @class = "form-control", @type = "number", @placeholder = "المبلغ", @required = "required", } })
                                             @Html.ValidationMessageFor(model => model.SPEND_COST, "", new { @class = "text-danger" })
 
-
                                         </div>
                                     </div>
-
-
-                                </div>
-
-                                <div class="row mb-3">
-
-                                 
-
-                                    <div class="col-md-12">
+                                    <div class="col-md-4">
                                         <div class="form-floating">
                                             <label for="inputLastName">البيان</label>
                                             @Html.EditorFor(model => model.NOTE, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = "البيان" } })
@@ -242,7 +251,36 @@
         var today = moment().format('YYYY-MM-DD');
 
         $('#DATE_M').val(today);
-      
+
+         $('#projectDropdown').change(function () {
+     var projectId = $(this).val();
+     $('#buildingDropdown').empty();
+     $('#unitDropdown').empty();
+     if (projectId) {
+         $.getJSON('@Url.Action("GetByParintId", "AcchProject")', { Id: projectId }, function (data) {
+             var items = '<option>اختار عمارة </option>';
+             $.each(data, function (i, building) {
+                 items += "<option value='" + building.Value + "'>" + building.Text + "</option>";
+             });
+             $('#buildingDropdown').html(items);
+         });
+     }
+ });
+
+ $('#buildingDropdown').change(function () {
+     var buildingId = $(this).val();
+     $('#unitDropdown').empty();
+     if (buildingId) {
+         $.getJSON('@Url.Action("GetByParintId", "AcchProject")', { Id: buildingId }, function (data) {
+             var items = '<option>اختار وحدة</option>';
+             $.each(data, function (i, unit) {
+                 items += "<option value='" + unit.Value + "'>" + unit.Text + "</option>";
+             });
+             $('#unitDropdown').html(items);
+         });
+     }
+ });
+
     });
 
 
@@ -256,19 +294,19 @@
 
 
             success: function (response) {
-              
+
                 $('select[name=SOURCE_BOX]').val(response.data.SPEND_BOX);
                     $('#SOURCE_BOX').selectpicker('refresh')
 
-                
-               
+
+
 
 
             }
 
 
         });
-       
+
 
     }
 

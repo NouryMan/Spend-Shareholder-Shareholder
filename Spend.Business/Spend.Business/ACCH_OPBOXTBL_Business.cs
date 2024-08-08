@@ -192,6 +192,8 @@ namespace Spend.Business
             acchOpBoxModelView.Date = OpBox.DATE_M.Value;
             acchOpBoxModelView.TotalAmount = OpBox.SPEND_COST;
             acchOpBoxModelView.NOTE = OpBox.NOTE;
+            acchOpBoxModelView.BuildingId = OpBox.BUILDING_ID;
+            acchOpBoxModelView.UnitId = OpBox.UNIT_ID;
 
             List<AcchOpBoxDetailsModelView> acchOpBoxDetails = new List<AcchOpBoxDetailsModelView>();
 

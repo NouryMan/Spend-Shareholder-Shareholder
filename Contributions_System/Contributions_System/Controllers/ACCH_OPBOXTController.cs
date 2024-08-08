@@ -80,9 +80,9 @@ namespace Contributions_System.Controllers
             ViewBag.SCRIP_NO = aCCH_OPBOXTBL_B.GetMaxSCRIP_NO();
 
             ACCH_PROJECT_Business proj_b = new ACCH_PROJECT_Business();
-            ViewBag.proj = proj_b.GetAllAsync(1).Result.Where(x => x.OPERATIONAL_PALANCE_Collection.Count() > 0);
-
+            ViewBag.proj =new SelectList(proj_b.GetAllAsync(1).Result.Where(x => x.OPERATIONAL_PALANCE_Collection.Count() > 0), "ID", "PROJECT_AR_NAME");
             BOXTBL_Business Box_B = new BOXTBL_Business();
+           
             ViewBag.Box = Box_B.getall();
 
             BOX_OPTBL_Business BOX_OP = new BOX_OPTBL_Business();
@@ -123,7 +123,7 @@ namespace Contributions_System.Controllers
             ViewBag.SCRIP_NO = aCCH_OPBOXTBL_B.GetMaxSCRIP_NO();
 
             ACCH_PROJECT_Business proj_b = new ACCH_PROJECT_Business();
-            ViewBag.proj = proj_b.GetAllAsync(1).Result.Where(x => x.OPERATIONAL_PALANCE_Collection.Count() > 0);
+            ViewBag.proj = new SelectList(proj_b.GetAllAsync(1).Result.Where(x => x.OPERATIONAL_PALANCE_Collection.Count() > 0), "ID", "PROJECT_AR_NAME",model.TARGET_PROJ);
 
             BOXTBL_Business Box_B = new BOXTBL_Business();
             ViewBag.Box = Box_B.getall();
@@ -157,7 +157,10 @@ namespace Contributions_System.Controllers
             ViewBag.SCRIP_NO = aCCH_OPBOXTBL_B.GetMaxSCRIP_NO();
 
             ACCH_PROJECT_Business proj_b = new ACCH_PROJECT_Business();
-            ViewBag.proj = proj_b.GetAllAsync(1).Result.Where(x => x.OPERATIONAL_PALANCE_Collection.Count() > 0);
+            ViewBag.proj = new SelectList(proj_b.GetAllAsync(1).Result.Where(x => x.OPERATIONAL_PALANCE_Collection.Count() > 0), "ID", "PROJECT_AR_NAME",model.ProjectId);
+            ViewBag.building = new SelectList(proj_b.GetProjectListByParentIdAsync(model.ProjectId).Result, "ID", "PROJECT_AR_NAME", model.BuildingId);
+            ViewBag.unit = new SelectList(proj_b.GetProjectListByParentIdAsync(model.BuildingId).Result, "ID", "PROJECT_AR_NAME", model.UnitId);
+
 
             BOXTBL_Business Box_B = new BOXTBL_Business();
             ViewBag.Box = Box_B.getall();
@@ -213,6 +216,8 @@ namespace Contributions_System.Controllers
                             aCCH_OPBOXTBL_Model.OP_NO = opNo++;
                             aCCH_OPBOXTBL_Model.OP_TYPE = model.OpTypeId;
                             aCCH_OPBOXTBL_Model.TARGET_PROJ = model.ProjectId;
+                            aCCH_OPBOXTBL_Model.BUILDING_ID = model.BuildingId;
+                            aCCH_OPBOXTBL_Model.UNIT_ID = model.UnitId;
                             aCCH_OPBOXTBL_Model.SOURCE_BOX = model.BoxId;
                             aCCH_OPBOXTBL_Model.SCRIP_NO = scriptNo;
                             //  aCCH_OPBOXTBL_Model.PARENT_BOX = model.PARENT_BOX;
