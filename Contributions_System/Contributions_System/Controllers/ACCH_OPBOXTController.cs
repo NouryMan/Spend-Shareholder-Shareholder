@@ -9,6 +9,7 @@ using System.Linq;
 using System.Security.Cryptography;
 using System.Transactions;
 using System.Web;
+using System.Web.Http.Results;
 using System.Web.Mvc;
 
 namespace Contributions_System.Controllers
@@ -226,9 +227,8 @@ namespace Contributions_System.Controllers
 
                             aCCH_OPBOXTBL_B.Create(aCCH_OPBOXTBL_Model);
                         }
-
                         tran.Complete();    
-                        return RedirectToAction("Index", new { type = "block" });
+                        return RedirectToAction("Details", new { UnderNo = underNo, reuternPage = "block" });
                     }
                     
                 }
