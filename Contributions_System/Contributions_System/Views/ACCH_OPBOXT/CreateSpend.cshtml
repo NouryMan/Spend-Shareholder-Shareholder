@@ -325,6 +325,7 @@
 
       // Bind change event to amount inputs
         $(document).on('input', '.Amount', function (e) {
+
         var index = $(this).attr('id').match(/\d+/)[0];
         var balance = parseFloat($('#AcchOpBoxDetailsModelView-' + index + '-AccHolderId').find('option:selected').data('balance')) || 0;
         var amount = parseFloat($(this).val()) || 0;

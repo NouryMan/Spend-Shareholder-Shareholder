@@ -33,14 +33,14 @@ namespace Contributions_System.Controllers
             if (type == "block")
             {
                 typArray =new List<int> { 3, 7, 5 };
-                achinTypeArray =new  List<int> { 4, 1, 6 };
+                achinTypeArray =new  List<int> {1};
 
                 model = b.GetpyGroup().Where(x => typArray.Contains(x.FirstOrDefault().OP_TYPE.Value));
             }
             else if (type == "distribut")
             {
-                typArray = new List<int> {6};
-                achinTypeArray = new List<int> {1};
+                typArray = new List<int> {1};
+                achinTypeArray = new List<int> {6};
 
                 model = b.GetpyGroup().Where(x => typArray.Contains(x.FirstOrDefault().OP_TYPE.Value) && achinTypeArray.Contains(x.FirstOrDefault().ACTION_TYPE.Value));
             }
@@ -89,7 +89,7 @@ namespace Contributions_System.Controllers
             ViewBag.BOX_OP = BOX_OP.GetAll();
 
             ACCH_OPBOX_ACTIONSTBL_Business OPBOX_ACTIONS = new ACCH_OPBOX_ACTIONSTBL_Business();
-            ViewBag.OPBOX_ACTIONS = OPBOX_ACTIONS.GetAll();
+            ViewBag.OPBOX_ACTIONS = OPBOX_ACTIONS.GetAll().Where(x=>x.ID==1);
 
             return View();
         }
@@ -132,7 +132,7 @@ namespace Contributions_System.Controllers
             ViewBag.BOX_OP = BOX_OP.GetAll();
 
             ACCH_OPBOX_ACTIONSTBL_Business OPBOX_ACTIONS = new ACCH_OPBOX_ACTIONSTBL_Business();
-            ViewBag.OPBOX_ACTIONS = OPBOX_ACTIONS.GetAll();
+            ViewBag.OPBOX_ACTIONS = OPBOX_ACTIONS.GetAll().Where(x => x.ID == 1);
 
             return View();
         }
@@ -169,7 +169,7 @@ namespace Contributions_System.Controllers
             ViewBag.BOX_OP = BOX_OP.GetAll();
 
             ACCH_OPBOX_ACTIONSTBL_Business OPBOX_ACTIONS = new ACCH_OPBOX_ACTIONSTBL_Business();
-            ViewBag.OPBOX_ACTIONS = OPBOX_ACTIONS.GetAll();
+            ViewBag.OPBOX_ACTIONS = OPBOX_ACTIONS.GetAll().Where(x => x.ID == 1);
 
             return View(model);
         }
@@ -254,7 +254,7 @@ namespace Contributions_System.Controllers
             ViewBag.BOX_OP = BOX_OP.GetAll();
 
             ACCH_OPBOX_ACTIONSTBL_Business OPBOX_ACTIONS = new ACCH_OPBOX_ACTIONSTBL_Business();
-            ViewBag.OPBOX_ACTIONS = OPBOX_ACTIONS.GetAll();
+            ViewBag.OPBOX_ACTIONS = OPBOX_ACTIONS.GetAll().Where(x => x.ID == 1);
 
             return View(model);
         }
@@ -372,34 +372,54 @@ namespace Contributions_System.Controllers
 
         public ActionResult Distribution()
         {
-            ACCH_PROJECT_Business pROJECTTBL = new ACCH_PROJECT_Business();
-            ViewBag.Project = pROJECTTBL.GetAllAsync(1).Result.Where(x=>x.ACCH_PROJ_BOX_PERCENT_Collection.Count>0);
+            ACC_HOLDERTBL_Business AccHolderB = new ACC_HOLDERTBL_Business();
+            ViewBag.AccHolder = AccHolderB.getall();
+
+            ACCH_PROJECT_Business proj_b = new ACCH_PROJECT_Business();
+            ViewBag.Project = new SelectList(proj_b.GetAllAsync(1).Result.Where(x => x.ACCH_PROJ_BOX_PERCENT_Collection.Count > 0), "ID", "PROJECT_AR_NAME");
+            BOXTBL_Business Box_B = new BOXTBL_Business();
+            ViewBag.Box = new SelectList(Box_B.getall(), "BOX_NO", "BOX_NAME");
+
             return View();  
         }
 
         [HttpPost]
-        public ActionResult Distribution(API_TRANSESALE_INVO_Model model)
+        public ActionResult Distribution(DistributionViewModel model)
         {
             try
             {
-                if (ModelState.IsValid)
+                if (model.DistributionDetailsViewModel!=null  && model.TotalAmount < model.DistributionDetailsViewModel.Sum(x => x.Amount))
                 {
-                    ACCH_OPBOXTBL_Business aCCH_OPBOXTBL_Business = new ACCH_OPBOXTBL_Business();
+                    ModelState.AddModelError("", "يجب ان يكون صافي المبلغ بالموجب ");
+                }
+                else
+                {
 
-
-                    if (aCCH_OPBOXTBL_Business.Distribution(model))
+                    if (ModelState.IsValid)
                     {
-                        return RedirectToAction("Index");
+                        ACCH_OPBOXTBL_Business aCCH_OPBOXTBL_Business = new ACCH_OPBOXTBL_Business();
+
+
+                        if (aCCH_OPBOXTBL_Business.Distribution(model))
+                        {
+                            return RedirectToAction("Index", new { type = "distribut" });
+                        }
+
+
                     }
-
-
                 }
             }catch(Exception ex) {
                 ModelState.AddModelError("",ex.Message);
 
             }
-            ACCH_PROJECT_Business pROJECTTBL = new ACCH_PROJECT_Business();
-            ViewBag.Project = pROJECTTBL.GetAllAsync(1).Result.Where(x => x.ACCH_PROJ_BOX_PERCENT_Collection.Count > 0);
+
+
+            ACC_HOLDERTBL_Business AccHolderB = new ACC_HOLDERTBL_Business();
+            ViewBag.AccHolder = AccHolderB.getall();
+            ACCH_PROJECT_Business proj_b = new ACCH_PROJECT_Business();
+            ViewBag.Project = new SelectList(proj_b.GetAllAsync(1).Result.Where(x => x.ACCH_PROJ_BOX_PERCENT_Collection.Count > 0), "ID", "PROJECT_AR_NAME");
+            BOXTBL_Business Box_B = new BOXTBL_Business();
+            ViewBag.Box = new SelectList(Box_B.getall(), "BOX_NO", "BOX_NAME");
             return View(model);
         }
 

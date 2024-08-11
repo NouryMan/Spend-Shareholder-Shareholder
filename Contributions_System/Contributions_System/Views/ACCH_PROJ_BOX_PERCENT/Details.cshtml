@@ -1,6 +1,16 @@
 ﻿@model IEnumerable<Spend.Models.ACCH_PROJ_PERCENTTBL_Model>
+@using System.Globalization;
 @{
     ViewBag.Title = "المساهامات";
+    NumberFormatInfo nfi = new CultureInfo("en-US", false).NumberFormat;
+    nfi.CurrencyDecimalDigits = 2;
+    nfi.NumberDecimalDigits = 2;
+    nfi.CurrencyDecimalSeparator = ".";
+    nfi.CurrencyGroupSeparator = ",";
+    nfi.CurrencySymbol = "";
+    nfi.NegativeSign = "-";
+    nfi.NumberNegativePattern = 1;
+    nfi.CurrencyNegativePattern = 1;
 }
 
 
@@ -50,7 +60,7 @@
                                                 <th>المساهم</th>
 
                                                 <th>اجمالي الصرفيات</th>
-                                               
+
 
                                                 <th>نسبة المستحقة</th>
                                                 <th> </th>
@@ -87,17 +97,17 @@
                                                     </td>
                                                     <td>
                                                         @{ try
-                                                            { @item.ACCH_SPEND }
+                                                            { @item.ACCH_SPEND.ToString("C", nfi) }
                                                         catch
                                                         {
 
                                                         }
                                                         }
                                                     </td>
-                                                  
+
                                                     <td>
                                                         @{ try
-                                                            { @item.ACCH_PERCENT }
+                                                            { @(item.ACCH_PERCENT*100)<span>%</span>}
                                                         catch
                                                         {
 
@@ -106,7 +116,7 @@
                                                     </td>
 
                                                     <td>
-                                                        <a href="~/ACCH_PROJ_BOX_PERCENT/PERCENT_Details/@item.ACC_HOLDER_NO" class="btn btn-success" ><i class="la  la-eye"> </i></a>
+                                                        <a href="~/ACCH_PROJ_BOX_PERCENT/PERCENT_Details/@item.ACC_HOLDER_NO" class="btn btn-success"><i class="la  la-eye"> </i></a>
                                                     </td>
 
 
@@ -155,50 +165,50 @@
 
 <script>
 
-        jQuery(document).ready(function () {
+    jQuery(document).ready(function () {
 
 
         ReportTabl = jQuery('#data-table').DataTable({
 
 
 
-              });
-
-
-
         });
 
 
-        function DeleteConfirmbox(id) {
+
+    });
+
+
+    function DeleteConfirmbox(id) {
 
 
 
-            var result = confirm('هل انت متاكد من عملية الحذف?');
-            if (result) {
-                $.ajax({
-                    type: 'POST',
-                    contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
-                    url: 'delete', // this for calling the web method function in cs code.
-                    data: { id: id },// empid value
+        var result = confirm('هل انت متاكد من عملية الحذف?');
+        if (result) {
+            $.ajax({
+                type: 'POST',
+                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
+                url: 'delete', // this for calling the web method function in cs code.
+                data: { id: id },// empid value
 
-                    success: function (response) {
+                success: function (response) {
 
-                        if (response == "True") {
+                    if (response == "True") {
 
-                            window.location.reload(true);
-                            //window.location.replace("~/reserv/project/index/");
-                        }
-                        else {
-                            alert("error" + "خطاء في البيانات .. لم يتم الحذف");
-                        }
+                        window.location.reload(true);
+                        //window.location.replace("~/reserv/project/index/");
                     }
+                    else {
+                        alert("error" + "خطاء في البيانات .. لم يتم الحذف");
+                    }
+                }
 
 
-                });
+            });
 
-                return false;
-            }
+            return false;
         }
+    }
 
 </script>
 

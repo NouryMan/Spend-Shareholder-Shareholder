@@ -1,5 +1,5 @@
 ﻿
-@model Spend.Api.Models.API_TRANSESALE_INVO_Model
+@model Spend.Models.Helper.DistributionViewModel
 @{
     ViewBag.Title = "توزيع ارباح";
 }
@@ -59,47 +59,32 @@
 
                                 @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
+
                                 <div class="row mb-3">
-                                    <div class="col-md-6">
+
+
+                                    <div class="col-md-4">
                                         <div class="form-floating mb-12 mb-md-0">
-                                            <label for="inputPasswordConfirm">اسم المشروع</label>
-                                            <select id="ProjNo" name="ProjNo" dir="ltr" class="form-control selectpicker " required data-live-search="true">
-                                                <option value="">اختار مشروع</option>
-                                                @foreach (var p in ViewBag.Project)
-                                                {
-                                                    if (p.PROJECT_NO == ViewBag.PROJECT_NO)
-                                                    {
-                                                        <option selected class="themeprimary" value='@p.ID'>
-                                                            @p.PROJECT_AR_NAME
-                                                        </option>
-                                                    }
-                                                    else
-                                                    {
-                                                        <option class="themeprimary" value='@p.ID'>
-                                                            @p.PROJECT_AR_NAME
-                                                        </option>
-                                                    }
+                                            <label for="inputPasswordConfirm">المشروع</label>
+                                            @Html.DropDownList("ProjectId", (SelectList)ViewBag.Project, "اختار المشروع", new { @class = "form-control", @id = "projectDropdown", @required = "required" })
+                                            @Html.ValidationMessageFor(model => model.ProjectId, "", new { @class = "text-danger" })
 
-
-
-                                                }
-
-                                            </select>
-                                          
                                         </div>
                                     </div>
+                                    <div class="col-md-4">
+                                        <div class="form-floating mb-12 mb-md-0">
+                                            <label>العمارة</label>
+                                            @Html.DropDownList("BUILDING_ID", Enumerable.Empty<SelectListItem>(), "اختار عمارة", new { @class = "form-control", @id = "buildingDropdown" })
+                                            @Html.ValidationMessageFor(model => model.BuildingId, "", new { @class = "text-danger" })
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-floating mb-12 mb-md-0">
+                                            <label>الوحدة</label>
+                                            @Html.DropDownList("UnitId", Enumerable.Empty<SelectListItem>(), "اختار وحدة", new { @class = "form-control", @id = "unitDropdown" })
+                                            @Html.ValidationMessageFor(model => model.UnitId, "", new { @class = "text-danger" })
 
-
-                                    <div class="col-md-6">
-                                       
-                                            <div class="form-floating mb-12 mb-md-0">
-                                                <label for="inputPasswordConfirm">مبلغ الصيانة</label>
-                                                @Html.EditorFor(model => model.Mantinc, new { htmlAttributes = new { @class = "form-control", @type = "number", placeholder = "مبلغ التسويق", @required = "required", } })
-                                                @Html.ValidationMessageFor(model => model.Mantinc, "", new { @class = "text-danger" })
-
-                                            </div>
-                                        
-                                       
+                                        </div>
                                     </div>
 
 
@@ -108,53 +93,103 @@
 
 
                                 <div class="row mb-3">
-                                    <div class="col-md-6">
-                                       
-                                            <div class="form-floating mb-12 mb-md-0">
-                                                <label for="inputPasswordConfirm">مبلغ التسويق</label>
-                                                @Html.EditorFor(model => model.Markting, new { htmlAttributes = new { @class = "form-control", @type = "number", placeholder = "مبلغ التسويق", @required = "required", } })
-                                                @Html.ValidationMessageFor(model => model.Mantinc, "", new { @class = "text-danger" })
 
-                                            </div>
-                                        
+                                    <div class="col-md-4">
+                                        <div class="form-floating">
+                                            <label for="inputLastName">الصندوق/بنك</label>
 
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="form-floating mb-12 mb-md-0">
-                                            <label for="inputPasswordConfirm">صرفيات اخرى</label>
-                                            @Html.EditorFor(model => model.OtherCost, new { htmlAttributes = new { @class = "form-control", @type = "number", @placeholder = "صرفيات اخرى", @required = "required" } })
-                                            @Html.ValidationMessageFor(model => model.OtherCost, "", new { @class = "text-danger" })
+                                            @Html.DropDownList("BoxId", (SelectList)ViewBag.box, "اختار الصندوق/بنك", new { @class = "form-control selectpicker", @data_live_search = "true", @required = "required" })
+                                            @Html.ValidationMessageFor(model => model.BoxId, "", new { @class = "text-danger" })
 
                                         </div>
                                     </div>
 
 
+                                    <div class="col-md-4">
+                                        <div class="form-floating">
+                                            <label for="inputLastName"> التاريخ</label>
+                                            @Html.EditorFor(model => model.Date, new { htmlAttributes = new { @class = "form-control", @type = "date", @placeholder = "التاريخ", @required = "required", } })
+                                            @Html.ValidationMessageFor(model => model.Date, "", new { @class = "text-danger" })
 
-                                </div>
-
-                                <div class="row mb-3">
-
-                                    <div class="col-md-6">
-                                        <div class="form-floating mb-12 mb-md-0">
-                                            <label for="inputPasswordConfirm">مبلغ التوزيع على المساهمين</label>
-                                            @Html.EditorFor(model => model.PurCost, new { htmlAttributes = new { @class = "form-control", @type = "number", @placeholder = " مبلغ التوزيع على المساهمين", } })
-                                            @Html.ValidationMessageFor(model => model.PurCost, "", new { @class = "text-danger" })
 
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="form-floating mb-12 mb-md-0">
-                                            <label for="inputPasswordConfirm">البيان</label>
-                                            @Html.EditorFor(model => model.Note, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = " البيان" } })
+
+                                    <div class="col-md-4">
+                                        <div class="form-floating">
+                                            <label for="inputLastName">البيان</label>
+                                            @Html.EditorFor(model => model.Note, new { htmlAttributes = new { @class = "form-control", @type = "text", @placeholder = "البيان" } })
                                             @Html.ValidationMessageFor(model => model.Note, "", new { @class = "text-danger" })
 
+
                                         </div>
                                     </div>
-                                   
+
+
+                                </div>
+
+                                <div class="row mb-3">
+
+                                    <div class="col-md-4">
+                                        <div class="form-floating">
+                                            <label for="inputLastName">  المبلغ</label>
+                                            @Html.EditorFor(model => model.TotalAmount, new { htmlAttributes = new { @class = "form-control", @type = "number", @placeholder = "المبلغ", @required = "required", } })
+                                            @Html.ValidationMessageFor(model => model.TotalAmount, "", new { @class = "text-danger" })
+
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-4">
+                                        <div class="form-floating">
+                                            <label for="inputLastName">اجمالي المستقطع</label>
+                                            <input class="form-control" type="number" value="0.00" disabled id="discount" />
+                                        </div>
+                                    </div>
+                                    <div class="col-md-4">
+                                        <div class="form-floating">
+                                            <label for="inputLastName">الصافي</label>
+                                            <input class="form-control" type="number" value="0.00" disabled id="NetTotal" />
+
+                                        </div>
+                                    </div>
 
                                 </div>
 
 
+
+                                <div class="form-group">
+                                    <div class="col-md-offset-2 col-md-10">
+                                        <button type="button" id="addTrans" class="btn btn-primary">اضافة صرفية</button>
+                                    </div>
+                                </div>
+                                <div class="row mb-0">
+                                    <div class="col-md-12">
+                                        <div class="form-check form-switch col-md-12 p-0">
+                                            <div class="card mb-4 col-md-12">
+                                                <div class="card-body">
+                                                    <table id="parent-table" class="table table-bordered">
+                                                        <thead>
+                                                            <tr>
+                                                                <th>#</th>
+                                                                <th>الحساب</th>
+                                                                <th>نسبة</th>
+                                                               
+                                                                <th>المبلغ </th>
+
+
+
+                                                                <th></th>
+                                                            </tr>
+                                                        </thead>
+                                                        <tbody id="Translist">
+                                                       
+                                                        </tbody>
+                                                    </table>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
 
 
 
@@ -213,30 +248,109 @@
 
 
 <script>
-    function getAcc_NO() {
 
+      $(document).ready(function () {
+           var today = moment().format('YYYY-MM-DD');
+          $('#Date').val(today);
 
-
-        var id = $('#ACC_PARENT').val();
-        $('#parent-Acc').val(id);
-
-        var ajaxMethodUrl = "getAcc_NO?parent_id=" + id;
-
-        $.ajax({
-            async: false,
-            cache: true,
-            type: "Get",
-            url: ajaxMethodUrl,
-            success: function (data) {
-                $('#Acc_NOString').val(data);
-
-
-            },
-
-
+          $('#projectDropdown').change(function () {
+            var projectId = $(this).val();
+            $('#buildingDropdown').empty();
+            $('#unitDropdown').empty();
+            if (projectId) {
+                $.getJSON('@Url.Action("GetByParintId", "AcchProject")', { Id: projectId }, function (data) {
+                    var items = '<option>اختار عمارة </option>';
+                    $.each(data, function (i, building) {
+                        items += "<option value='" + building.Value + "'>" + building.Text + "</option>";
+                    });
+                    $('#buildingDropdown').html(items);
+                });
+            }
         });
-    }
+
+        $('#buildingDropdown').change(function () {
+            var buildingId = $(this).val();
+            $('#unitDropdown').empty();
+            if (buildingId) {
+                $.getJSON('@Url.Action("GetByParintId", "AcchProject")', { Id: buildingId }, function (data) {
+                    var items = '<option>اختار وحدة</option>';
+                    $.each(data, function (i, unit) {
+                        items += "<option value='" + unit.Value + "'>" + unit.Text + "</option>";
+                    });
+                    $('#unitDropdown').html(items);
+                });
+            }
+        });
 
 
+     var index = 0;
+$('#addTrans').click(function () {
+    var newItem = `<tr class="form-group">
+              <td>${index + 1}</td>
+              <td>
+                  <select id="DistributionDetailsViewModel-${index}-AccHolderId" name="DistributionDetailsViewModel[${index}].AccHolderId" dir="ltr" class="form-control selectpicker" data-live-search="true">
+                    <option value="">اختار لحساب </option>
+                    @foreach (var p in ViewBag.AccHolder)
+                    {
+                        <option class="themeprimary" value="@p.ACC_HOLDER_NO" data-balance="@p.BALANCE">@p.ACC_HOLDER_NAME</option>
+                    }
+                 </select>
+              </td>
+              <td><input class="form-control percentage" type="number" name="DistributionDetailsViewModel[${index}].percentage" id="DistributionDetailsViewModel_${index}_percentage" /></td>
+              <td><input class="form-control Amount" type="number" name="DistributionDetailsViewModel[${index}].Amount" id="DistributionDetailsViewModel_${index}_Amount" /></td>
+              <td><button type="button" class="btn btn-danger removeB">حذف</button></td>
+          </tr>`;
+
+    $('#Translist').append(newItem);
+
+    var select = $('#DistributionDetailsViewModel-' + index + '-AccHolderId');
+    select.selectpicker(); // Initialize the selectpicker
+    select.selectpicker('refresh'); // Refresh the selectpicker
+    index++;
+    updateTotal();
+});
+
+$('#Translist').on('click', '.removeB', function () {
+    $(this).closest('.form-group').remove();
+    updateTotal();
+});
+
+$(document).on('input', '.Amount', function (e) {
+    var index = $(this).attr('id').match(/\d+/)[0]; // استخراج رقم index من id
+    var total = parseFloat($('#TotalAmount').val());
+    var amount = parseFloat($(this).val()) || 0;
+    var percentage = (amount / total) * 100;
+    $('#DistributionDetailsViewModel_' + index + '_percentage').val(percentage); // استخدام val بدلاً من text
+    updateTotal();
+});
+
+$(document).on('input', '.percentage', function (e) {
+    var index = $(this).attr('id').match(/\d+/)[0]; // استخراج رقم index من id
+    var total = parseFloat($('#TotalAmount').val());
+    var percentage = parseFloat($(this).val()) || 0;
+    var amount = (percentage / 100) * total;
+    $('#DistributionDetailsViewModel_' + index + '_Amount').val(amount); // استخدام val بدلاً من text
+    updateTotal();
+});
+
+
+        function  updateTotal(){
+            var amount = 0;
+            var total = parseFloat( $('#TotalAmount').val());
+            $('.Amount').each(function () {
+               var value = parseFloat($(this).val()) || 0;
+              if (!isNaN(value)) {
+                  amount += value;
+                }
+                            });
+
+
+            $('#discount').val(amount.toFixed(2));
+            $('#NetTotal').val((total - amount).toFixed(2));
+
+             }
+
+
+    });
 
 </script>
