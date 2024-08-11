@@ -26,7 +26,7 @@ namespace Spend.Models
         public int TARGET_PROJ { get; set; }
 
         [Column(TypeName = "VARCHAR2"), StringLength(400, ErrorMessage = "طول الحقل كبير جداً")]
-        public string PROJECT_NAME { get; set; }
+        public string PROJECT_AR_NAME { get; set; }
 
         [RegularExpression("^[0-9.]*$", ErrorMessage = "هذا الحقل رقم ")]
         public double SPENDING { get; set; }

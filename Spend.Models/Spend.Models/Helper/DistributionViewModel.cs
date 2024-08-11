@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Spend.Models.Helper
 {
-    public class AcchOpBoxModelView
+    public class DistributionViewModel
     {
         [Required]
         public int ProjectId { get; set; }
@@ -15,25 +15,22 @@ namespace Spend.Models.Helper
         public int? UnitId { get; set; }
         [Required]
         public int BoxId { get; set; }
-        [Required]
-        public int OpTypeId { get; set; }
-        [Required]
-        public int OpActionTypeId { get; set; }
+       
         [Required]
         public DateTime Date { get; set; }
         [Required]
         public double TotalAmount { get; set; }
-        public string NOTE { get; set; }
-        public List<AcchOpBoxDetailsModelView> AcchOpBoxDetailsModelView { get; set; }
+        public string Note { get; set; }
+        public List<DistributionDetailsViewModel> DistributionDetailsViewModel { get; set; }
     }
 
-    public class AcchOpBoxDetailsModelView
+    public class DistributionDetailsViewModel
     {
+        [Required]
         public long AccHolderId { get; set; }
+        [Required]
         public double percentage { get; set; }
-        public bool IsPercentage { get; set; }
-        public double Balance { get; set; }
-  
+        [Required]
         public double Amount { get; set; }
     }
 

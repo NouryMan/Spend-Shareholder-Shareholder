@@ -120,7 +120,7 @@ namespace Spend.Business
 
         public void Create(ACCH_OPBOXTBL_Model OpBox)
         {
-            if (OpBox.ACTION_TYPE == 1 && OpBox.ACTION_TYPE == 4 && OpBox.ACTION_TYPE == 6)  // اذا كانت  تشغلية ليست خاصة او غير تشغلية
+            if (OpBox.ACTION_TYPE == 1 || OpBox.ACTION_TYPE == 4 || OpBox.ACTION_TYPE == 6)  // اذا كانت  تشغلية ليست خاصة او غير تشغلية
             {
                 OpBox.OUT = false;
             }
@@ -438,7 +438,9 @@ namespace Spend.Business
         }
 
 
-        public bool Distribution(API_TRANSESALE_INVO_Model Distrib)
+
+
+        public bool Distribution(DistributionViewModel Distribution)
         {
 
             using (TransactionScope tran = new TransactionScope())
@@ -450,7 +452,7 @@ namespace Spend.Business
                 {
 
 
-                    List<ACCH_OPBOXTBL_Model> list = new List<ACCH_OPBOXTBL_Model>();
+                    List<ACCH_OPBOXTBL_Model> aCCH_OPBOXTBL_s = new List<ACCH_OPBOXTBL_Model>();
                     ACC_HOLDERTBL_Business b = new ACC_HOLDERTBL_Business();
                     decimal UnderNo = 0;
                     try { UnderNo = db.MAX_UNDER_OPV_Model.Where(x => x.NAM == "under_no").FirstOrDefault().MAX_NO; } catch { UnderNo = 1; }
@@ -461,104 +463,88 @@ namespace Spend.Business
                     CENTERSTBL_Business center_b = new CENTERSTBL_Business();
                     //  var Box = center_b.GeCenterAccForProj(Distrib.ProjNo).INCOME_BOX.Value;
 
-                    var Box = 1;
-
-
-                    var ProjNo = Distrib.ProjNo;
-
-
-                    var Note = Distrib.Note;
+                    var Box = Distribution.BoxId;
+                    var ProjId = Distribution.ProjectId;
+                    var BuildingId = Distribution.BuildingId;
+                    var UnitId = Distribution.UnitId;
+                    var Note = Distribution.Note;
+                    var Date = Distribution.Date;
 
                     //ترحيل مبالغ الصيانة والتسويق والحسابات الاخرى///////////////////////////
 
                     ACC_HOLDERTBL_Business acch_b = new ACC_HOLDERTBL_Business();
-
-                    if (Distrib.Mantinc > 0)
+                    if (Distribution.DistributionDetailsViewModel != null)
                     {
-                        var acch = acch_b.getall().Where(x => x.ACCH_TYPE == 2).FirstOrDefault();
-                        if (acch == null)
+                        foreach (var item in Distribution.DistributionDetailsViewModel)
                         {
-                            throw new Exception("لايوجد حساب صيانة للمشروع");
-                        }
-                        var obj = AddOtherAccH(acch.ACC_HOLDER_NO, 6, acch.PARENT_ACCH.Value, Distrib.Mantinc, ProjNo, UnderNo, 1, Note, OpNo++, Box, SCRIP_NO++);
-                        list.Add(obj);
-                    }
-                    if (Distrib.Markting > 0)
-                    {
+                            Create(AddOtherAccH(item.AccHolderId, 6, item.Amount, ProjId, BuildingId, UnitId, UnderNo, 1, Note, OpNo++, Box, SCRIP_NO++, Date));
 
-                        var acch = acch_b.getall().Where(x => x.ACCH_TYPE == 3).FirstOrDefault();
-                        if (acch == null)
-                        {
-                            throw new Exception("لايوجد حساب تسويق للمشروع");
                         }
-                        list.Add(AddOtherAccH(acch.ACC_HOLDER_NO, 6, acch.PARENT_ACCH.Value, Distrib.Mantinc, ProjNo, UnderNo, 1, Note, OpNo++, Box, SCRIP_NO++));
                     }
-                    if (Distrib.OtherCost > 0)
-                    {
 
-                        var acch = acch_b.getall().Where(x => x.ACCH_TYPE == 4).FirstOrDefault();
-                        if (acch == null)
-                        {
-                            throw new Exception("لايوجد حساب للمصروفات الاخرى للمشروع");
-                        }
-                        list.Add(AddOtherAccH(acch.ACC_HOLDER_NO, 6, acch.PARENT_ACCH.Value, Distrib.Mantinc, ProjNo, UnderNo, 1, Note, OpNo++, Box, SCRIP_NO++));
-                    }
+
                     /////////////
 
-
-                    double TotalCost = Distrib.PurCost;
-
-                    ACCH_BALANCE_SUMMARYV_Business BS_b = new ACCH_BALANCE_SUMMARYV_Business();
-                    var Balnce = BS_b.GetPyProjNo(ProjNo);
-
-                    double TotalIncome = Balnce.Sum(x => x.INCOME);
-                    double TotallSpend = Balnce.Sum(x => x.SPENDING);
-                    double WorkCost = 0;
-                    ACCH_PROJ_BOX_PERCENTTBL_Business aCCH_PROJ_BOX_PERCENTTBL_B = new ACCH_PROJ_BOX_PERCENTTBL_Business();
-                    var acchList = aCCH_PROJ_BOX_PERCENTTBL_B.GetAllPyProject(ProjNo);
-
-                    if ((TotalCost + TotalIncome) - TotallSpend > 0)// add workpersent
+                    double AmountDistribution = 0;
+                    try {
+                         AmountDistribution = Distribution.DistributionDetailsViewModel.Sum(x => x.Amount);
+                    }
+                    catch
                     {
 
-                        var acch = acchList.Where(x => x.ACC_HOLDERTBL_Model.ACCH_TYPE == 3).FirstOrDefault();
-                        if (acch != null)
+                    }
+                  
+
+                    double TotalAmountDistributionForAccholder = Distribution.TotalAmount - AmountDistribution;
+                    if (TotalAmountDistributionForAccholder > 0)
+                    {
+                        ACCH_BALANCE_SUMMARYV_Business BS_b = new ACCH_BALANCE_SUMMARYV_Business();
+                        var Balnce = BS_b.GetPyProjNo(ProjId);
+
+                        double TotalIncome = Balnce.Sum(x => x.INCOME);
+                        double TotallSpend = Balnce.Sum(x => x.SPENDING);
+
+                        double WorkCost = 0;
+                        ACCH_PROJ_BOX_PERCENTTBL_Business aCCH_PROJ_BOX_PERCENTTBL_B = new ACCH_PROJ_BOX_PERCENTTBL_Business();
+                        var acchList = aCCH_PROJ_BOX_PERCENTTBL_B.GetAllPyProject(ProjId);
+
+                        //if ((TotalCost + TotalIncome) - TotallSpend > 0)// add workpersent
+                        //{
+
+                        //    var acch = acchList.Where(x => x.ACC_HOLDERTBL_Model.ACCH_TYPE == 3).FirstOrDefault();
+                        //    if (acch != null)
+                        //    {
+                        //        if (TotalIncome >= TotallSpend)
+                        //        {
+                        //            WorkCost = TotalCost * acch.INCOME_PERCENT;
+                        //        }
+                        //        else
+                        //        {
+                        //            WorkCost = ((TotalCost + TotalIncome) - TotallSpend) * acch.INCOME_PERCENT;
+                        //        }
+
+
+                        //        TotalCost = TotalCost - WorkCost;
+
+
+                        //        list.Add(AddOtherAccH(acch.ACC_HOLDER_NO, 6, acch.PARENT_ACCH, WorkCost, ProjNo, UnderNo, 1, Note, OpNo++, Box, SCRIP_NO++));
+                        //    }
+                        //}
+
+
+                        foreach (var item in acchList)//add acc holder persent
                         {
-                            if (TotalIncome >= TotallSpend)
-                            {
-                                WorkCost = TotalCost * acch.INCOME_PERCENT;
-                            }
-                            else
-                            {
-                                WorkCost = ((TotalCost + TotalIncome) - TotallSpend) * acch.INCOME_PERCENT;
-                            }
 
+                            double Amount = TotalAmountDistributionForAccholder * item.INCOME_PERCENT * item.ACCH_PROJ_PERCENTTBL_Model.ACCH_PERCENT;
 
-                            TotalCost = TotalCost - WorkCost;
+                            Create(AddOtherAccH(item.ACC_HOLDER_NO, 6, Amount, ProjId, BuildingId, UnitId, UnderNo, 1, Note, OpNo++, Box, SCRIP_NO++, Date));
 
-
-                            list.Add(AddOtherAccH(acch.ACC_HOLDER_NO, 6, acch.PARENT_ACCH, WorkCost, ProjNo, UnderNo, 1, Note, OpNo++, Box, SCRIP_NO++));
                         }
                     }
-
-
-                    foreach (var item in acchList.Where(x => x.ACC_HOLDERTBL_Model.ACCH_TYPE != 2 && x.ACC_HOLDERTBL_Model.ACCH_TYPE != 3 && x.ACC_HOLDERTBL_Model.ACCH_TYPE != 4))//add acc holder persent
-                    {
-
-                        double Cost = TotalCost * item.INCOME_PERCENT * item.ACCH_PROJ_PERCENTTBL_Model.ACCH_PERCENT;
-                        var obj = AddOtherAccH(item.ACC_HOLDER_NO, 6, item.PARENT_ACCH, Cost, ProjNo, UnderNo, 1, Note, OpNo++, Box, SCRIP_NO++);
-                        list.Add(obj);
-
-
-                    }
-
-                    db.ACCH_OPBOXTBL_Model.AddRange(list);
-                    return_value = db.SaveChanges();
-
-                    if (return_value > 0)
-                    {
+                 
                         tran.Complete();
                         return true;
-                    }
+                    
 
                 }
                 catch (Exception ex) { throw new Exception(ex.Message); }
@@ -572,13 +558,55 @@ namespace Spend.Business
 
 
 
-        public ACCH_OPBOXTBL_Model AddOtherAccH(long AcchNo, int Action_Type, long ParentAcch, double Cost, int ProjectNo, decimal UnderNo, int OpType, string Note, double OpNo, int Box, double SCRIP_NO)
+        public ACCH_OPBOXTBL_Model AddOtherAccH(long AcchNo, int Action_Type, double Cost, int ProjectNo,int? buildingId,int? unitId, decimal UnderNo, int OpType, string Note, double OpNo, int Box, double SCRIP_NO,DateTime date)
         {
 
 
             ACCH_OPBOXTBL_Model aCCH_OPBOXTBL_Model = new ACCH_OPBOXTBL_Model();
 
             if (Action_Type == 1 && Action_Type == 4 && Action_Type == 6)
+            {
+                aCCH_OPBOXTBL_Model.OUT = false;
+            }
+            else
+            {
+                aCCH_OPBOXTBL_Model.OUT = true;
+            }
+            aCCH_OPBOXTBL_Model.DATE_M = date;
+            // aCCH_OPBOXTBL_Model.INCOME = 0;
+            aCCH_OPBOXTBL_Model.UNDER_NO = UnderNo;
+            //aCCH_OPBOXTBL_Model.DATE_H = OpBox.DATE_H;
+           // aCCH_OPBOXTBL_Model.PARENT_ACCH = ParentAcch;
+            aCCH_OPBOXTBL_Model.ACC_HOLDER_NO = AcchNo;
+            aCCH_OPBOXTBL_Model.ACTION_TYPE = Action_Type;
+            aCCH_OPBOXTBL_Model.NOTE = Note;
+            // aCCH_OPBOXTBL_Model.OLD_VAL = OpBox.OLD_VAL;
+            aCCH_OPBOXTBL_Model.OP_NO = OpNo;
+            aCCH_OPBOXTBL_Model.OP_TYPE = OpType;
+
+            aCCH_OPBOXTBL_Model.TARGET_PROJ = ProjectNo;
+            aCCH_OPBOXTBL_Model.BUILDING_ID = buildingId;
+            aCCH_OPBOXTBL_Model.UNIT_ID = unitId;
+            aCCH_OPBOXTBL_Model.SOURCE_BOX = Box;
+            aCCH_OPBOXTBL_Model.SCRIP_NO = SCRIP_NO;
+
+
+            aCCH_OPBOXTBL_Model.INCOME = Cost;
+          
+
+            return aCCH_OPBOXTBL_Model;
+
+
+
+
+        }
+        public ACCH_OPBOXTBL_Model AddOtherAccH(long AcchNo, int Action_Type, long ParentAcch, double Cost, int ProjectNo, decimal UnderNo, int OpType, string Note, double OpNo, int Box, double SCRIP_NO)
+        {
+
+
+            ACCH_OPBOXTBL_Model aCCH_OPBOXTBL_Model = new ACCH_OPBOXTBL_Model();
+
+            if (Action_Type == 1 || Action_Type == 4 || Action_Type == 6)
             {
                 aCCH_OPBOXTBL_Model.OUT = false;
             }
@@ -612,7 +640,6 @@ namespace Spend.Business
 
 
         }
-
 
 
         public int CreateSpendScript(ACCH_OPBOXTBL_Model item)

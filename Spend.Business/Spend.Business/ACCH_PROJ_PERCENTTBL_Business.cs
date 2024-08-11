@@ -63,44 +63,47 @@ namespace Spend.Business
                     try
                     {
                         db.ACCH_PROJ_PERCENTTBL_Model.Add(AddOtherAccH(2, item));
-                    return_value = db.SaveChanges();
-                }
-                catch { }
+                        return_value = db.SaveChanges();
+                    }
+                    catch { }
 
-                try { db.ACCH_PROJ_PERCENTTBL_Model.Add(AddOtherAccH(3, item)); 
-                    return_value = db.SaveChanges();
+                    try
+                    {
+                        db.ACCH_PROJ_PERCENTTBL_Model.Add(AddOtherAccH(3, item));
+                        return_value = db.SaveChanges();
                     }
                     catch { }
                     try
                     {
                         db.ACCH_PROJ_PERCENTTBL_Model.Add(AddOtherAccH(4, item));
-                    return_value = db.SaveChanges();
-                }
-                catch { }
+                        return_value = db.SaveChanges();
+                    }
+                    catch { }
                     try
                     {
                         db.ACCH_PROJ_PERCENTTBL_Model.Add(AddOtherAccH(5, item));
-                    return_value = db.SaveChanges();
-            } catch { }
+                        return_value = db.SaveChanges();
+                    }
+                    catch { }
 
-            ///////
+                    ///////
 
 
-            foreach (var ACCH_BAL in ACCH_BALANCE.GroupBy(x => x.ACC_HOLDERTBL_Model.PARENT_ACCH))
+                    foreach (var ACCH_BAL in ACCH_BALANCE.GroupBy(x => x.ACC_HOLDERTBL_Model.PARENT_ACCH))
                     {
                         ACCH_PROJ_PERCENTTBL_Model ACCH_PROJ_PERCENTTBL = new ACCH_PROJ_PERCENTTBL_Model();
 
                         ACCH_PROJ_PERCENTTBL.ACTIVE = true;
                         ACCH_PROJ_PERCENTTBL.ACC_HOLDER_NO = ACCH_BAL.FirstOrDefault().ACC_HOLDERTBL_Model.PARENT_ACCH.Value;
-                        ACCH_PROJ_PERCENTTBL.ACCH_INCOME =item.ACCH_INCOME ;
-                        ACCH_PROJ_PERCENTTBL.ACCH_INCOMEPER =item.ACCH_INCOMEPER ;
-                        ACCH_PROJ_PERCENTTBL.ACCH_PERCENT = ACCH_BAL.Sum(y=>y.SPENDING)/ totalspand;
+                        ACCH_PROJ_PERCENTTBL.ACCH_INCOME = item.ACCH_INCOME;
+                        ACCH_PROJ_PERCENTTBL.ACCH_INCOMEPER = item.ACCH_INCOMEPER;
+                        ACCH_PROJ_PERCENTTBL.ACCH_PERCENT = ACCH_BAL.Sum(y => y.SPENDING) / totalspand;
                         ACCH_PROJ_PERCENTTBL.ACCH_SPEND = ACCH_BAL.Sum(y => y.SPENDING);
                         ACCH_PROJ_PERCENTTBL.COMMIT_PERCENT = ACCH_BAL.Sum(y => y.SPENDING) / totalspand;
-                        ACCH_PROJ_PERCENTTBL.NOTE =item.NOTE ;
+                        ACCH_PROJ_PERCENTTBL.NOTE = item.NOTE;
                         ACCH_PROJ_PERCENTTBL.PROJ_NO = item.PROJ_NO;
 
-                        foreach(var ACCH in ACCH_BAL)
+                        foreach (var ACCH in ACCH_BAL)
                         {
                             ACCH_PROJ_BOX_PERCENTTBL_Model BOX_PERCENTT = new ACCH_PROJ_BOX_PERCENTTBL_Model();
 
@@ -110,13 +113,13 @@ namespace Spend.Business
                             BOX_PERCENTT.CR_DATE = DateTime.Now;
                             BOX_PERCENTT.INCOME_BOX = item.BOX_NO.Value;
                             BOX_PERCENTT.BOX_INCOME = item.BOX_NO.Value;
-                            BOX_PERCENTT.INCOME_PERCENT =ACCH.SPENDING / ACCH_PROJ_PERCENTTBL.ACCH_SPEND;
+                            BOX_PERCENTT.INCOME_PERCENT = ACCH.SPENDING / ACCH_PROJ_PERCENTTBL.ACCH_SPEND;
                             BOX_PERCENTT.NOTE = item.NOTE;
-                           // BOX_PERCENTT.PARENT_BOX = ;
-                           // BOX_PERCENTT.PARENT_PROJ = ;
-                            BOX_PERCENTT.PROJ_NO =item.PROJ_NO ;
-                           // BOX_PERCENTT.SOURCE_PROJ = ;
-                            BOX_PERCENTT.BOX_NO =item.BOX_NO.Value ;
+                            // BOX_PERCENTT.PARENT_BOX = ;
+                            // BOX_PERCENTT.PARENT_PROJ = ;
+                            BOX_PERCENTT.PROJ_NO = item.PROJ_NO;
+                            // BOX_PERCENTT.SOURCE_PROJ = ;
+                            BOX_PERCENTT.BOX_NO = item.BOX_NO.Value;
                             BOX_PERCENTT.SPEND_COST = ACCH.SPENDING;
                             BOX_PERCENTT.PARENT_PERCENT = ACCH_PROJ_PERCENTTBL.ACCH_PERCENT;
                             BOX_PERCENTT.SPEND_PERCENT = ACCH.SPENDING / ACCH_PROJ_PERCENTTBL.ACCH_SPEND;
@@ -126,7 +129,7 @@ namespace Spend.Business
                         }
 
                         db.ACCH_PROJ_PERCENTTBL_Model.Add(ACCH_PROJ_PERCENTTBL);
-                        return_value= db.SaveChanges();
+                        return_value = db.SaveChanges();
                     }
                     if (return_value > 0)
                     {
@@ -143,10 +146,10 @@ namespace Spend.Business
         }
 
 
-        public ACCH_PROJ_PERCENTTBL_Model AddOtherAccH(int type, ACCH_PROJ_PERCENTTBL_Model item )
+        public ACCH_PROJ_PERCENTTBL_Model AddOtherAccH(int type, ACCH_PROJ_PERCENTTBL_Model item)
         {
 
-            double persent= 0;
+            double persent = 0;
 
             switch (type)
             {
@@ -178,7 +181,7 @@ namespace Spend.Business
             }
 
             ACC_HOLDERTBL_Business acch_b = new ACC_HOLDERTBL_Business();
-            
+
             var acch = acch_b.getall().Where(x => x.ACCH_TYPE == type);
 
             ACCH_PROJ_PERCENTTBL_Model ACCH_Maint = new ACCH_PROJ_PERCENTTBL_Model();
@@ -215,7 +218,7 @@ namespace Spend.Business
 
 
             return ACCH_Maint;
-         
+
 
 
 
