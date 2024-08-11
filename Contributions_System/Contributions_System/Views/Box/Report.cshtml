@@ -90,37 +90,27 @@
                                     </div>
                                     <div class="col-md-2 col-sm-6  ">
 
-                                        <select id="Project" name="Project" dir="ltr" class="form-control selectpicker " data-live-search="true">
-                                            <option value="0">كل المشاريع</option>
-                                            @foreach (var p in ViewBag.Project)
-                                            {
-                                                if (p.ID == ViewBag.PROJECT_NO)
-                                                {
-                                                    <option selected class="themeprimary" value='@p.ID'>
-                                                        @p.PROJECT_AR_NAME
-                                                    </option>
-                                                }
-                                                else
-                                                {
-                                                    <option class="themeprimary" value='@p.ID'>
-                                                        @p.PROJECT_AR_NAME
-                                                    </option>
-                                                }
+                                        @Html.DropDownList("Project", (SelectList)ViewBag.proj, "اختار المشروع", new { @class = "form-control project-select", @data_index = "0", @id = "projectDropdown" })
 
+                                    </div>
+                                    <div class="col-md-2 col-sm-6  ">
 
+                                        @Html.DropDownList("buildingId", (SelectList)ViewBag.building, "اختار عمارة", new { @class = "form-control building-select", @data_index = "0", @id = "buildingDropdown" })
 
-                                            }
+                                    </div>
+                                    <div class="col-md-1 col-sm-6  ">
 
-                                        </select>
+                                        @Html.DropDownList("unitId", (SelectList)ViewBag.unit, "اختار وحدة", new { @class = "form-control unit-select", @data_index = "0", @id = "unitDropdown" })
+
                                     </div>
 
                                     <div class="col-md-2 col-sm-6  ">
 
-                                        <input type="date" id="FromDate" name="FromDate" />
+                                        <input type="date" class="form-control" id="FromDate" name="FromDate" />
                                     </div>
                                     <div class="col-md-2 col-sm-6  ">
 
-                                        <input type="date" id="ToDate" name="ToDate" />
+                                        <input type="date" class="form-control" id="ToDate" name="ToDate" />
                                     </div>
 
 
@@ -321,6 +311,35 @@
 
 
         jQuery(document).ready(function () {
+
+     $('#projectDropdown').change(function () {
+    var projectId = $(this).val();
+    $('#buildingDropdown').empty();
+    $('#unitDropdown').empty();
+    if (projectId) {
+        $.getJSON('@Url.Action("GetByParintId", "AcchProject")', { Id: projectId }, function (data) {
+            var items = '<option>اختار عمارة </option>';
+            $.each(data, function (i, building) {
+                items += "<option value='" + building.Value + "'>" + building.Text + "</option>";
+            });
+            $('#buildingDropdown').html(items);
+        });
+    }
+});
+
+     $('#buildingDropdown').change(function () {
+    var buildingId = $(this).val();
+    $('#unitDropdown').empty();
+    if (buildingId) {
+        $.getJSON('@Url.Action("GetByParintId", "AcchProject")', { Id: buildingId }, function (data) {
+            var items = '<option>اختار وحدة</option>';
+            $.each(data, function (i, unit) {
+                items += "<option value='" + unit.Value + "'>" + unit.Text + "</option>";
+            });
+            $('#unitDropdown').html(items);
+        });
+    }
+});
 
              var FromDate = moment('@ViewBag.FromDate',"YYYY-MM-DD").format('YYYY-MM-DD');
             var ToDate = moment('@ViewBag.ToDate',"YYYY-MM-DD").format('YYYY-MM-DD');

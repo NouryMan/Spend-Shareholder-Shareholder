@@ -74,7 +74,7 @@
                                     <div class="col-md-4">
                                         <div class="form-floating mb-12 mb-md-0">
                                             <label>العمارة</label>
-                                            @Html.DropDownList("BUILDING_ID", Enumerable.Empty<SelectListItem>(), "اختار عمارة", new { @class = "form-control", @id = "buildingDropdown" })
+                                            @Html.DropDownList("BuildingId", Enumerable.Empty<SelectListItem>(), "اختار عمارة", new { @class = "form-control", @id = "buildingDropdown" })
                                             @Html.ValidationMessageFor(model => model.BuildingId, "", new { @class = "text-danger" })
                                         </div>
                                     </div>

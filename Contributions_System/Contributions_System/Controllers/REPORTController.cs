@@ -11,7 +11,7 @@ namespace Contributions_System.Controllers
     public class REPORTController : Controller
     {
         // GET: REPORT
-        public ActionResult Report()
+        public ActionResult AccountsRevenueAndExpenses()
         {
             ACCH_BALANCE_SUMMARYV_Business b = new ACCH_BALANCE_SUMMARYV_Business();
             var model = b.GetAll().GroupBy(x => x.ACC_HOLDER_NO);
@@ -19,7 +19,7 @@ namespace Contributions_System.Controllers
             return View(model);
         }
 
-        public ActionResult Report2(int? id)
+        public ActionResult AccountsRevenueAndExpensesByProject(int? id)
         {
             ACC_HOLDERTBL_Business AccHolderB = new ACC_HOLDERTBL_Business();
             ViewBag.AccHolder = AccHolderB.getall();
@@ -31,10 +31,10 @@ namespace Contributions_System.Controllers
             return View(model);
         }
 
-         public ActionResult Report3(int? id)
+         public ActionResult Project(int? id)
         {
-            PROJECTTBL_Business projB = new PROJECTTBL_Business();
-            ViewBag.proj = projB.getall();
+            ACCH_PROJECT_Business projB = new ACCH_PROJECT_Business();
+            ViewBag.Project = projB.GetAllAsync(1).Result;
 
             ACCH_BALANCE_SUMMARYV_Business b = new ACCH_BALANCE_SUMMARYV_Business();
             var model = b.GetAll().Where(x => x.TARGET_PROJ==id);
@@ -43,7 +43,7 @@ namespace Contributions_System.Controllers
             return View(model);
         }
 
-        public ActionResult Report4()
+        public ActionResult Capital ()
         {
            
             ACCH_OPBOXTBL_Business b = new ACCH_OPBOXTBL_Business();
@@ -53,7 +53,7 @@ namespace Contributions_System.Controllers
             return View(model);
         }
 
-        public ActionResult Report5(long? AccounNo, int? Project,  DateTime? FromDate, DateTime? ToDate)
+        public ActionResult AccountStatement(long? AccounNo, int? Project, int? buildingId, int? unitId, DateTime? FromDate, DateTime? ToDate)
         {
             ViewBag.Acc = AccounNo;
             ViewBag.PROJECT_NO = Project;
@@ -64,18 +64,23 @@ namespace Contributions_System.Controllers
             ACC_HOLDERTBL_Business AllAcc_b = new ACC_HOLDERTBL_Business();
             ViewBag.AllAcc = AllAcc_b.getall();
 
-            PROJECTTBL_Business pROJECTTBL = new PROJECTTBL_Business();
-            ViewBag.Project = pROJECTTBL.getall();
+            ACCH_PROJECT_Business proj_b = new ACCH_PROJECT_Business();
+            ViewBag.proj = new SelectList(proj_b.GetAllAsync(1).Result, "ID", "PROJECT_AR_NAME", Project);
+            ViewBag.building = new SelectList(proj_b.GetProjectListByParentIdAsync(Project).Result, "ID", "PROJECT_AR_NAME", buildingId);
+            ViewBag.unit = new SelectList(proj_b.GetProjectListByParentIdAsync(buildingId).Result, "ID", "PROJECT_AR_NAME", unitId);
+
+
+
 
             ACCH_OPBOXTBL_Business b = new ACCH_OPBOXTBL_Business();
 
 
-            var model = b.Search(AccounNo, Project, FromDate, ToDate);
+            var model = b.Search(AccounNo, Project, buildingId, unitId, FromDate, ToDate);
 
             //try { model.AddRange(b.SearchByParent(AccounNo, Project, Transe, FromDate, ToDate)); } catch { }
             try
             {
-                var OpenBalnce = b.OpenBalnce(AccounNo.Value, Project, FromDate.Value);
+                var OpenBalnce = b.OpenBalnce(AccounNo.Value, Project, buildingId, unitId, FromDate.Value);
                 ViewBag.SPEND_COST = Convert.ToDouble((OpenBalnce.Sum(x => x.SPEND_COST)).ToString("0.##"));
                 ViewBag.INCOME = Convert.ToDouble((OpenBalnce.Sum(x => x.INCOME)).ToString("0.##"));
 

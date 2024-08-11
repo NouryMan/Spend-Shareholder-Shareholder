@@ -915,11 +915,11 @@
     <Content Include="Views\ACCH_PROJ_BOX_PERCENT\Create.cshtml" />
     <Content Include="Views\ACCH_OPBOXT\TranseSaleInv.cshtml" />
     <Content Include="Views\ACCH_OPBOXT\Trans.cshtml" />
-    <Content Include="Views\REPORT\Report.cshtml" />
-    <Content Include="Views\REPORT\Report2.cshtml" />
-    <Content Include="Views\REPORT\Report3.cshtml" />
-    <Content Include="Views\REPORT\Report4.cshtml" />
-    <Content Include="Views\REPORT\Report5.cshtml" />
+    <Content Include="Views\REPORT\AccountsRevenueAndExpenses.cshtml" />
+    <Content Include="Views\REPORT\AccountsRevenueAndExpensesByProject.cshtml" />
+    <Content Include="Views\REPORT\Project.cshtml" />
+    <Content Include="Views\REPORT\Capital.cshtml" />
+    <Content Include="Views\REPORT\AccountStatement.cshtml" />
     <Content Include="Views\Default\Index.cshtml" />
     <Content Include="Views\Default\create.cshtml" />
     <Content Include="Views\Default\f.cshtml" />

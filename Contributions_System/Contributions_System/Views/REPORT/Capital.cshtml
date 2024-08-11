@@ -1,10 +1,9 @@
-﻿@model IEnumerable<Spend.Models.ACCH_BALANCE_SUMMARYV_Model>
+﻿@model IEnumerable<IEnumerable<Spend.Models.ACCH_OPBOXTBL_Model>>
 @using System.Globalization;
 @{
     ViewBag.Title = "تقرير المساهمين  ";
 
     int i = 1;
-
     NumberFormatInfo nfi = new CultureInfo("en-US", false).NumberFormat;
     nfi.CurrencyDecimalDigits = 2;
     nfi.NumberDecimalDigits = 2;
@@ -54,30 +53,7 @@
 
                         <div class="form-content">
 
-                            @using (Html.BeginForm())
-                            {
 
-
-
-                                <div class=" row input-group ">
-
-                                    <div class="col-md-4 col-sm-6  ">
-
-                                        <select id="id" name="id" dir="ltr" class="form-control selectpicker " data-live-search="true">
-                                            <option value="">اختار المساهم</option>
-                                            @foreach (var p in ViewBag.AccHolder)
-                                            {
-                                                <option class="themeprimary" value="@p.ACC_HOLDER_NO" selected> @p.ACC_HOLDER_NAME</option>
-                                            }
-
-                                        </select>
-                                    </div>
-
-                                    <div class="col-md-2 nopadding">
-                                        <button class="btn btn-primary" type="submit"><i class="la la-search"></i></button>
-                                    </div>
-                                </div>
-                            }
 
 
                             @if (Model != null)
@@ -88,10 +64,14 @@
                                         <thead>
                                             <tr>
                                                 <th># </th>
-                                                <th>المشروع</th>
-                                                <th>الايرادات</th>
-                                                <th>الصرفيات </th>
+                                                <th>كود المساهم </th>
+                                                <th>المساهم</th>
+                                                <th>الوارد استثمار  </th>
+                                                <th>الوارد غير استثمار </th>
+                                                <th>مصروف استثمار </th>
+                                                <th>مصروف غير استثمار </th>
                                                 <th>الرصيد </th>
+                                                <th>اجمالي راس المال </th>
 
 
                                             </tr>
@@ -110,7 +90,7 @@
 
                                                         @{ try
                                                             {
-                                                                @item.PROJECT_NAME
+                                                                @item.FirstOrDefault().ACC_HOLDER_NO
                                                             }
                                                             catch
                                                             {
@@ -124,7 +104,7 @@
 
                                                         @{ try
                                                             {
-                                                                @item.INCOME.ToString("C", nfi)
+                                                                @item.FirstOrDefault().ACC_HOLDERTBL_Model.ACC_HOLDER_NAME
                                                             }
                                                             catch
                                                             {
@@ -138,7 +118,20 @@
                                                     <td>
                                                         @{ try
                                                             {
-                                                                @item.SPENDING.ToString("C", nfi)
+                                                                @item.Where(x => x.ACTION_TYPE == 1 || x.ACTION_TYPE == 4 | x.ACTION_TYPE == 6).Sum(x => x.INCOME).ToString("C", nfi)
+                                                            }
+                                                            catch
+                                                            {
+
+                                                            }
+
+
+                                                        }
+                                                    </td>
+                                                    <td>
+                                                        @{ try
+                                                            {
+                                                                @item.Where(x => x.ACTION_TYPE == 2 || x.ACTION_TYPE == 5).Sum(x => x.INCOME).ToString("C", nfi)
                                                             }
                                                             catch
                                                             {
@@ -152,7 +145,50 @@
                                                     <td>
                                                         @{ try
                                                             {
-                                                                @item.REMAIN.ToString("C", nfi)
+                                                                @item.Where(x => x.ACTION_TYPE == 1 || x.ACTION_TYPE == 4 | x.ACTION_TYPE == 6).Sum(x => x.SPEND_COST).ToString("C", nfi)
+
+                                                            }
+                                                            catch
+                                                            {
+
+                                                            }
+                                                        }
+                                                    </td>
+                                                    <td>
+
+                                                        @{ try
+                                                            {
+                                                                @item.Where(x => x.ACTION_TYPE == 2 || x.ACTION_TYPE == 3 || x.ACTION_TYPE == 5).Sum(x => x.SPEND_COST).ToString("C", nfi)
+                                                            }
+                                                            catch
+                                                            {
+
+                                                            }
+                                                        }
+                                                    </td>
+
+                                                    <td>
+
+                                                        @{ try
+                                                            {
+                                                                var total = item.Sum(x => x.INCOME) - item.Sum(x => x.SPEND_COST);
+
+                                                                @total.ToString("C", nfi)
+                                                            }
+                                                            catch
+                                                            {
+
+                                                            }
+                                                        }
+                                                    </td>
+
+                                                    <td>
+
+                                                        @{ try
+                                                            {
+                                                                var total = (item.Sum(x => x.INCOME) - item.Sum(x => x.SPEND_COST)) + (item.Where(x => (x.SPEND_COST - x.INCOME) > 0 /*&& x.PROJECTTBL_Model.CLOSED == false*/).Sum(x => x.SPEND_COST) - item.Where(x => (x.SPEND_COST - x.INCOME) > 0 /*&& x.PROJECTTBL_Model.CLOSED == false*/).Sum(x => x.INCOME));
+
+                                                                @total.ToString("C", nfi)
                                                             }
                                                             catch
                                                             {
@@ -230,7 +266,7 @@
             responsive: true,
             buttons: [
                 { extend: 'copy', text: 'نسخ' },
-                
+            
                 {
                     extend: 'excelHtml5',
 

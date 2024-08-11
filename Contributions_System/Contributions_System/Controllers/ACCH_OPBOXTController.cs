@@ -399,11 +399,14 @@ namespace Contributions_System.Controllers
                     {
                         ACCH_OPBOXTBL_Business aCCH_OPBOXTBL_Business = new ACCH_OPBOXTBL_Business();
 
-
-                        if (aCCH_OPBOXTBL_Business.Distribution(model))
+                        var result = aCCH_OPBOXTBL_Business.Distribution(model);
+                        if (result > 0)
                         {
-                            return RedirectToAction("Index", new { type = "distribut" });
+                            return RedirectToAction("Details", new { UnderNo = result, reuternPage = "distribut" }); ;
+
+
                         }
+
 
 
                     }

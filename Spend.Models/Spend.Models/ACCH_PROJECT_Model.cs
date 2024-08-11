@@ -177,19 +177,21 @@ namespace Spend.Models
         public Nullable<int> MAIN_RENTAL_CONTRACT { get; set; }
         public Nullable<double> WIDTH { get; set; }
         public Nullable<double> LENGHT { get; set; }
+        [RegularExpression("^[0-9.]*$", ErrorMessage = "هذا الحقل رقم ")]
+        public Nullable<int> AGENT_ID { get; set; }
 
 
+        public int BRANCH_ID { get; set; }
+
+
+        [System.ComponentModel.DefaultValue(false)]
+        public bool IS_DISTRIBUTION { get; set; }
 
         [ForeignKey("PROJECT_PARENT_ID")]
         public virtual ACCH_PROJECT_Model ProjectModels { get; set; }
 
        
-        [RegularExpression("^[0-9.]*$", ErrorMessage = "هذا الحقل رقم ")]
-        public Nullable<int> AGENT_ID { get; set; }
-
-        
-        public int BRANCH_ID { get; set; }
-
+       
         public virtual ICollection<ACCH_PROJECT_Model> Project_Collection { get; set; }
 
         [JsonIgnore]

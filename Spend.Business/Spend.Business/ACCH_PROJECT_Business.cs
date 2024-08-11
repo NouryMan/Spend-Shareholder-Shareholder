@@ -230,6 +230,30 @@ namespace Spend.Business
 
 
         }
+
+
+
+        public async Task Distribution(int  id,bool distribut)
+        {
+
+            try
+            {
+                var item = await GetByIdAsync(id);
+                item.IS_DISTRIBUTION = distribut;
+
+                await db.SaveChangesAsync();
+
+
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.Message);
+            }
+
+
+
+        }
+
         public async Task<List<ACCH_PROJECT_Model>> SuiteByStuteAndProjectAsync(int? ProjectId, int? status)
         {
             return await db.ACCH_PROJECT_Model.Where(x => x.IS_DELETED == false && (status == null || x.STATUS_ID == status)

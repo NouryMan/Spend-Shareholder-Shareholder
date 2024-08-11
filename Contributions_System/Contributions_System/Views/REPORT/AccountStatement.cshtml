@@ -1,9 +1,9 @@
-﻿@model IEnumerable<Spend.Models.ACCH_BALANCE_SUMMARYV_Model>
+﻿@model IEnumerable<Spend.Models.ACCH_OPBOXTBL_Model>
 @using System.Globalization;
 @{
-    ViewBag.Title = "تقرير المساهمين  ";
-
-    int i = 1;
+    ViewBag.Title = " تقرير كشف حساب";
+    double balance = 0;
+    try { balance = ViewBag.INCOME - ViewBag.SPEND_COST; } catch { }
 
     NumberFormatInfo nfi = new CultureInfo("en-US", false).NumberFormat;
     nfi.CurrencyDecimalDigits = 2;
@@ -14,8 +14,6 @@
     nfi.NegativeSign = "-";
     nfi.NumberNegativePattern = 1;
     nfi.CurrencyNegativePattern = 1;
-
-
 
 }
 
@@ -31,7 +29,7 @@
                 <div class="col-lg-6">
                     <div class="breadcrumb-content">
                         <div class="section-heading">
-                            <h2 class="sec__title font-size-30 text-white">كشف مسامهين</h2>
+                            <h2 class="sec__title font-size-30 text-white">كشف حساب</h2>
                         </div>
                     </div><!-- end breadcrumb-content -->
                 </div><!-- end col-lg-6 -->
@@ -39,9 +37,8 @@
                     <div class="breadcrumb-list text-right">
                         <ul class="list-items">
                             <li><a href="~" class="text-white">الصفحة الرئيسية</a></li>
-
+                            <li>الحسابات</li>
                             <li>التقارير</li>
-                            <li>تقرير المساهمين</li>
                         </ul>
                     </div><!-- end breadcrumb-list -->
                 </div><!-- end col-lg-6 -->
@@ -56,6 +53,8 @@
 
                         <div class="form-content">
 
+
+
                             @using (Html.BeginForm())
                             {
 
@@ -63,24 +62,66 @@
 
                                 <div class=" row input-group ">
 
-                                    <div class="col-md-4 col-sm-6  ">
 
-                                        <select id="id" name="id" dir="ltr" class="form-control selectpicker " data-live-search="true">
-                                            <option selected value="">اختار المشروع</option>
+                                    <div class="col-md-2 col-sm-6  ">
 
-                                            @foreach (var p in ViewBag.proj)
+                                        <select id="AccounNo" name="AccounNo" dir="ltr" class="form-control selectpicker " data-live-search="true">
+                                            <option value="">الحساب</option>
+                                            @foreach (var p in ViewBag.AllAcc)
                                             {
-                                                <option class="themeprimary" value="@p.PROJECT_NO" selected> @p.PROJECT_NAME</option>
+                                                if (p.ACC_HOLDER_NO == ViewBag.Acc)
+                                                {
+                                                    <option selected class="themeprimary" value='@p.ACC_HOLDER_NO'>
+                                                        @p.ACC_HOLDER_NAME  -  @p.ACC_HOLDER_NO
+                                                    </option>
+                                                }
+                                                else
+                                                {
+                                                    <option class="themeprimary" value='@p.ACC_HOLDER_NO'>
+                                                        @p.ACC_HOLDER_NAME   -  @p.ACC_HOLDER_NO
+                                                    </option>
+                                                }
+
+
+
                                             }
 
                                         </select>
                                     </div>
+                                    <div class="col-md-2 col-sm-6  ">
 
-                                    <div class="col-md-2 nopadding">
+                                        @Html.DropDownList("Project", (SelectList)ViewBag.proj, "اختار المشروع", new { @class = "form-control project-select", @data_index = "0", @id = "projectDropdown" })
+
+                                    </div>
+                                    <div class="col-md-2 col-sm-6  ">
+
+                                        @Html.DropDownList("buildingId", (SelectList)ViewBag.building, "اختار عمارة", new { @class = "form-control building-select", @data_index = "0", @id = "buildingDropdown" })
+
+                                    </div>
+                                    <div class="col-md-1 col-sm-6  ">
+
+                                        @Html.DropDownList("unitId", (SelectList)ViewBag.unit, "اختار وحدة", new { @class = "form-control unit-select", @data_index = "0", @id = "unitDropdown" })
+
+                                    </div>
+
+                                    <div class="col-md-2 col-sm-6  ">
+
+                                        <input type="date" class = "form-control" id="FromDate" name="FromDate" />
+                                    </div>
+                                    <div class="col-md-2 col-sm-6  ">
+
+                                        <input type="date" class = "form-control" id="ToDate" name="ToDate" />
+                                    </div>
+
+
+                                    <div class="col-md-1 nopadding">
                                         <button class="btn btn-primary" type="submit"><i class="la la-search"></i></button>
                                     </div>
+
+
                                 </div>
                             }
+
 
 
                             @if (Model != null)
@@ -90,11 +131,12 @@
                                     <table id="ReportTable" class="table ">
                                         <thead>
                                             <tr>
-                                                <th># </th>
-                                                <th>كود المساهم</th>
-                                                <th> المساهم</th>
-                                                <th>الايرادات</th>
-                                                <th>الصرفيات </th>
+                                                <th>رقم القيد</th>
+                                                <th>البيان</th>
+                                                <th>التاريخ </th>
+                                                <th>مدين </th>
+                                                <th>دائن</th>
+
                                                 <th>الرصيد </th>
 
 
@@ -103,18 +145,26 @@
 
                                         <tbody>
 
+                                            <tr>
+                                                <td></td>
+                                                <td><h5>الرصيد الافتتاحي</h5></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
 
+                                                <td>@balance</td>
+                                            </tr>
 
                                             @foreach (var item in Model)
                                             {
-
+                                                balance += item.INCOME - item.SPEND_COST;
                                                 <tr>
-                                                    <td>@i  </td>
+
                                                     <td>
 
                                                         @{ try
                                                             {
-                                                                @item.ACC_HOLDER_NO
+                                                                @item.UNDER_NO
                                                             }
                                                             catch
                                                             {
@@ -128,7 +178,7 @@
 
                                                         @{ try
                                                             {
-                                                                @item.ACC_HOLDER_NAME
+                                                                @item.NOTE
                                                             }
                                                             catch
                                                             {
@@ -138,8 +188,22 @@
 
 
                                                     </td>
-                                                    <td>
 
+                                                    <td>
+                                                        @{ try
+                                                            {
+                                                                @item.DATE_M.Value.ToString("dd/MM/yyyy")
+                                                            }
+                                                            catch
+                                                            {
+
+                                                            }
+
+
+                                                        }
+                                                    </td>
+
+                                                    <td>
                                                         @{ try
                                                             {
                                                                 @item.INCOME.ToString("C", nfi)
@@ -149,28 +213,25 @@
 
                                                             }
                                                         }
-
-
                                                     </td>
-
                                                     <td>
+
                                                         @{ try
                                                             {
-                                                                @item.SPENDING.ToString("C", nfi)
+                                                                @item.SPEND_COST.ToString("C", nfi)
+                                                             
                                                             }
                                                             catch
                                                             {
 
                                                             }
-
-
                                                         }
                                                     </td>
-
                                                     <td>
+
                                                         @{ try
                                                             {
-                                                                @item.REMAIN.ToString("C", nfi)
+                                                                @balance.ToString("C", nfi)
                                                             }
                                                             catch
                                                             {
@@ -181,10 +242,28 @@
 
 
                                                 </tr>
-
-                                                i++;
                                             }
+                                            <tr>
+                                                <td></td>
+                                                <td><h5>الاجمالي</h5></td>
+                                                <td></td>
+                                                <td>
+                                                    @{double totalFOR_HIM = Model.Sum(x => x.SPEND_COST);
+                                                        <h5> @totalFOR_HIM.ToString("C", nfi)</h5>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @{double totalFROM_HIM = Model.Sum(x => x.INCOME);
+                                                        <h5>@totalFROM_HIM.ToString("C", nfi)</h5>
+                                                    }
+                                                </td>
+                                                <td>
+                                                    @*@{decimal total = totalFROM_HIM - totalFOR_HIM;
+                                                            <h5> @total.ToString("0.##") </h5>
+                                                        }*@
+                                                </td>
 
+                                            </tr>
 
                                         </tbody>
                                     </table>
@@ -231,40 +310,68 @@
 
 
 
-    jQuery(document).ready(function () {
+        jQuery(document).ready(function () {
+
+     $('#projectDropdown').change(function () {
+    var projectId = $(this).val();
+    $('#buildingDropdown').empty();
+    $('#unitDropdown').empty();
+    if (projectId) {
+        $.getJSON('@Url.Action("GetByParintId", "AcchProject")', { Id: projectId }, function (data) {
+            var items = '<option>اختار عمارة </option>';
+            $.each(data, function (i, building) {
+                items += "<option value='" + building.Value + "'>" + building.Text + "</option>";
+            });
+            $('#buildingDropdown').html(items);
+        });
+    }
+});
+
+     $('#buildingDropdown').change(function () {
+    var buildingId = $(this).val();
+    $('#unitDropdown').empty();
+    if (buildingId) {
+        $.getJSON('@Url.Action("GetByParintId", "AcchProject")', { Id: buildingId }, function (data) {
+            var items = '<option>اختار وحدة</option>';
+            $.each(data, function (i, unit) {
+                items += "<option value='" + unit.Value + "'>" + unit.Text + "</option>";
+            });
+            $('#unitDropdown').html(items);
+        });
+    }
+});
 
 
+
+             var FromDate = moment('@ViewBag.FromDate',"YYYY-MM-DD").format('YYYY-MM-DD');
+            var ToDate = moment('@ViewBag.ToDate',"YYYY-MM-DD").format('YYYY-MM-DD');
+
+            $('#FromDate').val(FromDate);
+            $('#ToDate').val(ToDate);
 
         ReportTabl = jQuery('#ReportTable').DataTable({
             "pagingType": "simple_numbers",
             "pageLength": 100,
-            "ordering": true,
-            "searching": true,
+            "ordering": false,
+            "searching": false,
             "columnDefs": [{
                 "targets": 'no-sort',
                 "orderable": false,
             }], dom: 'Bfrtip',
-
             responsive: true,
             buttons: [
                 { extend: 'copy', text: 'نسخ' },
-                { extend: 'csv', text: 'csv' },
+
                 {
                     extend: 'excelHtml5',
-
+                    title:'كشف حساب'+$("#AccounNo option:selected").text()+'من تاريخ:'+'@ViewBag.FromDate'+'الى:'+'@ViewBag.ToDate',
                     text: ' اكسل',
                     titleAttr: 'تصدير اكسل',
                     customizeData: function (data) { // for long number
-                        //for (var i = 0; i < data.body.length; i++) {
-                        //    //for (var j = 0; j < data.body[i].length; j++) {
-                        //    //    data.body[i][j] = '\u200C' + data.body[i][j];
-                        //    //}
 
-
-                        //}
                     },
 
-                },
+},
                 {
                     extend: 'pdf', text: 'Pdf', customize: function (win) {
 
@@ -277,11 +384,9 @@
                         jQuery(win.document.body).find('table')
                             .addClass('compact')
                             .css('font-size', 'inherit');
-                    }
-                },
+                    }},
                 {
-                    extend: 'print', text: 'طباعة', title: "تقرير المساهمين ",
-
+                    extend: 'print', text: 'طباعة',  title:'كشف حساب'+$("#AccounNo option:selected").text()+'من تاريخ:'+'@ViewBag.FromDate'+'الى:'+'@ViewBag.ToDate',
 
                     customize: function (win) {
                         $(win.document.body)
@@ -337,12 +442,11 @@
             ],
 
 
-        });
+              });
 
 
 
     });
-
 
 
 </script>

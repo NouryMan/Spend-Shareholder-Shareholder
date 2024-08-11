@@ -568,7 +568,7 @@
         $('#FISCAL_YEAR').val(moment().format("YYYY"));
         $("#SCRIP_DATE").val(GetDate($("#DATE_M").val()))
 
-           $('#projectDropdown').change(function () {
+        $('#projectDropdown').change(function () {
        var projectId = $(this).val();
        $('#buildingDropdown').empty();
        $('#unitDropdown').empty();
@@ -583,7 +583,7 @@
        }
    });
 
-   $('#buildingDropdown').change(function () {
+        $('#buildingDropdown').change(function () {
        var buildingId = $(this).val();
        $('#unitDropdown').empty();
        if (buildingId) {

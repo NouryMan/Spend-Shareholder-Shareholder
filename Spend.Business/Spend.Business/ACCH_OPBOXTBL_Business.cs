@@ -440,7 +440,7 @@ namespace Spend.Business
 
 
 
-        public bool Distribution(DistributionViewModel Distribution)
+        public decimal Distribution(DistributionViewModel Distribution)
         {
 
             using (TransactionScope tran = new TransactionScope())
@@ -540,22 +540,27 @@ namespace Spend.Business
                             Create(AddOtherAccH(item.ACC_HOLDER_NO, 6, Amount, ProjId, BuildingId, UnitId, UnderNo, 1, Note, OpNo++, Box, SCRIP_NO++, Date));
 
                         }
+                        if (UnitId != null)
+                        {
+                            ACCH_PROJECT_Business aCCH_PROJECT_Business = new ACCH_PROJECT_Business();
+                            aCCH_PROJECT_Business.Distribution(UnitId.Value, true);
+                        }
                     }
                  
                         tran.Complete();
-                        return true;
+                        return UnderNo;
                     
 
                 }
                 catch (Exception ex) { throw new Exception(ex.Message); }
-                return false;
+                return 0;
             }
         }
 
 
 
 
-
+        
 
 
         public ACCH_OPBOXTBL_Model AddOtherAccH(long AcchNo, int Action_Type, double Cost, int ProjectNo,int? buildingId,int? unitId, decimal UnderNo, int OpType, string Note, double OpNo, int Box, double SCRIP_NO,DateTime date)
@@ -675,7 +680,7 @@ namespace Spend.Business
             return reusert;
         }
 
-        public List<ACCH_OPBOXTBL_Model> Search(long? ACC_NO, int? PROJECT_NO, DateTime? FromDate, DateTime? ToDate)
+        public List<ACCH_OPBOXTBL_Model> Search(long? ACC_NO, int? PROJECT_NO, int? buildingId, int? unitId, DateTime? FromDate, DateTime? ToDate)
         {
 
             if (ToDate == null)
@@ -703,11 +708,21 @@ namespace Spend.Business
 
                 model = model.Where(x => x.TARGET_PROJ == PROJECT_NO).OrderBy(x => x.ACC_HOLDER_NO).ToList();
             }
+            if (buildingId.HasValue)
+            {
+
+                model = model.Where(x => x.BUILDING_ID == buildingId).OrderBy(x => x.ACC_HOLDER_NO).ToList();
+            }
+            if (unitId.HasValue)
+            {
+
+                model = model.Where(x => x.UNIT_ID == unitId).OrderBy(x => x.ACC_HOLDER_NO).ToList();
+            }
 
             return model.OrderBy(x => x.DATE_M).ToList(); ;
         }
 
-        public List<ACCH_OPBOXTBL_Model> OpenBalnce(long ACC_NO, int? PROJECT_NO, DateTime ToDate)
+        public List<ACCH_OPBOXTBL_Model> OpenBalnce(long ACC_NO, int? PROJECT_NO, int? buildingId, int? unitId, DateTime ToDate)
         {
 
 
@@ -723,13 +738,23 @@ namespace Spend.Business
 
                     model = model.Where(x => x.TARGET_PROJ == PROJECT_NO).OrderBy(x => x.DATE_M).ToList();
                 }
+                if (buildingId.HasValue)
+                {
+
+                    model = model.Where(x => x.BUILDING_ID == buildingId).OrderBy(x => x.DATE_M).ToList();
+                }
+                if (unitId.HasValue)
+                {
+
+                    model = model.Where(x => x.UNIT_ID == unitId).OrderBy(x => x.DATE_M).ToList();
+                }
 
 
             }
             return model;
         }
 
-        public List<ACCH_OPBOXTBL_Model> BoxStatement(long? boxId, int? PROJECT_NO, DateTime? FromDate, DateTime? ToDate)
+        public List<ACCH_OPBOXTBL_Model> BoxStatement(long? boxId, int? PROJECT_NO, int? buildingId, int? unitId, DateTime? FromDate, DateTime? ToDate)
         {
 
             if (ToDate == null)
@@ -758,9 +783,20 @@ namespace Spend.Business
                 model = model.Where(x => x.TARGET_PROJ == PROJECT_NO).OrderBy(x => x.ACC_HOLDER_NO).ToList();
             }
 
+            if (buildingId.HasValue)
+            {
+
+                model = model.Where(x => x.BUILDING_ID == buildingId).OrderBy(x => x.ACC_HOLDER_NO).ToList();
+            }
+            if (unitId.HasValue)
+            {
+
+                model = model.Where(x => x.UNIT_ID == unitId).OrderBy(x => x.ACC_HOLDER_NO).ToList();
+            }
+
             return model.OrderBy(x => x.DATE_M).ToList(); ;
         }
-        public List<ACCH_OPBOXTBL_Model> BoxOpenBalnce(long boxId, int? PROJECT_NO, DateTime ToDate)
+        public List<ACCH_OPBOXTBL_Model> BoxOpenBalnce(long boxId, int? PROJECT_NO, int? buildingId, int? unitId, DateTime ToDate)
         {
 
 
@@ -776,7 +812,16 @@ namespace Spend.Business
 
                     model = model.Where(x => x.TARGET_PROJ == PROJECT_NO).OrderBy(x => x.DATE_M).ToList();
                 }
+                if (buildingId.HasValue)
+                {
 
+                    model = model.Where(x => x.BUILDING_ID == buildingId).OrderBy(x => x.DATE_M).ToList();
+                }
+                if (unitId.HasValue)
+                {
+
+                    model = model.Where(x => x.UNIT_ID == unitId).OrderBy(x => x.DATE_M).ToList();
+                }
 
             }
             return model;
