@@ -61,11 +61,19 @@ namespace Spend.Business
 
                         
                         List<PERCENT_EST_Model> percntList = new List<PERCENT_EST_Model>();
-
+                        var determinedCost = item.PERCENT_EST_Collection.Where(x => x.SPEND_DETERMINED).Sum(x => x.DET_COST);
                         foreach (var child in item.PERCENT_EST_Collection)
                         {
+                            if (item.IS_DETERMINED)
+                            {
+                                if(child.SPEND_DETERMINED == false)
+                                {
+                                    child.SPEND_DETERMINED = true;
+                                    child.DET_COST = (item.DET_COST - determinedCost) / child.SPEND_PERCENT;
+                                }
+                            }
 
-                          //  child.BALANCE = 1;
+                                //  child.BALANCE = 1;
                             child.SOURCE_BOX = 1;
                             child.PARENT_ACCH = item.ACC_HOLDER_NO;
                             //child.STATUS = true;
@@ -111,8 +119,17 @@ namespace Spend.Business
 
                         List<PERCENT_EST_Model> percntList = new List<PERCENT_EST_Model>();
 
+                        var determinedCost = item.PERCENT_EST_Collection.Where(x => x.SPEND_DETERMINED).Sum(x => x.DET_COST);
                         foreach (var child in item.PERCENT_EST_Collection)
                         {
+                            if (item.IS_DETERMINED)
+                            {
+                                if (child.SPEND_DETERMINED == false)
+                                {
+                                    child.SPEND_DETERMINED = true;
+                                    child.DET_COST = (item.DET_COST - determinedCost) / child.SPEND_PERCENT;
+                                }
+                            }
 
                             //  child.BALANCE = 1;
                             child.SOURCE_BOX = 1;

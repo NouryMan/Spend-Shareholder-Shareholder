@@ -63,7 +63,7 @@
                                 <div class="col-md-4">
                                     <div class="form-floating mb-12 mb-md-0">
                                         <label for="inputPasswordConfirm">المشروع</label>
-                                        @Html.DropDownList("TARGET_PROJ", (SelectList)ViewBag.proj, "اختار المشروع", new { @class = "form-control", @id = "projectDropdown" })
+                                        @Html.DropDownList("TARGET_PROJ", (SelectList)ViewBag.proj, "اختار المشروع", new { @class = "form-control", @id = "projectDropdown", @required= "required" })
                                         @Html.ValidationMessageFor(model => model.TARGET_PROJ, "", new { @class = "text-danger" })
 
                                     </div>
@@ -93,36 +93,17 @@
                                     <div class="col-md-4">
                                         <div class="form-floating">
                                             <label for="inputLastName">الصندوق/البنك</label>
-                                            <select id="SOURCE_BOX" name="SOURCE_BOX" dir="ltr" class="form-control selectpicker " data-live-search="true">
-                                                <option value="">اختار الصندوق</option>
-                                                @foreach (var p in ViewBag.Box)
-                                                {
-                                                    try
-                                                    {
-                                                        <option class="themeprimary" value="@p.BOX_NO"> @p.BOX_NAME</option>
-                                                    }
-                                                    catch { }
-                                                }
 
-                                            </select>
+                                            @Html.DropDownList("SOURCE_BOX", (SelectList)ViewBag.Box, "اختار الصندوق", new { @class = "form-control selectpicker ", @data_live_search="true", @required = "required" })
+                                            @Html.ValidationMessageFor(model => model.SOURCE_BOX, "", new { @class = "text-danger" })
 
                                         </div>
                                     </div>
                                     <div class="col-md-4">
                                         <div class="form-floating">
                                             <label for="inputLastName">نوع العملية</label>
-                                            <select id="OP_TYPE" name="OP_TYPE" dir="ltr" class="form-control selectpicker " data-live-search="true" required>
-                                                <option value="">اختار نوع العملية </option>
-                                                @foreach (var p in ViewBag.BOX_OP)
-                                                {
-                                                    if (p.OP_NO == 3 || p.OP_NO == 5 || p.OP_NO == 7)
-                                                    {
-                                                        <option class="themeprimary" value="@p.OP_NO"> @p.OP_NAME</option>
-                                                    }
-                                                }
-
-
-                                            </select>
+                                            @Html.DropDownList("OP_TYPE", (SelectList)ViewBag.BOX_OP, "اختار نوع العملية", new { @class = "form-control selectpicker ", @data_live_search = "true", @required = "required" })
+                                            @Html.ValidationMessageFor(model => model.OP_TYPE, "", new { @class = "text-danger" })
 
                                         </div>
                                     </div>
@@ -130,17 +111,10 @@
                                     <div class="col-md-4">
                                         <div class="form-floating">
                                             <label for="inputLastName">نوع حدث العملية</label>
-                                            <select id="ACTION_TYPE" name="ACTION_TYPE" dir="ltr" class="form-control selectpicker " data-live-search="true">
-                                                <option value="">اختار نوع العملية </option>
-                                                @foreach (var p in ViewBag.OPBOX_ACTIONS)
-                                                {
-                                                    if (p.ID == 4 || p.ID == 1 || p.ID == 6)
-                                                    {
-                                                        <option class="themeprimary" value="@p.ID"> @p.ACTION_NAME</option>
-                                                    }
-                                                }
+                                            @Html.DropDownList("ACTION_TYPE", (SelectList)ViewBag.OPBOX_ACTIONS, "اختار نوع العملية", new { @class = "form-control selectpicker ", @data_live_search = "true", @required = "required" })
+                                            @Html.ValidationMessageFor(model => model.ACTION_TYPE, "", new { @class = "text-danger" })
 
-                                            </select>
+                                           
 
                                         </div>
                                     </div>

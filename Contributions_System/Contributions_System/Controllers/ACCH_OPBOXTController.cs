@@ -83,14 +83,13 @@ namespace Contributions_System.Controllers
             ACCH_PROJECT_Business proj_b = new ACCH_PROJECT_Business();
             ViewBag.proj =new SelectList(proj_b.GetAllAsync(1).Result.Where(x => x.OPERATIONAL_PALANCE_Collection.Count() > 0), "ID", "PROJECT_AR_NAME");
             BOXTBL_Business Box_B = new BOXTBL_Business();
-           
-            ViewBag.Box = Box_B.getall();
+            ViewBag.Box = new SelectList(Box_B.getall(), "BOX_NO", "BOX_NAME");
 
             BOX_OPTBL_Business BOX_OP = new BOX_OPTBL_Business();
-            ViewBag.BOX_OP = BOX_OP.GetAll();
+            ViewBag.BOX_OP = new SelectList(BOX_OP.GetAll(), "OP_NO", "OP_NAME");
 
             ACCH_OPBOX_ACTIONSTBL_Business OPBOX_ACTIONS = new ACCH_OPBOX_ACTIONSTBL_Business();
-            ViewBag.OPBOX_ACTIONS = OPBOX_ACTIONS.GetAll().Where(x=>x.ID==1);
+            ViewBag.OPBOX_ACTIONS = new SelectList(OPBOX_ACTIONS.GetAll().Where(x => x.ID == 1), "ID", "ACTION_NAME");
 
             return View();
         }
@@ -127,13 +126,15 @@ namespace Contributions_System.Controllers
             ViewBag.proj = new SelectList(proj_b.GetAllAsync(1).Result.Where(x => x.OPERATIONAL_PALANCE_Collection.Count() > 0), "ID", "PROJECT_AR_NAME",model.TARGET_PROJ);
 
             BOXTBL_Business Box_B = new BOXTBL_Business();
-            ViewBag.Box = Box_B.getall();
+            ViewBag.Box =  new SelectList(Box_B.getall(), "BOX_NO", "BOX_NAME", model.SOURCE_BOX);
 
             BOX_OPTBL_Business BOX_OP = new BOX_OPTBL_Business();
-            ViewBag.BOX_OP = BOX_OP.GetAll();
+            ViewBag.BOX_OP = new SelectList(BOX_OP.GetAll(), "OP_NO", "OP_NAME", model.OP_NO);
 
             ACCH_OPBOX_ACTIONSTBL_Business OPBOX_ACTIONS = new ACCH_OPBOX_ACTIONSTBL_Business();
-            ViewBag.OPBOX_ACTIONS = OPBOX_ACTIONS.GetAll().Where(x => x.ID == 1);
+            ViewBag.OPBOX_ACTIONS =  new SelectList(OPBOX_ACTIONS.GetAll().Where(x => x.ID == 1), "ID", "ACTION_NAME", model.ACTION_TYPE);
+
+           
 
             return View();
         }

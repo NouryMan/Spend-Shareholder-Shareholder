@@ -30,7 +30,7 @@ namespace Contributions_System.Controllers
             ACCH_PROJECT_Business PROJ_B = new ACCH_PROJECT_Business();
 
 
-            var model = ACCH_B.getall();
+            var model = ACCH_B.getall().Where(x=>x.ACCH_TYPE==1);
           
           
             ViewBag.PROJ = PROJ_B.GetAllAsync(1).Result.Where(x => x.OPERATIONAL_PALANCE_Collection.Count()<=0).ToList();
@@ -106,11 +106,13 @@ namespace Contributions_System.Controllers
             return View(model);
         }
 
-        public ActionResult PERCENT_Details(long id)
+        public ActionResult PERCENT_Details(long id,int projId)
         {
             PERCENT_EST_Business b = new PERCENT_EST_Business();
-            var model = b.GetAll().Where(x=>x.PARENT_ACCH==id);
+            var model = b.GetAll().Where(x=>x.PARENT_ACCH==id && x.TARGET_PROJ==projId);
             return View(model);
         }
+
+        
     }
 }

@@ -125,6 +125,10 @@ namespace Spend.Business
                 OpBox.OUT = false;
             }
             else { OpBox.OUT = true; }
+
+            ACC_HOLDERTBL_Business aCC_HOLDERTBL_Business = new ACC_HOLDERTBL_Business();
+            OpBox.PARENT_ACCH = aCC_HOLDERTBL_Business.GetById(1).PARENT_ACCH;
+
             OpBox.ID = GetMaxId();
             OpBox.IS_DELETE =false;
             db.ACCH_OPBOXTBL_Model.Add(OpBox); 
@@ -133,18 +137,24 @@ namespace Spend.Business
 
         public void Update(ACCH_OPBOXTBL_Model OpBox)
         {
-            if (OpBox.ACTION_TYPE == 1 && OpBox.ACTION_TYPE == 4 && OpBox.ACTION_TYPE == 6)  // اذا كانت  تشغلية ليست خاصة او غير تشغلية
+            if (OpBox.ACTION_TYPE == 1 || OpBox.ACTION_TYPE == 4 || OpBox.ACTION_TYPE == 6)  // اذا كانت  تشغلية ليست خاصة او غير تشغلية
             {
                 OpBox.OUT = false;
             }
             else { OpBox.OUT = true; }
-            
+            ACC_HOLDERTBL_Business aCC_HOLDERTBL_Business =new ACC_HOLDERTBL_Business();
+            OpBox.PARENT_ACCH = aCC_HOLDERTBL_Business.GetById(OpBox.ACC_HOLDER_NO).PARENT_ACCH;
+
+
             db.Entry(OpBox).State = EntityState.Modified;
             db.Entry(OpBox).Property(x => x.IS_DELETE).IsModified = false;
             db.Entry(OpBox).Property(x => x.UNDER_NO).IsModified = false;
             db.Entry(OpBox).Property(x => x.OP_NO).IsModified = false;
             db.Entry(OpBox).Property(x => x.DATE_M).IsModified = false;
             db.Entry(OpBox).Property(x => x.DATE_H).IsModified = false;
+            db.Entry(OpBox).Property(x => x.SCRIPT_TYPE).IsModified = false;
+            db.Entry(OpBox).Property(x => x.SCRIP_NO).IsModified = false;
+            db.Entry(OpBox).Property(x => x.SPEND_SCRIPT_NO).IsModified = false;
         
           
 
@@ -185,7 +195,7 @@ namespace Spend.Business
             ACCH_BALANCEV_Business aCCH_BALANCEV_Business = new ACCH_BALANCEV_Business();
            
 
-            acchOpBoxModelView.ProjectId = OpBox.TARGET_PROJ;
+            acchOpBoxModelView.ProjectId = OpBox.TARGET_PROJ.Value;
             acchOpBoxModelView.BoxId = OpBox.SOURCE_BOX;
             acchOpBoxModelView.OpTypeId = OpBox.OP_TYPE.Value;
             acchOpBoxModelView.OpActionTypeId = OpBox.ACTION_TYPE.Value;
@@ -218,7 +228,7 @@ namespace Spend.Business
                             AcchOpBoxDetailsModelView acchOpBox = new AcchOpBoxDetailsModelView();
 
                             acchOpBox.AccHolderId = persent.ACC_HOLDER_NO;
-                            acchOpBox.percentage = persent.DET_COST.Value;
+                          //  acchOpBox.percentage = persent.DET_COST.Value;
                             acchOpBox.IsPercentage = false;
                           
                             acchOpBox.Balance = aCCH_BALANCEV_Business.GetPyID(persent.ACC_HOLDER_NO).BALANCE??0;
