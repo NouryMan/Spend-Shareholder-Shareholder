@@ -60,31 +60,31 @@ namespace Spend.Business
                     // اضافة حسابات الصيانة والاشغال واجور اخرى
 
 
-                    try
-                    {
-                        db.ACCH_PROJ_PERCENTTBL_Model.Add(AddOtherAccH(2, item));
-                        return_value = db.SaveChanges();
-                    }
-                    catch { }
+                    //try
+                    //{
+                    //    db.ACCH_PROJ_PERCENTTBL_Model.Add(AddOtherAccH(2, item));
+                    //    return_value = db.SaveChanges();
+                    //}
+                    //catch { }
 
-                    try
-                    {
-                        db.ACCH_PROJ_PERCENTTBL_Model.Add(AddOtherAccH(3, item));
-                        return_value = db.SaveChanges();
-                    }
-                    catch { }
-                    try
-                    {
-                        db.ACCH_PROJ_PERCENTTBL_Model.Add(AddOtherAccH(4, item));
-                        return_value = db.SaveChanges();
-                    }
-                    catch { }
-                    try
-                    {
-                        db.ACCH_PROJ_PERCENTTBL_Model.Add(AddOtherAccH(5, item));
-                        return_value = db.SaveChanges();
-                    }
-                    catch { }
+                    //try
+                    //{
+                    //    db.ACCH_PROJ_PERCENTTBL_Model.Add(AddOtherAccH(3, item));
+                    //    return_value = db.SaveChanges();
+                    //}
+                    //catch { }
+                    //try
+                    //{
+                    //    db.ACCH_PROJ_PERCENTTBL_Model.Add(AddOtherAccH(4, item));
+                    //    return_value = db.SaveChanges();
+                    //}
+                    //catch { }
+                    //try
+                    //{
+                    //    db.ACCH_PROJ_PERCENTTBL_Model.Add(AddOtherAccH(5, item));
+                    //    return_value = db.SaveChanges();
+                    //}
+                    //catch { }
 
                     ///////
 
