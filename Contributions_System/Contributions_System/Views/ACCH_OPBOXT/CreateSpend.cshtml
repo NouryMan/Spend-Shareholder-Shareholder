@@ -214,7 +214,7 @@
                 <div class="row align-items-center">
                     <div class="col-lg-7">
                         <div class="copy-right padding-top-30px">
-                            <p class="copy__desc">&copy; Copyright Tech Light 2022. Made with <span class="la la-heart"></span> by <a href="http://TechLightsa.com/">Noury</a></p>
+                            <p class="copy__desc">&copy; Copyright Tech Light 2022. Made with <span class="la la-heart"></span> by <a href="http://TechLightsa.com/">techlight</a></p>
                         </div>
                     </div>
                     <div class="col-lg-5">
@@ -231,10 +231,12 @@
             </div>
         </div>
     </div>
-    <script>
-        $(document).ready(function () {
+ <script>
 
-             $('#projectDropdown').change(function () {
+
+    $(document).ready(function () {
+
+           $('#projectDropdown').change(function () {
      var projectId = $(this).val();
      $('#buildingDropdown').empty();
      $('#unitDropdown').empty();
@@ -249,7 +251,7 @@
      }
  });
 
- $('#buildingDropdown').change(function () {
+           $('#buildingDropdown').change(function () {
      var buildingId = $(this).val();
      $('#unitDropdown').empty();
      if (buildingId) {
@@ -263,9 +265,9 @@
      }
  });
 
-      var index = @Model.AcchOpBoxDetailsModelView.Count;
+          var index = @Model.AcchOpBoxDetailsModelView.Count;
 
-       $('#addAccholder').click(function () {
+          $('#addAccholder').click(function () {
         var newItem = `<tr class="form-group">
                         <td>
                         <select id="AcchOpBoxDetailsModelView-${index}-AccHolderId" name="AcchOpBoxDetailsModelView[${index}].AccHolderId" dir="ltr" class="form-control selectpicker" data-live-search="true">
@@ -304,8 +306,8 @@
               $('#TotalAmount').val(totalNetBalance.toFixed(2));
           }
 
-    // Bind change event to select elements
-    $(document).on('change', '.selectpicker', function (e) {
+         // Bind change event to select elements
+          $(document).on('change', '.selectpicker', function (e) {
         // Get the selected option
         var selectedOption = $(this).find('option:selected');
         // Get the balance from the data attribute
@@ -321,10 +323,10 @@
         $('#AcchOpBoxDetailsModelView\\[' + index + '\\]_NetBalence').text(netBalance);
 
         updateTotalNetBalance();
-    });
+      });
 
-      // Bind change event to amount inputs
-        $(document).on('input', '.Amount', function (e) {
+          // Bind change event to amount inputs
+          $(document).on('input', '.Amount', function (e) {
 
         var index = $(this).attr('id').match(/\d+/)[0];
         var balance = parseFloat($('#AcchOpBoxDetailsModelView-' + index + '-AccHolderId').find('option:selected').data('balance')) || 0;
@@ -339,16 +341,33 @@
                 row.css('background-color', '');
             }
         updateTotalNetBalance();
-    });
+      });
 
-    // Initially calculate the total NetBalance
+          // Initially calculate the total NetBalance
           updateTotalNetBalance();
 
           $('#opBoxlist').on('click', '.removeB', function () {
               $(this).closest('.form-group').remove();
+              // Reindex the remaining rows
+              $('#opBoxlist tr').each(function (index) {
+                  $(this).find('select, input, td').each(function () {
+                      // Update the IDs and names to match the new index
+                      var oldId = $(this).attr('id');
+                      var oldName = $(this).attr('name');
+
+                      if (oldId) {
+                          var newId = oldId.replace(/\d+/, index);
+                          $(this).attr('id', newId);
+                      }
+
+                      if (oldName) {
+                          var newName = oldName.replace(/\d+/, index);
+                          $(this).attr('name', newName);
+                      }
+                  });
               updateTotalNetBalance();
           });
-});
-
-    </script>
+      });
+   });
+</script>
 

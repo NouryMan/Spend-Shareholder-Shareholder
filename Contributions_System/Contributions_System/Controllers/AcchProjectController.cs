@@ -26,10 +26,13 @@ namespace Contributions_System.Controllers
             
             
             var pagination =await projB.GetAllAsync(filter);
-            ViewBag.buldingNo =await projB.GetCountByTypeAsync(1);
-            ViewBag.suiteNo =await projB.GetCountByTypeAsync(2);
-            ViewBag.project =await projB.GetCountByTypeAsync(3);
-            //ViewBag.suiteNoclosed = projB.GetProjectListByProjectType(call_constants.project_type.suite).Where(x => x.STATUS_ID == call_constants.projectStatus.closed).Count();
+            ViewBag.buldingNo =await projB.GetCountByTypeAsync(2);
+            ViewBag.suiteNo =await projB.GetCountByTypeAsync(3);
+            ViewBag.project =await projB.GetCountByTypeAsync(1);
+            ViewBag.suiteNoclosed =(await projB.GetAllAsync(3)).Where(x =>x.IS_DELETED==false 
+            && x.ProjectModels.IS_DELETED==false
+            && x.ProjectModels.ProjectModels.IS_DELETED==false 
+            && x.IS_DISTRIBUTION == true).Count();
 
             return View(pagination.Items.ToPagedList(filter.PageNumber, filter.PageSize));
         }
@@ -90,7 +93,7 @@ namespace Contributions_System.Controllers
 
                 ViewBag.cmbPROJECT_TYPE_ID = 1; //new SelectList(lb.GetAllBYParentId(call_constants.project_type.hd), "ID", "NAME_AR");
                 ViewBag.PROJECT_TYPE_Name = "مشروع";
-                ViewBag.PROJECT_NO = await projectBusiness.GetMaxByProjectParent(aread.ID, 2);
+                ViewBag.PROJECT_NO = await projectBusiness.GetMaxByProjectParent(aread.ID, 1);
 
 
             }

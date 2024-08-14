@@ -108,7 +108,7 @@ namespace Spend.Business
                         if (INV.UNDER_NO == null)
                         {
 
-                            INV.UNDER_NO = Under_NO_b.getall().Where(x => x.NAM == "under_no").FirstOrDefault().MAX_NO;
+                            INV.UNDER_NO = Under_NO_b.GetAll().Where(x => x.NAM == "under_no").FirstOrDefault().MAX_NO;
                         }
                     
 

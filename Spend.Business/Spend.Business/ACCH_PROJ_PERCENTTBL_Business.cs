@@ -134,6 +134,7 @@ namespace Spend.Business
                     if (return_value > 0)
                     {
                         scope.Complete();
+                        return_value = item.PROJ_NO;
                     }
                     return return_value;
                 }

@@ -79,7 +79,7 @@ namespace Contributions_System.Controllers
             ViewBag.AllAcc = AllAcc_b.getall().Where(x=>x.OP_ACC==true).ToList();
 
             MAX_UNDER_OPV_Business Under_NO_b = new MAX_UNDER_OPV_Business();
-            ViewBag.UNDER_NO = Under_NO_b.getall().Where(x=>x.NAM=="under_no").FirstOrDefault().MAX_NO;
+            ViewBag.UNDER_NO = Under_NO_b.GetAll().Where(x=>x.NAM=="under_no")?.FirstOrDefault()?.MAX_NO??1;
             UNITTBL_Business Unit_b = new UNITTBL_Business();
             ViewBag.Unitt_b = Unit_b.getall();
 

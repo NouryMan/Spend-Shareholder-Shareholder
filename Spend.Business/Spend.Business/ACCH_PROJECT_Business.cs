@@ -70,9 +70,23 @@ namespace Spend.Business
         }
 
 
-        public async Task<int> GetCountByTypeAsync(int id)
+        public async Task<int> GetCountByTypeAsync(int type)
         {
-            return await db.ACCH_PROJECT_Model.Where(x => x.PROJECT_TYPE_ID == id && x.IS_DELETED == false).CountAsync();
+
+            var query = db.ACCH_PROJECT_Model.Where(x => x.PROJECT_TYPE_ID == type && x.IS_DELETED == false );
+            if (type == 2)
+            {
+                query = query.Where(x => x.ProjectModels.IS_DELETED == false);
+
+            }
+
+            if (type == 3)
+            {
+                query = query.Where(x => x.ProjectModels.ProjectModels.IS_DELETED == false && x.ProjectModels.IS_DELETED == false);
+
+            }
+
+            return await query.CountAsync();
         }
         
 

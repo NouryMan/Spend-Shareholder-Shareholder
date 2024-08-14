@@ -41,8 +41,8 @@ namespace Contributions_System.Controllers
             ViewBag.AccHolder = holders.Count();
             ViewBag.Balence = holders.Sum(x=>x.BALANCE).ToString("C", nfi);
 
-            PROJECTTBL_Business ProjectB = new PROJECTTBL_Business();
-            ViewBag.Project = ProjectB.getall().Count();
+            ACCH_PROJECT_Business ProjectB = new ACCH_PROJECT_Business();
+            ViewBag.Project = ProjectB.GetAllAsync(1).Result.Count();
 
             USERSTBL_Business userB = new USERSTBL_Business();
             ViewBag.User = userB.getall().Count();

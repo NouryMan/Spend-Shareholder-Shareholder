@@ -312,6 +312,26 @@ $('#addTrans').click(function () {
 
 $('#Translist').on('click', '.removeB', function () {
     $(this).closest('.form-group').remove();
+    // Reindex the remaining rows
+    $('#opBoxlist tr').each(function (index) {
+        $(this).find('select, input, td').each(function () {
+            // Update the IDs and names to match the new index
+            var oldId = $(this).attr('id');
+            var oldName = $(this).attr('name');
+
+            if (oldId) {
+                var newId = oldId.replace(/\d+/, index);
+                $(this).attr('id', newId);
+            }
+
+            if (oldName) {
+                var newName = oldName.replace(/\d+/, index);
+                $(this).attr('name', newName);
+            }
+        });
+
+
+    });
     updateTotal();
 });
 

@@ -99,7 +99,7 @@ namespace callcenter.all.Areas.Spend.Api
                     long underNo = 0;
                     try
                     {
-                        underNo = mAX_UNDER_OPV_Business.getall().Where(x => x.NAM == "under_no").FirstOrDefault().MAX_NO;
+                        underNo = mAX_UNDER_OPV_Business.GetAll().Where(x => x.NAM == "under_no").FirstOrDefault().MAX_NO;
                     }
                     catch
                     {

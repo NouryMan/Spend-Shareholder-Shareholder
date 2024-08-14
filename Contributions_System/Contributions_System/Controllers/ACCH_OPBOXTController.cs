@@ -36,7 +36,7 @@ namespace Contributions_System.Controllers
                 typArray =new List<int> { 3, 7, 5 };
                 achinTypeArray =new  List<int> {1};
 
-                model = b.GetpyGroup().Where(x => typArray.Contains(x.FirstOrDefault().OP_TYPE.Value));
+                model = b.GetpyGroup().Where(x => typArray.Contains(x.FirstOrDefault().OP_TYPE.Value ) && achinTypeArray.Contains(x.FirstOrDefault().ACTION_TYPE.Value));
             }
             else if (type == "distribut")
             {
@@ -98,8 +98,8 @@ namespace Contributions_System.Controllers
         public ActionResult SpendProsses(ACCH_OPBOXTBL_Model model)
         {
             ACCH_OPBOXTBL_Business aCCH_OPBOXTBL_B = new ACCH_OPBOXTBL_Business();
-            if (ModelState.IsValid)
-            {
+            //if (ModelState.IsValid)
+            //{
 
                 try
                 {
@@ -116,7 +116,7 @@ namespace Contributions_System.Controllers
                 {
 
                 }
-            }
+          //  }
 
 
 
@@ -193,7 +193,7 @@ namespace Contributions_System.Controllers
                     long underNo = 0;
                     try
                     {
-                         underNo = mAX_UNDER_OPV_Business.getall().Where(x => x.NAM == "under_no").FirstOrDefault().MAX_NO;
+                         underNo = mAX_UNDER_OPV_Business.GetAll().Where(x => x.NAM == "under_no").FirstOrDefault().MAX_NO;
                     }
                     catch
                     {
@@ -246,7 +246,10 @@ namespace Contributions_System.Controllers
             ViewBag.SCRIP_NO = aCCH_OPBOXTBL_B.GetMaxSCRIP_NO();
 
             ACCH_PROJECT_Business proj_b = new ACCH_PROJECT_Business();
-            ViewBag.proj = proj_b.GetAllAsync(1).Result.Where(x => x.OPERATIONAL_PALANCE_Collection.Count() > 0);
+            ViewBag.proj = new SelectList(proj_b.GetAllAsync(1).Result.Where(x => x.OPERATIONAL_PALANCE_Collection.Count() > 0), "ID", "PROJECT_AR_NAME", model.ProjectId);
+            ViewBag.building = new SelectList(proj_b.GetProjectListByParentIdAsync(model.ProjectId).Result, "ID", "PROJECT_AR_NAME", model.BuildingId);
+            ViewBag.unit = new SelectList(proj_b.GetProjectListByParentIdAsync(model.BuildingId).Result, "ID", "PROJECT_AR_NAME", model.UnitId);
+
 
             BOXTBL_Business Box_B = new BOXTBL_Business();
             ViewBag.Box = Box_B.getall();
@@ -308,7 +311,7 @@ namespace Contributions_System.Controllers
                     long underNo = 0;
                     try
                     {
-                        underNo = mAX_UNDER_OPV_Business.getall().Where(x => x.NAM == "under_no").FirstOrDefault().MAX_NO;
+                        underNo = mAX_UNDER_OPV_Business.GetAll().Where(x => x.NAM == "under_no").FirstOrDefault().MAX_NO;
                     }
                     catch
                     {
@@ -396,9 +399,7 @@ namespace Contributions_System.Controllers
                 else
                 {
 
-                    if (ModelState.IsValid)
-                    {
-                        ACCH_OPBOXTBL_Business aCCH_OPBOXTBL_Business = new ACCH_OPBOXTBL_Business();
+                     ACCH_OPBOXTBL_Business aCCH_OPBOXTBL_Business = new ACCH_OPBOXTBL_Business();
 
                         var result = aCCH_OPBOXTBL_Business.Distribution(model);
                         if (result > 0)
@@ -410,7 +411,7 @@ namespace Contributions_System.Controllers
 
 
 
-                    }
+                    
                 }
             }catch(Exception ex) {
                 ModelState.AddModelError("",ex.Message);

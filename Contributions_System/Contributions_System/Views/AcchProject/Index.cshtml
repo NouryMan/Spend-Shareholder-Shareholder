@@ -44,7 +44,7 @@
                                 </h2>
                             </div>
                             <div class="col-4 text-right">
-                                <span>12.5% <i class="fa fa-arrow-up"></i></span>
+                                @*<span>12.5% <i class="fa fa-arrow-up"></i></span>*@
                             </div>
                         </div>
                         <div class="progress mt-1 " data-height="8" style="height: 8px;">
@@ -67,7 +67,7 @@
                                 </h2>
                             </div>
                             <div class="col-4 text-right">
-                                <span>9.23% <i class="fa fa-arrow-up"></i></span>
+                                @*<span>9.23% <i class="fa fa-arrow-up"></i></span>*@
                             </div>
                         </div>
                         <div class="progress mt-1 " data-height="8" style="height: 8px;">
@@ -90,7 +90,7 @@
                                 </h2>
                             </div>
                             <div class="col-4 text-right">
-                                <span>10% <i class="fa fa-arrow-up"></i></span>
+                                @*<span>10% <i class="fa fa-arrow-up"></i></span>*@
                             </div>
                         </div>
                         <div class="progress mt-1 " data-height="8" style="height: 8px;">
@@ -109,11 +109,10 @@
                         <div class="row align-items-center mb-2 d-flex">
                             <div class="col-8">
                                 <h2 class="d-flex align-items-center mb-0">
-                                    @ViewBag.suiteNo
-                                </h2>
+                                    @ViewBag.suiteNoclosed
                             </div>
                             <div class="col-4 text-right">
-                                <span>2.5% <i class="fa fa-arrow-up"></i></span>
+                                @*<span>2.5% <i class="fa fa-arrow-up"></i></span>*@
                             </div>
                         </div>
                         <div class="progress mt-1 " data-height="8" style="height: 8px;">
@@ -143,40 +142,36 @@
             <div class="row">
 
                 @foreach (var item in Model)
-                {
-
-
-
-                    double suitno = 0;
-                    double blookedNo = 0;
-                    double rentalNo = 0;
-                    double unrentalNo = 0;
-
-                    try
                     {
-                        foreach (var building in item.Project_Collection)
-                        {
 
-                            foreach (var suite in building.Project_Collection.Where(x => x.PROJECT_PARENT_ID == building.ID))
+
+
+                        double suitno = 0;
+                        double suitOpen = 0;
+                        double suitClose = 0;
+
+                        try
+                        {
+                            foreach (var building in item.Project_Collection.Where(x => x.IS_DELETED == false))
                             {
-                                suitno++;
-                                if (suite.STATUS_ID == 1)
+
+                                foreach (var suite in building.Project_Collection.Where(x => x.IS_DELETED==false && x.PROJECT_PARENT_ID == building.ID))
                                 {
-                                    blookedNo++;
-                                }
-                                else if (suite.STATUS_ID == 0)
-                                {
-                                    rentalNo++;
-                                }
-                                else
-                                {
-                                    unrentalNo++;
+                                    suitno++;
+                                    if (suite.IS_DISTRIBUTION)
+                                    {
+                                        suitClose++;
+                                    }
+
+                                    else
+                                    {
+                                        suitOpen++;
+                                    }
                                 }
                             }
-                        }
 
-                    }
-                    catch { }
+                        }
+                        catch { }
 
 
                     <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
@@ -184,40 +179,68 @@
                             <div class="wrapper">
                                 <div class="header">@item.PROJECT_AR_NAME</div>
                                 <div class="banner-img">
-                                    <img src="http://via.placeholder.com/640x360" alt="Image 1">
+                                    @*<img src="http://via.placeholder.com/640x360" alt="Image 1">*@
+                                    <img src="~/assets/images/Rectangle 50 (1).png" />
                                 </div>
                                 <div class="dates">
+
+                                   
+
                                     <div class="start">
                                         <strong>الموقع:</strong>
                                         @item.PROJECT_LOCATION
                                     </div>
                                 </div>
-                                <div class="stats">
-                                    <div>
-                                        <strong> العمارات</strong>
-                                        @item.Project_Collection.Count()
+                                <div dir="rtl"class="font-size-14">
+
+                                  
+
+                                    <div class ="row">
+                                        <div class="col col-6">
+                                            <strong> العمارات </strong>
+                                        </div>
+                                        <div class="col col-6">
+                                            @item.Project_Collection.Count()
+                                        </div>
+                                        <strong></strong>
+                                       
+                                     </div>
+                                    <div class="row">
+                                        <div class="col col-6">
+                                            <strong> الشقق </strong>
+                                        </div>
+                                        <div class="col col-6">
+                                            @suitno
+                                        </div>
                                     </div>
-                                    <div>
-                                        <strong> الشقق</strong>
-                                        @suitno
+                                    <div class="row">
+                                        <div class="col col-6">
+                                            <strong> الشقق المتاحة</strong>
+                                        </div>
+                                        <div class="col col-6">
+                                            @suitOpen
+                                        </div>
+                                     
                                     </div>
-                                    <div>
-                                        <strong> الشقق المتاحة</strong>
-                                        @suitno
-                                    </div>
-                                    <div>
-                                        <strong> الشقق المغلقة</strong>
-                                        @suitno
+                                    <div class="row">
+                                        <div class="col col-6">
+                                            <strong> الشقق المغلقة </strong>
+                                        </div>
+                                        <div class="col col-6">
+                                            @suitClose
+                                        </div>
+                                      
                                     </div>
                                 </div>
                                 <div class="footer">
-                                    <a href="~/AcchProject/buildReview/@item.ID" class="Cbtn Cbtn-primary">عرض</a>
-                                    <a href="~/AcchProject/edit/@item.ID" class="Cbtn Cbtn-secondary">تعديل</a>
+                                    <a href="~/AcchProject/buildReview/@item.ID" class="Cbtn Cbtn-primary" title="عرض"><span class="la la-eye" title="عرض"></span></a>
+                                    <a href="~/AcchProject/edit/@item.ID" class="Cbtn Cbtn-secondary " title="تعديل"><span class="la la-edit" title="تعديل"></span></a>
+                                    <a onclick="DeleteConfirmbox(@item.ID)" class="Cbtn Cbtn-danger"title="حذف" ><span class="la la-trash" title="حذف"></span></a>
 
                                 </div>
                                 <div class="footer">
 
-                                    <a onclick="DeleteConfirmbox(@item.ID)" class="Cbtn Cbtn-danger">حذف</a>
+                                   
                                 </div>
                             </div>
                         </div>

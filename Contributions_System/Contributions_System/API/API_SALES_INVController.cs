@@ -187,7 +187,7 @@ namespace Contributions_System.API
 
             model.USER_CR = Convert.ToInt16(User.Identity.GetUserId());
 
-            model.QRCODE = QrCode.encodeQrText("مجموعة شركة جدة الأولى للاستثمارات العقارية", "310166139600003", model.DATE_M.Value.ToString("u"), model.INV_PUR.ToString(), model.VAT_AMOUNT.ToString());
+            model.QRCODE = QrCode.encodeQrText("techlight", "00000000000", model.DATE_M.Value.ToString("u"), model.INV_PUR.ToString(), model.VAT_AMOUNT.ToString());
           
             foreach (var item in model.SALES_INVDTTBL_Collection)
             {
@@ -238,7 +238,7 @@ namespace Contributions_System.API
 
             model.USER_UP = Convert.ToInt16(User.Identity.GetUserId());
 
-            model.QRCODE = QrCode.encodeQrText("مجموعة شركة جدة الأولى للاستثمارات العقارية", "310166139600003", model.DATE_M.Value.ToString("u"), model.INV_PUR.ToString(), model.VAT_AMOUNT.ToString());
+            model.QRCODE = QrCode.encodeQrText("Techlight", "00000000000", model.DATE_M.Value.ToString("u"), model.INV_PUR.ToString(), model.VAT_AMOUNT.ToString());
 
             foreach (var item in model.SALES_INVDTTBL_Collection)
             {

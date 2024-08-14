@@ -155,7 +155,7 @@ namespace Spend.Business
                 ACCOUNTTBL_Business aCCOUNTTBL_Business = new ACCOUNTTBL_Business();
                 MAX_UNDER_OPV_Business Under_NO_b = new MAX_UNDER_OPV_Business();
                 ALL_ACC_NOTBL_Business aLL_ACC_NOTBL_Business = new ALL_ACC_NOTBL_Business();
-                var underNo = Under_NO_b.getall().Where(x => x.NAM == "under_no").FirstOrDefault().MAX_NO;
+                var underNo = Under_NO_b.GetAll().Where(x => x.NAM == "under_no").FirstOrDefault().MAX_NO;
 
 
                 var opNo = aCCOUNTTBL_Business.GetMaxOpNo();

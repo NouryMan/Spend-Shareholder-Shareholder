@@ -69,7 +69,7 @@ namespace Contributions_System.Controllers
                     long reusert = b.Create(model);
                     if (reusert > 0)
                     {
-                        return RedirectToAction("Index");
+                        return RedirectToAction("Details", new {id=1} );
                     }
                 }
                 catch

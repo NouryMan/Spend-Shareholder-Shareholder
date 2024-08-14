@@ -32,7 +32,7 @@ namespace Spend.Models
 
        
         public int? TARGET_PROJ { get; set; }
-        public int? BUILDING_ID { get; set; }
+        public Nullable<int> BUILDING_ID { get; set; }
         public int? UNIT_ID { get; set; }
 
 
